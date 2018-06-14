@@ -15,17 +15,19 @@ import com.skh.reviewme.R
 import com.skh.reviewme.databinding.FragmentCommunityMainBinding
 
 
-class CommunityMainFragment : BaseFragment() {
+class CommunityMainFragment : BaseFragment(), View.OnClickListener {
+
 
     lateinit var binding: FragmentCommunityMainBinding
     private lateinit var communityMainAdapter: CommunityMainAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
+    private var isCatOpen: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_main, container, false)
-
+        binding.onClickListener = this
         setView()
         return binding.root
     }
@@ -34,21 +36,21 @@ class CommunityMainFragment : BaseFragment() {
 
         val list = ArrayList<CommunityModel>()
 
-        val model1 = CommunityModel("skh","닌텐도 게임 사고싶다")
-        val model2 = CommunityModel("skh","흠ㅎ므")
-        val model3 = CommunityModel("skh","ㅇㄴㅇㅁ")
-        val model4 = CommunityModel("skh","ㄲㄲ")
-        val model5 = CommunityModel("skh","ㅃㅃㅃㅃㅃ")
-        val model6 = CommunityModel("skh","ㅁㅁㅁㅁㅁㅁㅁㅁ")
-        val model7 = CommunityModel("skh","ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+        val model1 = CommunityModel("skh", "닌텐도 게임 사고싶다")
+        val model2 = CommunityModel("skh", "흠ㅎ므")
+        val model3 = CommunityModel("skh", "ㅇㄴㅇㅁ")
+        val model4 = CommunityModel("skh", "ㄲㄲ")
+        val model5 = CommunityModel("skh", "ㅃㅃㅃㅃㅃ")
+        val model6 = CommunityModel("skh", "ㅁㅁㅁㅁㅁㅁㅁㅁ")
+        val model7 = CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
 
-        val model8 = CommunityModel("skh","닌텐도 게임 사고싶다")
-        val model9 = CommunityModel("skh","흠ㅎ므")
-        val model10 = CommunityModel("skh","ㅇㄴㅇㅁ")
-        val model11 = CommunityModel("skh","ㄲㄲ")
-        val model12 = CommunityModel("skh","ㅃㅃㅃㅃㅃ")
-        val model13 = CommunityModel("skh","ㅁㅁㅁㅁㅁㅁㅁㅁ")
-        val model14 = CommunityModel("skh","ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+        val model8 = CommunityModel("skh", "닌텐도 게임 사고싶다")
+        val model9 = CommunityModel("skh", "흠ㅎ므")
+        val model10 = CommunityModel("skh", "ㅇㄴㅇㅁ")
+        val model11 = CommunityModel("skh", "ㄲㄲ")
+        val model12 = CommunityModel("skh", "ㅃㅃㅃㅃㅃ")
+        val model13 = CommunityModel("skh", "ㅁㅁㅁㅁㅁㅁㅁㅁ")
+        val model14 = CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
 
         list.add(model1)
         list.add(model2)
@@ -67,7 +69,7 @@ class CommunityMainFragment : BaseFragment() {
 
 
         communityMainAdapter = CommunityMainAdapter(context!!, list)
-        layoutManager = LinearLayoutManager(context!!,  LinearLayoutManager.VERTICAL, false)
+        layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
         (layoutManager as LinearLayoutManager).initialPrefetchItemCount = 5
         binding.mainGridRv.layoutManager = layoutManager
@@ -81,5 +83,19 @@ class CommunityMainFragment : BaseFragment() {
         binding.mainGridRv.addItemDecoration(decor)
     }
 
+    override fun onClick(v: View?) {
+        when (v?.id) {
+            R.id.community_btn_cat -> {
+                if (isCatOpen) {
+                    binding.textCategory.visibility = View.GONE
+                    isCatOpen = false
+                } else {
+                    binding.textCategory.visibility = View.VISIBLE
+                    isCatOpen = true
+                }
+            }
+        }
+
+    }
 
 }// Required empty public constructor
