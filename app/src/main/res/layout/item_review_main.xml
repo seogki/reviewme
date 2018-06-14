@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    >
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener"
+            />
+
+        <variable
+            name="item"
+            type="java.lang.String"
+            />
+
+        <variable
+            name="model"
+            type="com.skh.reviewme.Main.model.ReviewModel"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="250dp"
+        >
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:textSize="15sp"
+            android:text="@{model.titles}"
+            android:gravity="center"
+            android:textColor="#000"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/main_review_img"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:reviewImageUrl="@{model.images}"
+            android:onClick="@{onClickListener::onClick}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="7dp"
+            tool:src="@drawable/ic_launcher_background"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="@{model.reviews}"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:gravity="center"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/btn_bg"
+            android:textColor="@color/colorPrimaryDark"
+            app:layout_constraintEnd_toStartOf="@id/main_review_img"
+            app:layout_constraintStart_toEndOf="@id/main_review_img"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="2dp"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

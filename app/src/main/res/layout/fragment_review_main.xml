@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.skh.reviewme.Main.ReviewMainActivity"
+    >
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener"
+            />
+    </data>
+
+
+
+    <android.support.design.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        >
+
+
+
+
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appBarLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/main_search_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                app:contentInsetEnd="0dp"
+                app:contentInsetLeft="0dp"
+                app:contentInsetRight="0dp"
+                app:contentInsetStart="0dp"
+                app:elevation="0dp"
+                app:layout_scrollFlags="scroll|enterAlways|snap"
+                >
+
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/horizontal_title"
+                    >
+
+                    <TextView
+                        android:id="@+id/main_search_txt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:textColor="#000"
+                        android:text="검색"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                    <EditText
+                        android:id="@+id/main_search_edit"
+                        android:layout_width="200dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
+                        android:textColor="#000"
+                        android:textColorHint="#000"
+                        android:hint="검색..."
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/main_search_txt"
+                        app:layout_constraintTop_toTopOf="parent"
+                        />
+
+                </android.support.constraint.ConstraintLayout>
+
+            </android.support.v7.widget.Toolbar>
+
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/main_grid_rv"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/appBarLayout"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:background="#fff"
+            />
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/review_const_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end"
+
+            >
+
+            <Button
+                android:id="@+id/review_main_regi"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginBottom="100dp"
+                android:text="+"
+                android:textSize="25sp"
+                android:textStyle="bold"
+                android:background="#5000"
+                app:layout_constraintEnd_toStartOf="@id/review_main_question"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                android:onClick="@{onClickListener::onClick}"
+                />
+            <include
+
+                android:id="@+id/review_main_question"
+                android:layout_width="300dp"
+                android:layout_height="match_parent"
+                layout="@layout/item_navi_question"
+                android:background="@color/colorPrimary"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_anchor="@id/review_main_regi"
+                app:layout_anchorGravity="bottom|end"
+                />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+
+    </android.support.design.widget.CoordinatorLayout>
+
+
+</layout>
