@@ -14,11 +14,11 @@
 
 
         <include
-            android:layout_height="45dp"
-            android:layout_width="match_parent"
             android:id="@+id/layout_bottom_tab"
             layout="@layout/item_bottom_layout"
             android:layout_alignParentBottom="true"
+            android:layout_height="70dp"
+            android:layout_width="match_parent"
             />
 
         <FrameLayout

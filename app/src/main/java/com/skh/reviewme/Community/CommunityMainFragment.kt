@@ -75,7 +75,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener {
         binding.mainGridRv.layoutManager = layoutManager
         binding.mainGridRv.adapter = communityMainAdapter
         binding.mainGridRv.setItemViewCacheSize(20)
-        binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+        binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO
         binding.mainGridRv.setHasFixedSize(true)
 
         val decor = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)

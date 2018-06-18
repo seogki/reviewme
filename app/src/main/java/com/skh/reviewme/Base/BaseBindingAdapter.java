@@ -1,11 +1,14 @@
 package com.skh.reviewme.Base;
 
+import android.app.Activity;
+import android.content.Context;
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -13,6 +16,8 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.skh.reviewme.Util.KeyboardUtils;
+import com.skh.reviewme.Util.UtilMethod;
 
 /**
  * Created by Seogki on 2018. 4. 12..
@@ -86,5 +91,29 @@ public class BaseBindingAdapter {
                         imageView.setImageDrawable(resource);
                     }
                 });
+    }
+
+    @BindingAdapter("keyboardDetect")
+    public static void keyboardDetect(@NonNull final View view, final String data) {
+
+        Context context = view.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
+        if (UtilMethod.getActivity(view.getContext()) != null) {
+            KeyboardUtils.addKeyboardToggleListener(UtilMethod.getActivity(view.getContext()), new KeyboardUtils.SoftKeyboardToggleListener() {
+                @Override
+                public void onToggleSoftKeyboard(boolean isVisible) {
+                    view.setVisibility(isVisible ? View.GONE : View.VISIBLE);
+                }
+            });
+        }
+
     }
 }

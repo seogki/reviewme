@@ -10,26 +10,27 @@
             name="onClickListener"
             type="android.view.View.OnClickListener"
             />
+        <variable
+            name="empty"
+            type="String"/>
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#fff"
+        app:keyboardDetect="@{empty}"
         >
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="#000"
-            />
+
 
         <Button
 
             android:id="@+id/bottom_layout_btn1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:text="메인"
+            android:background="@drawable/btn_color_border"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -41,7 +42,8 @@
         <Button
             android:id="@+id/bottom_layout_btn2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
+            android:background="@drawable/btn_color_border"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn1"
             app:layout_constraintStart_toEndOf="@id/bottom_layout_btn3"
@@ -54,7 +56,8 @@
         <Button
             android:id="@+id/bottom_layout_btn3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
+            android:background="@drawable/btn_color_border"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

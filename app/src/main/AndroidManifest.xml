@@ -30,7 +30,8 @@
         </activity>
         <activity
             android:name=".Main.ReviewMainActivity"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            >
         </activity>
         <activity android:name=".Setting.SettingMainActivity">
         </activity>
