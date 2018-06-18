@@ -78,6 +78,20 @@
                         tools:ignore="LabelFor"
                         />
 
+
+                    <Button
+                        android:background="@android:color/transparent"
+                        android:text="카테고리"
+                        android:textColor="#000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/community_btn_cat"
+                        android:onClick="@{onClickListener::onClick}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        />
+
                 </android.support.constraint.ConstraintLayout>
 
             </android.support.v7.widget.Toolbar>

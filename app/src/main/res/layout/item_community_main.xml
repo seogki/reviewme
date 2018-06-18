@@ -39,17 +39,28 @@
 
         <TextView
             android:text="@{item.text}"
-            android:layout_width="match_parent"
+            android:layout_width="290dp"
             android:layout_height="40dp"
             android:textColor="@color/colorPrimaryDark"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/img_thumbnail"
             android:layout_marginStart="20dp"
             android:layout_marginEnd="20dp"
             android:gravity="center_vertical"
-            tools:text="내일 쉰다"
+            tools:text="여기 구나"
+            />
+
+        <ImageView
+            android:id="@+id/img_thumbnail"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="20dp"
+            app:CommunityMainImageUrl="@{item.image}"
 
             />
 

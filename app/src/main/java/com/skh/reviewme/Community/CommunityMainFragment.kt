@@ -36,21 +36,21 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener {
 
         val list = ArrayList<CommunityModel>()
 
-        val model1 = CommunityModel("skh", "닌텐도 게임 사고싶다")
-        val model2 = CommunityModel("skh", "흠ㅎ므")
-        val model3 = CommunityModel("skh", "ㅇㄴㅇㅁ")
-        val model4 = CommunityModel("skh", "ㄲㄲ")
-        val model5 = CommunityModel("skh", "ㅃㅃㅃㅃㅃ")
-        val model6 = CommunityModel("skh", "ㅁㅁㅁㅁㅁㅁㅁㅁ")
-        val model7 = CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+        val model1 = CommunityModel("skh", "닌텐도 게임 사고싶다",getURLForResource(R.drawable.test1))
+        val model2 = CommunityModel("skh", "흠ㅎ므","")
+        val model3 = CommunityModel("skh", "ㅇㄴㅇㅁ","")
+        val model4 = CommunityModel("skh", "ㄲㄲ",getURLForResource(R.drawable.test3))
+        val model5 = CommunityModel("skh", "ㅃㅃㅃㅃㅃ","")
+        val model6 = CommunityModel("skh", "ㅁㅁㅁㅁㅁㅁㅁㅁ",getURLForResource(R.drawable.test6))
+        val model7 = CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ","")
 
-        val model8 = CommunityModel("skh", "닌텐도 게임 사고싶다")
-        val model9 = CommunityModel("skh", "흠ㅎ므")
-        val model10 = CommunityModel("skh", "ㅇㄴㅇㅁ")
-        val model11 = CommunityModel("skh", "ㄲㄲ")
-        val model12 = CommunityModel("skh", "ㅃㅃㅃㅃㅃ")
-        val model13 = CommunityModel("skh", "ㅁㅁㅁㅁㅁㅁㅁㅁ")
-        val model14 = CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ")
+        val model8 = CommunityModel("skh", "닌텐도 게임 사고싶다","")
+        val model9 = CommunityModel("skh", "흠ㅎ므",getURLForResource(R.drawable.test2))
+        val model10 = CommunityModel("skh", "ㅇㄴㅇㅁ","")
+        val model11 = CommunityModel("skh", "ㄲㄲ",getURLForResource(R.drawable.test5))
+        val model12 = CommunityModel("skh", "ㅃㅃㅃㅃㅃ","")
+        val model13 = CommunityModel("skh", "ㅁㅁㅁㅁㅁㅁㅁㅁ",getURLForResource(R.drawable.test4))
+        val model14 = CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ","")
 
         list.add(model1)
         list.add(model2)
@@ -78,7 +78,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener {
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         binding.mainGridRv.setHasFixedSize(true)
 
-        val decor = DividerItemDecoration(activity, DividerItemDecoration.VERTICAL)
+        val decor = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
         decor.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.survey_divder)!!)
         binding.mainGridRv.addItemDecoration(decor)
     }

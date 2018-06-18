@@ -42,7 +42,7 @@ public class BaseBindingAdapter {
     @BindingAdapter("reviewImageUrl")
     public static void ReviewImage(final ImageView imageView, String url) {
         Uri uri;
-        Log.d("ee",url);
+        Log.d("ee", url);
         if (!url.contains("resource"))
             uri = Uri.parse("file://" + url);
         else
@@ -53,6 +53,31 @@ public class BaseBindingAdapter {
                 .apply(new RequestOptions()
                         .centerCrop()
                         .override(450, 450)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                .thumbnail(0.1f)
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        imageView.setImageDrawable(resource);
+                    }
+                });
+    }
+
+    @BindingAdapter("CommunityMainImageUrl")
+    public static void CommunityMainImage(final ImageView imageView, String url) {
+        Uri uri;
+        Log.d("ee", url);
+        if (!url.contains("resource"))
+            uri = Uri.parse("file://" + url);
+        else
+            uri = Uri.parse(url);
+
+        Glide.with(imageView.getContext())
+                .load(uri)
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .circleCrop()
+                        .override(150, 150)
                         .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                 .thumbnail(0.1f)
                 .into(new SimpleTarget<Drawable>() {

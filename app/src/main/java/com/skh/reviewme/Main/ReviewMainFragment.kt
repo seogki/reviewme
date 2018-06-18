@@ -53,6 +53,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
 
         binding.onClickListener = this
         binding.reviewMainQuestion.onClickListener = this
+
         setView()
 
         return binding.root
@@ -230,7 +231,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
                         super.onAnimationEnd(animation)
                         isOpened = true
                         binding.reviewMainQuestion.naviItems.isClickable = true
-
+                        binding.reviewMainQuestion.naviItems.requestFocus()
                         binding.reviewMainRegi.text = "-"
                         DLog.e("isOpend: $isOpened")
                     }
