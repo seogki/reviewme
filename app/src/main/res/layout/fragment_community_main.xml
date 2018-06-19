@@ -19,8 +19,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
+
      >
 
 
@@ -49,6 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/horizontal_title"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
                     >
 
                     <TextView
@@ -70,17 +71,20 @@
                         android:layout_marginStart="25dp"
                         android:textColor="#000"
                         android:textColorHint="#000"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/main_search_txt"
                         app:layout_constraintTop_toTopOf="parent"
                         android:inputType="text"
+                        android:background="@drawable/btn_grey_border"
                         tools:ignore="LabelFor"
                         />
 
 
                     <Button
                         android:background="@android:color/transparent"
-                        android:text="카테고리"
+                        android:text="등록"
                         android:textColor="#000"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

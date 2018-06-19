@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.skh.reviewme.Community.InnerActivity.CommunityQuestionActivity"
+    >
+
+    <data>
+
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener"
+            />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="등록"
+            android:id="@+id/question_text_titlebar"
+            android:textColor="#000"
+            android:gravity="top|start"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@id/question_text_title"
+            android:textSize="18sp"
+
+            />
+
+        <EditText
+            android:id="@+id/question_text_title"
+            android:layout_width="250dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="20dp"
+            android:gravity="center_vertical"
+            android:padding="10dp"
+            android:hint="제목을 입력해주세요"
+            android:textColor="#000"
+            android:textColorHint="#BFBFBF"
+            android:background="@drawable/btn_grey_border"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/question_text_titlebar"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            >
+
+        </EditText>
+
+
+
+        <EditText
+            android:id="@+id/question_txt_question"
+            android:layout_width="250dp"
+            android:layout_height="300dp"
+            android:background="@drawable/btn_grey_border"
+            android:gravity="start"
+            android:padding="10dp"
+            android:hint="내용"
+            android:textColor="#000"
+            android:textColorHint="#BFBFBF"
+            android:layout_marginTop="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/question_text_title"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            >
+        </EditText>
+
+
+        <TextView
+            android:id="@+id/question_add_img"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="35dp"
+            android:gravity="center"
+            android:text="이미지 추가"
+            android:textColor="#000"
+            app:layout_constraintEnd_toStartOf="@id/question_img"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/question_txt_question"
+
+            />
+
+        <ImageView
+            android:id="@+id/question_img"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="35dp"
+            android:background="@drawable/btn_grey_border"
+            android:padding="6dp"
+            android:onClick="@{onClickListener::onClick}"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/question_add_img"
+            app:layout_constraintTop_toBottomOf="@id/question_txt_question"
+
+
+            />
+
+        <Button
+            android:id="@+id/question_btn_register"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_color_border"
+            android:onClick="@{onClickListener::onClick}"
+            android:text="등록"
+            android:textColor="#fff"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            />
+
+
+
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>

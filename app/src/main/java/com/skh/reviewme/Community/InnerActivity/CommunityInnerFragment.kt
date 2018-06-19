@@ -10,6 +10,7 @@ import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.R
 import com.skh.reviewme.databinding.FragmentCommunityInnerBinding
 
@@ -17,21 +18,22 @@ import com.skh.reviewme.databinding.FragmentCommunityInnerBinding
 /**
  * A simple [Fragment] subclass.
  */
-class CommunityInnerFragment : Fragment() {
+class CommunityInnerFragment : BaseFragment() {
 
     lateinit var binding: FragmentCommunityInnerBinding
     lateinit var bitmap : Bitmap
+
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val bundle = arguments
 
-        bitmap = bundle?.getParcelable("IMAGE")!!
+//        bitmap = arguments?.getParcelable("IMAGE")!!
 
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_inner, container, false)
 
-        binding.comInnerImg.setImageBitmap(bitmap)
+//        binding.comInnerImg.setImageBitmap(bitmap)
 
         return binding.root
     }
@@ -40,7 +42,9 @@ class CommunityInnerFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.explode)
+            sharedElementEnterTransition = TransitionInflater.from(context).inflateTransition(android.R.transition.move)
+
+
         }
         super.onCreate(savedInstanceState)
     }

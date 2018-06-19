@@ -34,6 +34,7 @@ open class BaseFragment : Fragment() {
         if (AllowStateloss) {
             activity?.supportFragmentManager
                     ?.beginTransaction()
+//                    ?.setReorderingAllowed(true)
                     ?.addSharedElement(sharedView, transitionName)
                     ?.add(frameId, fragment, fragment.tag)
                     ?.addToBackStack(fragment.tag)
@@ -41,6 +42,7 @@ open class BaseFragment : Fragment() {
         } else {
             activity?.supportFragmentManager
                     ?.beginTransaction()
+//                    ?.setReorderingAllowed(true)
                     ?.addSharedElement(sharedView, transitionName)
                     ?.add(frameId, fragment, fragment.tag)
                     ?.addToBackStack(fragment.tag)

@@ -19,8 +19,7 @@
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:focusableInTouchMode="true"
-        android:focusable="true"
+
         >
 
 
@@ -49,6 +48,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/horizontal_title"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true"
                     >
 
                     <TextView
@@ -70,7 +71,9 @@
                         android:layout_marginStart="25dp"
                         android:textColor="#000"
                         android:textColorHint="#000"
-                        android:hint="검색..."
+                        android:background="@drawable/btn_grey_border"
+                        android:paddingStart="5dp"
+                        android:paddingEnd="5dp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/main_search_txt"
                         app:layout_constraintTop_toTopOf="parent"

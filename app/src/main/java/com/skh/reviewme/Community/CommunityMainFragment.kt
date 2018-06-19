@@ -1,16 +1,14 @@
 package com.skh.reviewme.Community
 
-import android.annotation.SuppressLint
+import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.support.annotation.RequiresApi
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.transition.TransitionInflater
+import android.transition.Fade
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +17,8 @@ import android.widget.TextView
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
 import com.skh.reviewme.Community.InnerActivity.CommunityInnerFragment
+import com.skh.reviewme.Community.InnerActivity.CommunityQuestionActivity
+import com.skh.reviewme.Community.customAnimation.DetailsTransition
 import com.skh.reviewme.Community.model.CommunityModel
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
@@ -61,7 +61,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         communityMainAdapter.setOnItemClickListener(this)
     }
 
-    @SuppressLint("NewApi")
+
     override fun onItemClick(view: View, position: Int) {
         DLog.e("item $position")
 
@@ -82,50 +82,31 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
+//                val frag2 = shared()
                 val frag2 = CommunityInnerFragment()
 
-                val bundle = Bundle()
+//                val bundle = Bundle()
+//
+//                bundle.putParcelable("IMAGE", (Images.drawable as BitmapDrawable).bitmap)
+//                frag2.arguments = bundle
+                frag2.sharedElementEnterTransition = DetailsTransition()
+                frag2.enterTransition = Fade()
+                exitTransition = Fade()
+                frag2.returnTransition = DetailsTransition()
 
-                bundle.putParcelable("IMAGE", (Images.drawable as BitmapDrawable).bitmap)
-                frag2.arguments = bundle
 
-                addFragmentWithSharedElement(activity, R.id.frame_layout, frag2, false, Images, Images.transitionName)
+                addFragmentWithSharedElement(activity, R.id.frame_layout, frag2, false, Images, "innerImage")
             } else {
                 addFragment(activity, R.id.frame_layout, CommunityInnerFragment(), false)
             }
         }
 
-
     }
-
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
-    private fun shared(): CommunityInnerFragment {
-        val sub02Fragment = CommunityInnerFragment()
-        sharedElementReturnTransition = TransitionInflater.from(
-                activity).inflateTransition(R.transition.change_image_transform)
-        exitTransition = TransitionInflater.from(
-                activity).inflateTransition(android.R.transition.fade)
-
-        sub02Fragment.sharedElementEnterTransition = TransitionInflater.from(
-                activity).inflateTransition(R.transition.change_image_transform)
-        sub02Fragment.enterTransition = TransitionInflater.from(
-                activity).inflateTransition(android.R.transition.fade)
-
-
-        return sub02Fragment
-    }
-
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.community_btn_cat -> {
-                if (isCatOpen) {
-                    binding.textCategory.visibility = View.GONE
-                    isCatOpen = false
-                } else {
-                    binding.textCategory.visibility = View.VISIBLE
-                    isCatOpen = true
-                }
+               beginNewActivity(Intent(context,CommunityQuestionActivity::class.java))
             }
         }
 

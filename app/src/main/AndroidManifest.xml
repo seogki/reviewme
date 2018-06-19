@@ -43,6 +43,8 @@
         </activity>
         <activity android:name=".Community.InnerActivity.CommunityInnerActivity">
         </activity>
+        <activity android:name=".Community.InnerActivity.CommunityQuestionActivity">
+        </activity>
     </application>
 
 </manifest>
