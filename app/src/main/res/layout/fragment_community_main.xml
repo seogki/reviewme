@@ -70,7 +70,6 @@
                         android:layout_marginStart="25dp"
                         android:textColor="#000"
                         android:textColorHint="#000"
-
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/main_search_txt"
                         app:layout_constraintTop_toTopOf="parent"
@@ -90,6 +89,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+
                         />
 
                 </android.support.constraint.ConstraintLayout>
@@ -141,10 +141,6 @@
 
 
         </android.support.constraint.ConstraintLayout>
-
-
-
-
 
 
     </android.support.design.widget.CoordinatorLayout>

@@ -121,7 +121,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
         binding.mainGridRv.adapter = reviewAdpater
         binding.mainGridRv.setItemViewCacheSize(20)
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
-        binding.mainGridRv.setHasFixedSize(true)
+        binding.mainGridRv.setHasFixedSize(false)
 
         val decorVertical = ContextCompat.getDrawable(context!!, R.drawable.survey_divder)
         val decorHorizontal = ContextCompat.getDrawable(context!!, R.drawable.survey_divder_horizontal)

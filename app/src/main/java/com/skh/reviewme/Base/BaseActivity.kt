@@ -15,9 +15,9 @@ open class BaseActivity : AppCompatActivity() {
 
     fun AppCompatActivity.addFragment(@IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean) {
         if (AllowStateloss)
-            supportFragmentManager.beginTransaction().add(frameId, fragment, fragment.tag)?.commitAllowingStateLoss()
+            supportFragmentManager.beginTransaction().addToBackStack(fragment.tag).add(frameId, fragment, fragment.tag)?.commitAllowingStateLoss()
         else
-            supportFragmentManager.beginTransaction().add(frameId, fragment, fragment.tag)?.commit()
+            supportFragmentManager.beginTransaction().addToBackStack(fragment.tag).add(frameId, fragment, fragment.tag)?.commit()
     }
 
     fun AppCompatActivity.replaceFragment(@IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean) {

@@ -41,16 +41,26 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onBackPressed() {
 
-        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
-            backKeyPressedTime = System.currentTimeMillis()
-            showGuide()
-            return
-        }
-        if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
-            this.finishAffinity()
-            finishToast()
+        if (isFirstFragment()) {
+            if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+                backKeyPressedTime = System.currentTimeMillis()
+                showGuide()
+                return
+            }
+            if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+                this.finishAffinity()
+                finishToast()
+            }
+        } else {
+            super.onBackPressed()
         }
 
+    }
+
+    private fun isFirstFragment(): Boolean {
+        val curFragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
+
+        return curFragment.tag == "CheeseMainTabFragment"
     }
 
 

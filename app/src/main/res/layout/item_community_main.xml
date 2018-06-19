@@ -54,6 +54,7 @@
 
         <ImageView
             android:id="@+id/img_thumbnail"
+            android:transitionName="innerImage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -61,7 +62,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginEnd="20dp"
             app:CommunityMainImageUrl="@{item.image}"
-
+            tools:ignore="UnusedAttribute"
             />
 
 

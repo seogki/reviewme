@@ -1,0 +1,25 @@
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             tools:context="com.skh.reviewme.Community.InnerActivity.CommunityInnerFragment"
+    >
+
+    <!-- TODO: Update blank fragment layout -->
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#fff"
+        >
+
+
+        <ImageView
+            android:id="@+id/com_inner_img"
+            android:transitionName="innerImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            tools:ignore="UnusedAttribute"
+            />
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</layout>
