@@ -1,7 +1,6 @@
 package com.skh.reviewme.Setting
 
 
-import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -10,13 +9,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.kakao.usermgmt.UserManagement
+import com.kakao.usermgmt.callback.LogoutResponseCallback
+import com.skh.reviewme.ApplicationClass
 import com.skh.reviewme.Base.BaseFragment
-import com.skh.reviewme.Login.SplashActivity
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.databinding.FragmentSettingMainBinding
-
-
 
 
 /**
@@ -46,24 +45,32 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun signOut() {
-        GoogleSignInOptions
-                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestEmail()
-                .build()
-                .let {
-                    GoogleSignIn
-                            .getClient(context!!, it)
-                            .let {
-                                it.signOut().addOnCompleteListener {
-                                    activity?.finishAffinity()
-                                    beginNewActivity(Intent(context, SplashActivity::class.java))
+        if (ApplicationClass.getIsKakao()) {
+            UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
+                override fun onCompleteLogout() {
+                    activity?.finishAffinity()
+                    RedirectLoginActivity()
 
-                                }
-                            }
                 }
+            })
+        } else {
+
+            GoogleSignInOptions
+                    .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+                    .let {
+                        GoogleSignIn.getClient(context!!, it)
+                                .let {
+                                    it.signOut().addOnCompleteListener {
+                                        activity?.finishAffinity()
+                                        RedirectLoginActivity()
+                                    }
+                                }
+                    }
+        }
 
     }
-    private fun getProfile(){
+
+    private fun getProfile() {
         val acct = GoogleSignIn.getLastSignedInAccount(activity!!)
         if (acct != null) {
             val personName = acct.displayName
