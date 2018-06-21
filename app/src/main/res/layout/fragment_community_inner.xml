@@ -3,6 +3,7 @@
         xmlns:tools="http://schemas.android.com/tools"
         tools:context="com.skh.reviewme.Community.Inner.CommunityInnerFragment"
     >
+
     <data>
 
         <variable
@@ -10,174 +11,191 @@
             type="android.view.View.OnClickListener"
             />
     </data>
-    <android.support.constraint.ConstraintLayout
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
-        android:clickable="true"
         >
 
-        <TextView
-            android:id="@+id/inner_txt_regi_name"
-            android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical"
-            android:textColor="#000"
-            app:layout_constraintStart_toEndOf="@id/inner_txt_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_chainStyle="spread"
-            tools:text="작성자"
-            />
-
-        <TextView
-            android:id="@+id/inner_txt_title"
-            android:layout_width="250dp"
-            android:layout_height="30dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center_vertical"
-            android:textColor="#000"
-
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/inner_txt_regi_name"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
-            />
-
-        <ScrollView
-            android:id="@+id/inner_const_view"
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/btn_grey_border"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inner_txt_title"
-            android:scrollbars="vertical"
+            android:layout_height="wrap_content"
             >
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#fff"
+                android:clickable="true"
+                android:focusable="true"
                 >
 
+
                 <TextView
-                    android:id="@+id/inner_inner_txt_content"
+                    android:id="@+id/inner_txt_regi_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="20dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#000"
+                    app:layout_constraintStart_toEndOf="@id/inner_txt_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintVertical_chainStyle="spread"
+                    tools:text="작성자"
+                    />
+
+                <TextView
+                    android:id="@+id/inner_txt_title"
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical"
+                    android:textColor="#000"
+
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/inner_txt_regi_name"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="ㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇㅇ"
+                    />
+
+
+                <RelativeLayout
+                    android:id="@+id/inner_const_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+
                     android:layout_marginTop="10dp"
+                    android:background="@drawable/btn_grey_border"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/inner_txt_title"
+                    >
+
+                    <TextView
+                        android:id="@+id/inner_inner_txt_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:textColor="#000"
+                        tools:text="ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                        />
+
+                    <ImageView
+                        android:id="@+id/inner_inner_img1_content"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/inner_inner_txt_content"
+                        android:layout_marginStart="20dp"
+                        tools:src="@drawable/horizontal_title"
+                        />
+
+                    <ImageView
+                        android:id="@+id/inner_inner_img2_content"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/inner_inner_txt_content"
+                        android:layout_marginEnd="20dp"
+                        tools:src="@drawable/horizontal_title"
+                        />
+
+                    <ImageView
+                        android:id="@+id/inner_inner_img3_content"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_alignStart="@+id/inner_inner_img1_content"
+                        android:layout_below="@+id/inner_inner_img1_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginTop="20dp"
+                        tools:src="@drawable/horizontal_title"
+                        />
+
+                    <ImageView
+                        android:id="@+id/inner_inner_img4_content"
+                        android:layout_width="130dp"
+                        android:layout_height="130dp"
+                        android:layout_alignStart="@+id/inner_inner_img2_content"
+                        android:layout_below="@+id/inner_inner_img2_content"
+                        android:layout_marginBottom="15dp"
+                        android:layout_marginTop="20dp"
+                        tools:src="@drawable/horizontal_title"
+                        />
+
+                </RelativeLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="#13A9AA"
+                    app:layout_constraintBottom_toTopOf="@id/inner_rv_comment"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/inner_rv_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="10dp"
+
+                    android:paddingEnd="5dp"
+                    android:paddingStart="5dp"
+                    android:scrollbars="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/inner_const_view"
+                    app:layout_constraintBottom_toTopOf="@id/inner_edit_comment"
+                    tools:listitem="@layout/item_community_main"
+                    />
+
+
+                <EditText
+                    android:id="@+id/inner_edit_comment"
+                    android:layout_width="0dp"
+                    android:layout_height="45dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:background="@drawable/btn_grey_rec"
+                    app:layout_constraintEnd_toStartOf="@id/inner_txt_comment"
+                    android:paddingEnd="7dp"
+                    android:paddingStart="7dp"
                     android:textColor="#000"
-                    android:layout_alignParentTop="true"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    tools:text="ddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+                    android:textSize="15sp"
+                    tools:text="아ㅐ겨호댜"
+
                     />
 
-                <ImageView
-                    android:id="@+id/inner_inner_img1_content"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_below="@+id/inner_inner_txt_content"
-                    android:layout_alignParentStart="true"
-                    tools:src="@drawable/horizontal_title"
+                <TextView
+                    android:id="@+id/inner_txt_comment"
+                    android:layout_width="60dp"
+                    android:layout_height="45dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/inner_edit_comment"
+                    android:background="@drawable/btn_color_rec"
+                    android:gravity="center"
+                    android:onClick="@{onClickListener::onClick}"
+                    android:text="등록"
+
+                    android:textColor="#fff"
                     />
 
-                <ImageView
-                    android:id="@+id/inner_inner_img2_content"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_marginEnd="20dp"
-                    android:layout_below="@+id/inner_inner_txt_content"
-                    android:layout_alignParentEnd="true"
-                    tools:src="@drawable/horizontal_title"
-                    />
 
-                <ImageView
-                    android:id="@+id/inner_inner_img3_content"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_alignStart="@+id/inner_inner_img1_content"
-                    android:layout_below="@+id/inner_inner_img1_content"
-                    tools:src="@drawable/horizontal_title"
-                    />
-
-                <ImageView
-                    android:id="@+id/inner_inner_img4_content"
-                    android:layout_width="130dp"
-                    android:layout_height="130dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_alignStart="@+id/inner_inner_img2_content"
-                    android:layout_below="@+id/inner_inner_img2_content"
-                    tools:src="@drawable/horizontal_title"
-                    />
-
-            </RelativeLayout>
-
-
-
-
-        </ScrollView>
-
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/inner_rv_comment"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/inner_edit_comment"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/inner_const_view"
-            tools:listitem="@layout/item_community_main"
-            />
-
-        <EditText
-            android:id="@+id/inner_edit_comment"
-            android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="15dp"
-            android:layout_marginStart="15dp"
-            android:paddingEnd="5dp"
-            android:paddingStart="5dp"
-            android:textColor="#000"
-
-            android:background="@drawable/btn_grey_border"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/inner_txt_comment"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:text="아ㅐ겨호댜"
-            />
-
-        <TextView
-            android:id="@+id/inner_txt_comment"
-            android:layout_width="50dp"
-            android:layout_height="25dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="15dp"
-            android:text="등록"
-            android:background="@drawable/btn_color_border"
-            android:textColor="#fff"
-            android:onClick="@{onClickListener::onClick}"
-            android:gravity="center"
-            android:layout_marginBottom="15dp"
-            />
-
-
-    </android.support.constraint.ConstraintLayout>
-
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </android.support.design.widget.CoordinatorLayout>
 </layout>

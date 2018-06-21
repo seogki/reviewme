@@ -17,8 +17,8 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="#fff"
+        android:layout_height="50dp"
+        android:background="#f4f4f4"
         app:keyboardDetect="@{empty}"
         >
 
@@ -28,7 +28,7 @@
 
             android:id="@+id/bottom_layout_btn1"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="25dp"
             android:text="메인"
             android:background="@drawable/btn_color_border"
             android:onClick="@{onClickListener::onClick}"
@@ -42,7 +42,7 @@
         <Button
             android:id="@+id/bottom_layout_btn2"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="25dp"
             android:background="@drawable/btn_color_border"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn1"
@@ -56,7 +56,7 @@
         <Button
             android:id="@+id/bottom_layout_btn3"
             android:layout_width="wrap_content"
-            android:layout_height="45dp"
+            android:layout_height="25dp"
             android:background="@drawable/btn_color_border"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintEnd_toEndOf="parent"

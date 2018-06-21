@@ -35,17 +35,37 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_inner, container, false)
         binding.onClickListener = this
-        (arguments?.getParcelable("IMAGE") as? Bitmap).let { binding.innerInnerImg1Content.setImageBitmap(it) }
+        val bitmap = arguments?.getParcelable("IMAGE") as? Bitmap
+        binding.innerInnerImg1Content.setImageBitmap(bitmap)
         arguments?.getString("text").let { binding.innerTxtTitle.setText(it) }
         arguments?.getString("title").let { binding.innerTxtRegiName.setText(it) }
-
+        binding.innerInnerTxtContent.text = "이거 이거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이 이거거 이거거 이거거 이거거 이거거 이거거 이거ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ"
+        binding.innerInnerImg2Content.setImageBitmap(bitmap)
+        binding.innerInnerImg3Content.setImageBitmap(bitmap)
+        binding.innerInnerImg4Content.setImageBitmap(bitmap)
         setRv()
+
+
 
         return binding.root
     }
 
     private fun setRv() {
 
+
+        communityInnerAdapter = CommunityInnerAdapter(context!!, setdata())
+        layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
+        layoutManager.isItemPrefetchEnabled = true
+        (layoutManager as LinearLayoutManager).initialPrefetchItemCount = 2
+        binding.innerRvComment.layoutManager = layoutManager
+        binding.innerRvComment.adapter = communityInnerAdapter
+        binding.innerRvComment.setItemViewCacheSize(20)
+        binding.innerRvComment.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO
+        binding.innerRvComment.setHasFixedSize(false)
+        binding.innerRvComment.isNestedScrollingEnabled = false
+    }
+
+    private fun setdata(): ArrayList<CommunityInnerModel> {
         val list = ArrayList<CommunityInnerModel>()
 
         list.add(CommunityInnerModel("skh", "ㅋㅋㅋ"))
@@ -56,15 +76,7 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
         list.add(CommunityInnerModel("skh", "ㅋㅂㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㅋㅋ"))
         list.add(CommunityInnerModel("skh", "ㅂㅆㅆㅈㅂㅆㅂㅈㅆㅈㅂㅋㅋㅋ"))
 
-        communityInnerAdapter = CommunityInnerAdapter(context!!, list)
-        layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
-        layoutManager.isItemPrefetchEnabled = true
-        (layoutManager as LinearLayoutManager).initialPrefetchItemCount = 2
-        binding.innerRvComment.layoutManager = layoutManager
-        binding.innerRvComment.adapter = communityInnerAdapter
-        binding.innerRvComment.setItemViewCacheSize(20)
-        binding.innerRvComment.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO
-        binding.innerRvComment.setHasFixedSize(false)
+        return list
     }
 
     override fun onClick(v: View?) {

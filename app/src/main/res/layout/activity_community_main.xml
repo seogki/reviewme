@@ -16,7 +16,7 @@
             android:id="@+id/layout_bottom_tab"
             layout="@layout/item_bottom_layout"
             android:layout_alignParentBottom="true"
-            android:layout_height="70dp"
+            android:layout_height="40dp"
             android:layout_width="match_parent"
             />
 
