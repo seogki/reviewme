@@ -45,6 +45,13 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
         binding.innerInnerImg4Content.setImageBitmap(bitmap)
         setRv()
 
+        if(bitmap == null){
+            binding.innerInnerImg1Content.visibility = View.GONE
+            binding.innerInnerImg2Content.visibility = View.GONE
+            binding.innerInnerImg3Content.visibility = View.GONE
+            binding.innerInnerImg4Content.visibility = View.GONE
+        }
+
 
 
         return binding.root

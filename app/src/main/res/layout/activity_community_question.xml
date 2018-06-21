@@ -30,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             app:layout_constraintBottom_toTopOf="@id/question_text_title"
             android:textSize="18sp"
 
@@ -38,9 +38,9 @@
 
         <EditText
             android:id="@+id/question_text_title"
-            android:layout_width="250dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_vertical"
             android:padding="10dp"
             android:hint="제목을 입력해주세요"
@@ -62,21 +62,20 @@
 
         <EditText
             android:id="@+id/question_txt_question"
-            android:layout_width="250dp"
-            android:layout_height="300dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:background="@drawable/btn_grey_border"
             android:gravity="start"
             android:padding="10dp"
             android:hint="내용"
             android:textColor="#000"
             android:textColorHint="#BFBFBF"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/question_text_title"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
-
             app:layout_constraintBottom_toTopOf="@id/question_add_img"
             >
         </EditText>
@@ -84,29 +83,34 @@
 
         <TextView
             android:id="@+id/question_add_img"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="이미지 추가"
             android:textColor="#000"
+            android:layout_marginStart="30dp"
+            android:layout_marginBottom="15dp"
             app:layout_constraintEnd_toStartOf="@id/question_img"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintTop_toBottomOf="@id/question_txt_question"
+            app:layout_constraintBottom_toTopOf="@id/question_btn_register"
 
 
             />
 
         <ImageView
             android:id="@+id/question_img"
-            android:layout_width="150dp"
+            android:layout_width="0dp"
             android:layout_height="50dp"
             android:layout_marginTop="15dp"
-
+            android:layout_marginBottom="15dp"
+            app:layout_constraintBottom_toTopOf="@id/question_btn_register"
             app:layout_constraintHorizontal_chainStyle="spread"
-            android:background="@drawable/btn_grey_border"
+
             android:padding="6dp"
+            android:layout_marginEnd="30dp"
             android:onClick="@{onClickListener::onClick}"
             android:src="@drawable/ic_launcher_background"
             app:layout_constraintEnd_toEndOf="parent"

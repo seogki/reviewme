@@ -60,6 +60,8 @@
         </activity>
         <activity android:name=".Login.LoginActivity">
         </activity>
+        <activity android:name=".Community.Question.CommunityQuestionPhotoActivity">
+        </activity>
     </application>
 
 </manifest>

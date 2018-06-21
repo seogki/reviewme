@@ -30,6 +30,7 @@
             android:text="사진을 정해주세요"
             android:textColor="#000"
             android:textSize="25sp"
+
             app:layout_constraintBottom_toTopOf="@+id/review_photo_rv"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -41,14 +42,14 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/review_photo_rv"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="0dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="25dp"
             app:layout_constraintBottom_toTopOf="@+id/btn_floataction"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/review_photo_title"
             app:layout_constraintVertical_weight="1"
             />
 

@@ -67,7 +67,6 @@
                     android:id="@+id/inner_const_view"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-
                     android:layout_marginTop="10dp"
                     android:background="@drawable/btn_grey_border"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -190,7 +189,6 @@
                     android:gravity="center"
                     android:onClick="@{onClickListener::onClick}"
                     android:text="등록"
-
                     android:textColor="#fff"
                     />
 

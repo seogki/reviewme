@@ -170,7 +170,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
                     override fun onPermissionGranted() {
                         Handler().postDelayed({
                             beginNewActivity(Intent(context, ReviewPhotoActivity::class.java))
-                        }, 10)
+                        }, 100)
                     }
 
                     override fun onPermissionDenied(deniedPermissions: java.util.ArrayList<String>) {
