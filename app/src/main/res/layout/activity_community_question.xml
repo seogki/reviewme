@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.skh.reviewme.Community.InnerActivity.CommunityQuestionActivity"
+    tools:context="com.skh.reviewme.Community.Question.CommunityQuestionActivity"
     >
 
     <data>
@@ -76,6 +76,7 @@
             app:layout_constraintTop_toBottomOf="@id/question_text_title"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+
             app:layout_constraintBottom_toTopOf="@id/question_add_img"
             >
         </EditText>
@@ -85,15 +86,15 @@
             android:id="@+id/question_add_img"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="15dp"
             android:gravity="center"
             android:text="이미지 추가"
             android:textColor="#000"
-            android:layout_marginBottom="35dp"
             app:layout_constraintEnd_toStartOf="@id/question_img"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintTop_toBottomOf="@id/question_txt_question"
-            app:layout_constraintBottom_toTopOf="@id/question_btn_register"
+
 
             />
 
@@ -101,8 +102,9 @@
             android:id="@+id/question_img"
             android:layout_width="150dp"
             android:layout_height="50dp"
-            android:layout_marginTop="35dp"
-            android:layout_marginBottom="9dp"
+            android:layout_marginTop="15dp"
+
+            app:layout_constraintHorizontal_chainStyle="spread"
             android:background="@drawable/btn_grey_border"
             android:padding="6dp"
             android:onClick="@{onClickListener::onClick}"
@@ -110,7 +112,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/question_add_img"
             app:layout_constraintTop_toBottomOf="@id/question_txt_question"
-            app:layout_constraintBottom_toTopOf="@id/question_btn_register"
+
 
 
 

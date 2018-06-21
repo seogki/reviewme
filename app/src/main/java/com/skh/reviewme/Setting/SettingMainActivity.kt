@@ -21,7 +21,7 @@ class SettingMainActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setting_main)
         binding.layoutBottomTab.onClickListener = this
 
-        addFragment(R.id.frame_layout, SettingMainFragment(), false)
+        addFragment(R.id.frame_layout, SettingMainFragment(), false, false)
     }
 
     override fun onClick(v: View?) {

@@ -4,7 +4,6 @@ package com.skh.reviewme.Setting
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -40,23 +39,22 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.setting_btn_out -> {
-                showDialog("로그아웃 하시겠습니까?")
                 signOut()
             }
         }
     }
-    private fun showDialog(msg: String){
-        val dialog = AlertDialog.Builder(context!!)
-                .setMessage(msg)
-                .setPositiveButton("확인") { dialog, which ->
-                   signOut()
-                }
-                .setNegativeButton("취소") { dialog, which ->
-                    dialog.dismiss()
-                }
-
-        dialog.show()
-    }
+//    private fun showDialog(msg: String){
+//        val dialog = AlertDialog.Builder(context!!)
+//                .setMessage(msg)
+//                .setPositiveButton("확인") { dialog, which ->
+//                   signOut()
+//                }
+//                .setNegativeButton("취소") { dialog, which ->
+//                    dialog.dismiss()
+//                }
+//
+//        dialog.show()
+//    }
 
     private fun signOut() {
         if (ApplicationClass.getIsKakao())

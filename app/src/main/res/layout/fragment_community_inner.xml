@@ -1,9 +1,15 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
-        tools:context="com.skh.reviewme.Community.InnerActivity.CommunityInnerFragment"
+        tools:context="com.skh.reviewme.Community.Inner.CommunityInnerFragment"
     >
+    <data>
 
+        <variable
+            name="onClickListener"
+            type="android.view.View.OnClickListener"
+            />
+    </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -140,7 +146,7 @@
 
         <EditText
             android:id="@+id/inner_edit_comment"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="25dp"
             android:layout_marginBottom="15dp"
             android:layout_marginEnd="15dp"
@@ -148,11 +154,27 @@
             android:paddingEnd="5dp"
             android:paddingStart="5dp"
             android:textColor="#000"
+
             android:background="@drawable/btn_grey_border"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/inner_txt_comment"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="아ㅐ겨호댜"
+            />
+
+        <TextView
+            android:id="@+id/inner_txt_comment"
+            android:layout_width="50dp"
+            android:layout_height="25dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="15dp"
+            android:text="등록"
+            android:background="@drawable/btn_color_border"
+            android:textColor="#fff"
+            android:onClick="@{onClickListener::onClick}"
+            android:gravity="center"
+            android:layout_marginBottom="15dp"
             />
 
 

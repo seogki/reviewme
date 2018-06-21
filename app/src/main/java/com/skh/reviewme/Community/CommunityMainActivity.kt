@@ -21,7 +21,7 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_main)
         binding.layoutBottomTab.onClickListener = this
 
-        addFragment(R.id.frame_layout, CommunityMainFragment(), false)
+        addFragment(R.id.frame_layout, CommunityMainFragment(), false, false)
     }
 
     override fun onClick(v: View?) {

@@ -1,4 +1,4 @@
-package com.skh.reviewme.Community.InnerActivity
+package com.skh.reviewme.Community.Question
 
 import android.databinding.DataBindingUtil
 import android.os.Bundle

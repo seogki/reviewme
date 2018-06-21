@@ -6,7 +6,6 @@ import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
-import android.view.View
 import com.skh.reviewme.Login.LoginActivity
 import com.skh.reviewme.R
 
@@ -26,32 +25,6 @@ open class BaseFragment : Fragment() {
         return Uri.parse("android.resource://" + R::class.java.`package`.name + "/" + resourceId).toString()
     }
 
-
-    fun addFragmentWithSharedElement(activity: FragmentActivity?
-                                     , @IdRes frameId: Int
-                                     , fragment: Fragment
-                                     , AllowStateloss: Boolean
-                                     , sharedView: View?
-                                     , transitionName: String) {
-
-        if (AllowStateloss) {
-            activity?.supportFragmentManager
-                    ?.beginTransaction()
-//                    ?.setReorderingAllowed(true)
-                    ?.addSharedElement(sharedView, transitionName)
-                    ?.add(frameId, fragment, fragment.tag)
-                    ?.addToBackStack(fragment.tag)
-                    ?.commitAllowingStateLoss()
-        } else {
-            activity?.supportFragmentManager
-                    ?.beginTransaction()
-//                    ?.setReorderingAllowed(true)
-                    ?.addSharedElement(sharedView, transitionName)
-                    ?.add(frameId, fragment, fragment.tag)
-                    ?.addToBackStack(fragment.tag)
-                    ?.commit()
-        }
-    }
 
     fun addFragment(activity: FragmentActivity?, @IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean, backstack: Boolean) {
 

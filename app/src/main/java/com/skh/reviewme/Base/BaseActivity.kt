@@ -6,6 +6,7 @@ import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
+import com.skh.reviewme.Login.LoginActivity
 import com.skh.reviewme.Main.ReviewMainActivity
 
 /**
@@ -16,11 +17,17 @@ open class BaseActivity : AppCompatActivity() {
 
     private lateinit var toast: Toast
 
-    fun AppCompatActivity.addFragment(@IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean) {
+    fun AppCompatActivity.addFragment(@IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean, backstack: Boolean) {
+        val transaction = supportFragmentManager?.beginTransaction()?.add(frameId, fragment, fragment.tag)
+
+        if (backstack) {
+            transaction?.addToBackStack(fragment.tag)
+        }
+
         if (AllowStateloss)
-            supportFragmentManager.beginTransaction().addToBackStack(fragment.tag).add(frameId, fragment, fragment.tag)?.commitAllowingStateLoss()
+            transaction?.commitAllowingStateLoss()
         else
-            supportFragmentManager.beginTransaction().addToBackStack(fragment.tag).add(frameId, fragment, fragment.tag)?.commit()
+            transaction?.commit()
     }
 
     fun AppCompatActivity.replaceFragment(@IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean) {
@@ -41,7 +48,7 @@ open class BaseActivity : AppCompatActivity() {
     fun AppCompatActivity.redirectReviewMainActivity() {
         startActivity(Intent(this, ReviewMainActivity::class.java))
     }
-    fun AppCompatActivity.LoginActivity() {
+    fun AppCompatActivity.redirectLoginActivity() {
         startActivity(Intent(this, LoginActivity()::class.java))
     }
 

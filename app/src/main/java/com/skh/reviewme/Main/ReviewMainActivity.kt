@@ -20,7 +20,7 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_review_main)
         binding.layoutBottomTab.onClickListener = this
-        addFragment(R.id.frame_layout, ReviewMainFragment(), false)
+        addFragment(R.id.frame_layout, ReviewMainFragment(), false, false)
 
 
     }

@@ -56,7 +56,7 @@
         </activity>
         <activity android:name=".Main.Photos.GalleryMaxActivity">
         </activity>
-        <activity android:name=".Community.InnerActivity.CommunityQuestionActivity">
+        <activity android:name=".Community.Question.CommunityQuestionActivity">
         </activity>
         <activity android:name=".Login.LoginActivity">
         </activity>

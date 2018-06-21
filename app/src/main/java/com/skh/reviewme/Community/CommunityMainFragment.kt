@@ -15,8 +15,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
-import com.skh.reviewme.Community.InnerActivity.CommunityInnerFragment
-import com.skh.reviewme.Community.InnerActivity.CommunityQuestionActivity
+import com.skh.reviewme.Community.Inner.CommunityInnerFragment
+import com.skh.reviewme.Community.Question.CommunityQuestionActivity
 import com.skh.reviewme.Community.model.CommunityModel
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
@@ -81,17 +81,19 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
             }
         }
 
+        val frag = CommunityInnerFragment()
+        val bundle = Bundle()
 
         if (Images != null) {
-
-            val frag = CommunityInnerFragment()
-            val bundle = Bundle()
             bundle.putString("title", title?.text.toString())
             bundle.putString("text", text?.text.toString())
-            bundle.putParcelable("IMAGE", (Images.drawable as BitmapDrawable).bitmap)
-            frag.arguments = bundle
-            addFragment(activity, R.id.frame_layout, frag, false, true)
+            bundle.putParcelable("IMAGE", (Images.drawable as? BitmapDrawable)?.bitmap)
+        } else{
+            bundle.putString("title", title?.text.toString())
+            bundle.putString("text", text?.text.toString())
         }
+        frag.arguments = bundle
+        addFragment(activity, R.id.frame_layout, frag, false, true)
 
     }
 
