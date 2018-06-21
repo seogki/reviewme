@@ -9,7 +9,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
+        android:background="@drawable/btn_color_border"
         >
 
         <TextView
@@ -31,18 +31,42 @@
             android:layout_width="300dp"
             android:layout_height="50dp"
             android:layout_marginBottom="15dp"
+            android:padding="2dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/sign_in_button"
+            android:visibility="gone"
+            />
+
+        <TextView
+            android:id="@+id/com_login"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_grey_border"
+            android:layout_marginBottom="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="카카오 로그인"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:gravity="center"
             app:layout_constraintBottom_toTopOf="@id/sign_in_button"
             />
 
 
-        <com.google.android.gms.common.SignInButton
+
+
+        <TextView
             android:id="@+id/sign_in_button"
+            android:text="구글 로그인"
+            android:textSize="15sp"
+            android:textColor="#000"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             android:layout_marginBottom="50dp"
+            android:background="@drawable/btn_grey_border"
             android:layout_width="300dp"
             android:layout_height="50dp" />
 

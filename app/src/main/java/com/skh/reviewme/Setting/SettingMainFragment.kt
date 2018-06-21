@@ -4,6 +4,7 @@ package com.skh.reviewme.Setting
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +29,7 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
+
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting_main, container, false)
         binding.settingBtnOut.setOnClickListener(this)
         getProfile()
@@ -39,35 +40,29 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.setting_btn_out -> {
+                showDialog("로그아웃 하시겠습니까?")
                 signOut()
             }
         }
     }
+    private fun showDialog(msg: String){
+        val dialog = AlertDialog.Builder(context!!)
+                .setMessage(msg)
+                .setPositiveButton("확인") { dialog, which ->
+                   signOut()
+                }
+                .setNegativeButton("취소") { dialog, which ->
+                    dialog.dismiss()
+                }
+
+        dialog.show()
+    }
 
     private fun signOut() {
-        if (ApplicationClass.getIsKakao()) {
-            UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
-                override fun onCompleteLogout() {
-                    activity?.finishAffinity()
-                    RedirectLoginActivity()
-
-                }
-            })
-        } else {
-
-            GoogleSignInOptions
-                    .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
-                    .let {
-                        GoogleSignIn.getClient(context!!, it)
-                                .let {
-                                    it.signOut().addOnCompleteListener {
-                                        activity?.finishAffinity()
-                                        RedirectLoginActivity()
-                                    }
-                                }
-                    }
-        }
-
+        if (ApplicationClass.getIsKakao())
+            kakaoLogout()
+        else
+            googleLogout()
     }
 
     private fun getProfile() {
@@ -83,5 +78,29 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
 
             DLog.e("profiles: $personEmail \n$personName,$personGivenName,$personFamilyName : $personId : $personPhoto")
         }
+    }
+
+    private fun kakaoLogout() {
+        UserManagement.getInstance().requestLogout(object : LogoutResponseCallback() {
+            override fun onCompleteLogout() {
+                activity?.finishAffinity()
+                redirectLoginActivity()
+
+            }
+        })
+    }
+
+    private fun googleLogout() {
+        GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build()
+                .let {
+                    GoogleSignIn.getClient(context!!, it)
+                            .let {
+                                it.signOut().addOnCompleteListener {
+                                    activity?.finishAffinity()
+                                    redirectLoginActivity()
+                                }
+                            }
+                }
     }
 }// Required empty public constructor

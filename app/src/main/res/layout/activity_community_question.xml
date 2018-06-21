@@ -30,7 +30,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="15dp"
             app:layout_constraintBottom_toTopOf="@id/question_text_title"
             android:textSize="18sp"
 
@@ -45,8 +45,10 @@
             android:padding="10dp"
             android:hint="제목을 입력해주세요"
             android:textColor="#000"
+            android:layout_marginBottom="10dp"
             android:textColorHint="#BFBFBF"
             android:background="@drawable/btn_grey_border"
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/question_text_titlebar"
@@ -74,6 +76,7 @@
             app:layout_constraintTop_toBottomOf="@id/question_text_title"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
+            app:layout_constraintBottom_toTopOf="@id/question_add_img"
             >
         </EditText>
 
@@ -81,22 +84,25 @@
         <TextView
             android:id="@+id/question_add_img"
             android:layout_width="150dp"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_marginTop="35dp"
             android:gravity="center"
             android:text="이미지 추가"
             android:textColor="#000"
+            android:layout_marginBottom="35dp"
             app:layout_constraintEnd_toStartOf="@id/question_img"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/question_txt_question"
+            app:layout_constraintBottom_toTopOf="@id/question_btn_register"
 
             />
 
         <ImageView
             android:id="@+id/question_img"
             android:layout_width="150dp"
-            android:layout_height="100dp"
+            android:layout_height="50dp"
             android:layout_marginTop="35dp"
+            android:layout_marginBottom="9dp"
             android:background="@drawable/btn_grey_border"
             android:padding="6dp"
             android:onClick="@{onClickListener::onClick}"
@@ -104,6 +110,8 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/question_add_img"
             app:layout_constraintTop_toBottomOf="@id/question_txt_question"
+            app:layout_constraintBottom_toTopOf="@id/question_btn_register"
+
 
 
             />

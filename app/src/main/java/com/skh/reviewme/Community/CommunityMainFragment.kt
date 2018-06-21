@@ -2,13 +2,12 @@ package com.skh.reviewme.Community
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.os.Build
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.transition.Fade
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
 import com.skh.reviewme.Community.InnerActivity.CommunityInnerFragment
 import com.skh.reviewme.Community.InnerActivity.CommunityQuestionActivity
-import com.skh.reviewme.Community.customAnimation.DetailsTransition
 import com.skh.reviewme.Community.model.CommunityModel
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
@@ -31,7 +29,6 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
     lateinit var binding: FragmentCommunityMainBinding
     private lateinit var communityMainAdapter: CommunityMainAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
-    private var isCatOpen: Boolean = false
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -66,11 +63,18 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         DLog.e("item $position")
 
         var Images: ImageView? = null
+        var text: TextView? = null
+        var title: TextView? = null
 
         for (i in 0..(view as ViewGroup).childCount) {
             val child = view.getChildAt(i)
+            title = (view.getChildAt(0) as TextView)
+            text = view.getChildAt(1) as TextView
+
+
             if (child is TextView) {
                 DLog.e("child + ${child.text}")
+
             } else if (child is ImageView) {
                 DLog.e("child + image ${child.drawable}")
                 Images = child
@@ -80,25 +84,13 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
 
         if (Images != null) {
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-
-//                val frag2 = shared()
-                val frag2 = CommunityInnerFragment()
-
-//                val bundle = Bundle()
-//
-//                bundle.putParcelable("IMAGE", (Images.drawable as BitmapDrawable).bitmap)
-//                frag2.arguments = bundle
-                frag2.sharedElementEnterTransition = DetailsTransition()
-                frag2.enterTransition = Fade()
-                exitTransition = Fade()
-                frag2.returnTransition = DetailsTransition()
-
-
-                addFragmentWithSharedElement(activity, R.id.frame_layout, frag2, false, Images, "innerImage")
-            } else {
-                addFragment(activity, R.id.frame_layout, CommunityInnerFragment(), false)
-            }
+            val frag = CommunityInnerFragment()
+            val bundle = Bundle()
+            bundle.putString("title", title?.text.toString())
+            bundle.putString("text", text?.text.toString())
+            bundle.putParcelable("IMAGE", (Images.drawable as BitmapDrawable).bitmap)
+            frag.arguments = bundle
+            addFragment(activity, R.id.frame_layout, frag, false, true)
         }
 
     }
@@ -106,7 +98,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.community_btn_cat -> {
-               beginNewActivity(Intent(context,CommunityQuestionActivity::class.java))
+                beginNewActivity(Intent(context, CommunityQuestionActivity::class.java))
             }
         }
 

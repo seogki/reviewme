@@ -5,7 +5,9 @@ import android.net.Uri
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AlertDialog
 import android.view.View
+import com.skh.reviewme.Login.LoginActivity
 import com.skh.reviewme.R
 
 
@@ -14,6 +16,7 @@ import com.skh.reviewme.R
  */
 open class BaseFragment : Fragment() {
 
+    lateinit var dialog: AlertDialog
 
     fun Fragment.beginNewActivity(intent: Intent) {
         startActivity(intent)
@@ -50,10 +53,23 @@ open class BaseFragment : Fragment() {
         }
     }
 
-    fun addFragment(activity: FragmentActivity?,@IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean) {
+    fun addFragment(activity: FragmentActivity?, @IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean, backstack: Boolean) {
+
+        val transaction = activity?.supportFragmentManager?.beginTransaction()?.add(frameId, fragment, fragment.tag)
+
+        if (backstack) {
+            transaction?.addToBackStack(fragment.tag)
+        }
+
         if (AllowStateloss)
-            activity?.supportFragmentManager?.beginTransaction()?.add(frameId, fragment, fragment.tag)?.commitAllowingStateLoss()
+            transaction?.commitAllowingStateLoss()
         else
-            activity?.supportFragmentManager?.beginTransaction()?.add(frameId, fragment, fragment.tag)?.commit()
+            transaction?.commit()
     }
+
+    fun redirectLoginActivity() {
+        startActivity(Intent(context, LoginActivity::class.java))
+    }
+
+
 }

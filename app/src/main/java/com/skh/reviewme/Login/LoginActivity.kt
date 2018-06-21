@@ -36,11 +36,10 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
         binding.signInButton.setOnClickListener(this)
-
-        callback = SessionCallback()
-        Session.getCurrentSession().addCallback(callback)
-        Session.getCurrentSession().checkAndImplicitOpen()
+        binding.comLogin.setOnClickListener(this)
         DLog.e("onSessionInitiated")
+
+        initiateKakaoSign()
         initiateGoogleSign()
     }
 
@@ -50,6 +49,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             R.id.sign_in_button -> {
                 signIn()
             }
+            R.id.com_login -> {
+                binding.comKakaoLogin.performClick()
+            }
         }
     }
 
@@ -58,6 +60,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onStart() {
         super.onStart()
         GoogleSignIn.getLastSignedInAccount(this).let { updataUI(it) }
+    }
+    private fun initiateKakaoSign(){
+        callback = SessionCallback()
+        Session.getCurrentSession().addCallback(callback)
+        Session.getCurrentSession().checkAndImplicitOpen()
+
     }
 
     private fun initiateGoogleSign() {

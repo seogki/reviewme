@@ -21,19 +21,17 @@ import com.skh.reviewme.databinding.FragmentCommunityInnerBinding
 class CommunityInnerFragment : BaseFragment() {
 
     lateinit var binding: FragmentCommunityInnerBinding
-    lateinit var bitmap : Bitmap
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
 
-//        bitmap = arguments?.getParcelable("IMAGE")!!
-
-
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_inner, container, false)
 
-//        binding.comInnerImg.setImageBitmap(bitmap)
+        (arguments?.getParcelable("IMAGE") as Bitmap).let { binding.innerInnerImg1Content.setImageBitmap(it) }
+        arguments?.getString("text").let { binding.innerTxtTitle.setText(it) }
+        arguments?.getString("title").let { binding.innerTxtRegiName.setText(it) }
 
         return binding.root
     }
