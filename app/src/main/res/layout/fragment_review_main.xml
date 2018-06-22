@@ -34,7 +34,7 @@
             <android.support.v7.widget.Toolbar
                 android:id="@+id/main_search_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
+                android:layout_height="85dp"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
                 app:contentInsetRight="0dp"
@@ -55,11 +55,11 @@
                     <TextView
                         android:id="@+id/main_search_reviewtitle"
                         android:layout_width="match_parent"
-                        android:layout_height="35dp"
+                        android:layout_height="45dp"
                         android:text="ReviewMe"
                         android:gravity="center"
                         android:textColor="#000"
-                        android:textSize="15sp"
+                        android:textSize="18sp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -70,7 +70,6 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginStart="10dp"
-
                         android:layout_marginBottom="10dp"
                         android:textColor="#000"
                         android:textColorHint="#000"
