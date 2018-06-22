@@ -172,7 +172,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         list.add(CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ", ""))
         list.add(CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ", ""))
 
-        return list;
+        return list
     }
 
 }// Required empty public constructor

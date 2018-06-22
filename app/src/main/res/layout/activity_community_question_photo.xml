@@ -40,7 +40,7 @@
         <ImageView
             android:id="@+id/question_photo_img1"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="100dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/question_photo_title"
             app:layout_constraintBottom_toTopOf="@id/question_photo_rv"
@@ -50,7 +50,7 @@
         <ImageView
             android:id="@+id/question_photo_img2"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="100dp"
             android:layout_marginTop="10dp"
 
             app:layout_constraintEnd_toStartOf="@id/question_photo_img3"
@@ -62,7 +62,7 @@
             android:layout_marginTop="10dp"
             android:id="@+id/question_photo_img3"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="100dp"
             app:layout_constraintEnd_toStartOf="@id/question_photo_img4"
             app:layout_constraintStart_toEndOf="@id/question_photo_img2"
             app:layout_constraintTop_toBottomOf="@id/question_photo_title"
@@ -71,10 +71,22 @@
             android:layout_marginTop="10dp"
             android:id="@+id/question_photo_img4"
             android:layout_width="0dp"
-            android:layout_height="70dp"
+            android:layout_height="100dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/question_photo_img3"
             app:layout_constraintTop_toBottomOf="@id/question_photo_title"
+            />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5dp"
+            android:background="@drawable/survey_divder"
+            app:layout_goneMarginTop="2.5dp"
+            app:layout_constraintTop_toBottomOf="@id/question_photo_img1"
+            app:layout_constraintBottom_toTopOf="@id/question_photo_rv"
+            android:layout_marginBottom="2.5dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             />
 
         <android.support.v7.widget.RecyclerView

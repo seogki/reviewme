@@ -126,7 +126,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         override fun onSessionOpenFailed(exception: KakaoException?) {
             if (exception != null) {
                 DLog.e("onSessionOpenFailed")
-                DLog.e(exception.message.toString());
+                DLog.e(exception.message.toString())
             }
         }
     }

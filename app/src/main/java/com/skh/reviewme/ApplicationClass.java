@@ -37,7 +37,7 @@ public class ApplicationClass extends MultiDexApplication{
         KakaoSDK.init(new KakaoSDKAdapter());
     }
 
-    @Nullable
+
     public static ApplicationClass getGlobalApplicationContext() {
         if (instance == null)
             throw new IllegalStateException("this application does not inherit com.kakao.GlobalApplication");

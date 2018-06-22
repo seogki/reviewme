@@ -8,7 +8,7 @@ import com.skh.reviewme.BuildConfig
  */
 
 object DLog {
-    internal val TAG = "CheeseCounter"
+    private const val TAG = "CheeseCounter"
 
     /**
      * Log Level Error

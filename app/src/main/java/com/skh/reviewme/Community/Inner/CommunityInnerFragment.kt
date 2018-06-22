@@ -37,8 +37,8 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
         binding.onClickListener = this
         val bitmap = arguments?.getParcelable("IMAGE") as? Bitmap
         binding.innerInnerImg1Content.setImageBitmap(bitmap)
-        arguments?.getString("text").let { binding.innerTxtTitle.setText(it) }
-        arguments?.getString("title").let { binding.innerTxtRegiName.setText(it) }
+        arguments?.getString("text").let { binding.innerTxtTitle.text = it }
+        arguments?.getString("title").let { binding.innerTxtRegiName.text = it }
         binding.innerInnerTxtContent.text = "이거 이거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이 이거거 이거거 이거거 이거거 이거거 이거거 이거ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ"
         binding.innerInnerImg2Content.setImageBitmap(bitmap)
         binding.innerInnerImg3Content.setImageBitmap(bitmap)
