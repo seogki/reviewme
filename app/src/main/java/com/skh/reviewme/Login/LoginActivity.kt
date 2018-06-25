@@ -86,7 +86,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         DLog.e("account : " + account.toString())
         if (account != null) {
             ApplicationClass.setIsKakao(false)
-            redirectReviewMainActivity()
+//            redirectReviewMainActivity()
+            redirectRegisterActivity()
             finish()
         }
     }
@@ -119,7 +120,8 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         override fun onSessionOpened() {
             DLog.e("onSessionOpened")
             ApplicationClass.setIsKakao(true)
-            redirectReviewMainActivity()
+//            redirectReviewMainActivity()
+            redirectRegisterActivity()
             finish()
         }
 

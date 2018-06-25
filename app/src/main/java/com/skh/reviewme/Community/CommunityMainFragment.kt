@@ -4,6 +4,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -88,13 +89,12 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
             bundle.putString("title", title?.text.toString())
             bundle.putString("text", text?.text.toString())
             bundle.putParcelable("IMAGE", (Images.drawable as? BitmapDrawable)?.bitmap)
-        } else{
+        } else {
             bundle.putString("title", title?.text.toString())
             bundle.putString("text", text?.text.toString())
         }
-        frag.arguments = bundle
-        addFragment(activity, R.id.frame_layout, frag, false, true)
 
+        startFragmentWithBundle(bundle, frag)
     }
 
     override fun onClick(v: View?) {
@@ -103,8 +103,14 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
                 beginNewActivity(Intent(context, CommunityQuestionActivity::class.java))
             }
         }
+    }
 
+    private fun startFragmentWithBundle(bundle: Bundle, frag: Fragment) {
 
+        if (frag is CommunityMainFragment) {
+            frag.arguments = bundle
+            addFragment(activity, R.id.frame_layout, frag, false, true)
+        }
     }
 
     private fun addlist(): ArrayList<CommunityModel> {

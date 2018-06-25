@@ -25,13 +25,13 @@
 
 
 
-        <Button
+        <ImageView
 
             android:id="@+id/bottom_layout_btn1"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="25dp"
             android:text="메인"
-            android:background="@drawable/btn_color_border"
+            android:src="@drawable/icons8_main_page_24"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -40,25 +40,25 @@
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn2"
             />
-        <Button
+        <ImageView
             android:id="@+id/bottom_layout_btn2"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="25dp"
-            android:background="@drawable/btn_color_border"
+            android:src="@drawable/icons8_user_account_24"
             android:onClick="@{onClickListener::onClick}"
-            app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn1"
-            app:layout_constraintStart_toEndOf="@id/bottom_layout_btn3"
+            app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn3"
+            app:layout_constraintStart_toEndOf="@id/bottom_layout_btn1"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_weight="1"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
             android:text="게시판"
             />
-        <Button
+        <ImageView
             android:id="@+id/bottom_layout_btn3"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="25dp"
-            android:background="@drawable/btn_color_border"
+            android:src="@drawable/icons8_settings_24"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

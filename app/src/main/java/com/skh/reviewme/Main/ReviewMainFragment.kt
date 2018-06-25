@@ -157,6 +157,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
             plusClose(false)
             binding.reviewMainQuestion.naviImg.setImageDrawable(null)
             name = "empty"
+            closeKeyboard()
         } else {
 
         }

@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.skh.reviewme.Login.LoginActivity
+import com.skh.reviewme.Login.ReviewRegister.RegisterActivity
 import com.skh.reviewme.Main.ReviewMainActivity
 
 /**
@@ -50,6 +51,9 @@ open class BaseActivity : AppCompatActivity() {
     }
     fun AppCompatActivity.redirectLoginActivity() {
         startActivity(Intent(this, LoginActivity()::class.java))
+    }
+    fun AppCompatActivity.redirectRegisterActivity() {
+        startActivity(Intent(this, RegisterActivity()::class.java))
     }
 
 

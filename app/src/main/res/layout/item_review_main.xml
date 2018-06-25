@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools"
+
     >
 
     <data>
@@ -28,13 +29,16 @@
         >
 
         <TextView
-            android:layout_marginTop="10dp"
-            android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:id="@+id/review_main_title"
+            android:layout_marginTop="15dp"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
             android:textSize="15sp"
             android:text="@{model.titles}"
             android:gravity="center"
             android:textColor="#000"
+            tool:text="텍스트다"
+            android:layout_marginBottom="5dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -42,20 +46,23 @@
 
         <ImageView
             android:id="@+id/main_review_img"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:reviewImageUrl="@{model.images}"
             android:onClick="@{onClickListener::onClick}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="7dp"
+            app:layout_constraintBottom_toTopOf="@id/review_main_text"
+            app:layout_constraintTop_toBottomOf="@id/review_main_title"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
             tool:src="@drawable/ic_launcher_background"
             />
 
         <TextView
+            android:id="@+id/review_main_text"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="25dp"
             android:text="@{model.reviews}"
             android:ellipsize="end"
             android:maxLines="1"
@@ -64,12 +71,12 @@
             android:paddingEnd="5dp"
             android:layout_marginEnd="10dp"
             android:layout_marginStart="10dp"
-            android:background="@drawable/btn_bg"
+            android:background="@drawable/btn_grey_border"
             android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/main_review_img"
-            app:layout_constraintStart_toEndOf="@id/main_review_img"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="2dp"
+            android:layout_marginBottom="15dp"
             />
 
     </android.support.constraint.ConstraintLayout>
