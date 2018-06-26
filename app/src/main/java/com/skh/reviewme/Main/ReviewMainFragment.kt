@@ -29,10 +29,15 @@ import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Main.Photos.ReviewPhotoActivity
+import com.skh.reviewme.Main.model.ReviewFragmentModel
 import com.skh.reviewme.Main.model.ReviewModel
+import com.skh.reviewme.Network.ApiCilent
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.databinding.FragmentReviewMainBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 /**
@@ -83,6 +88,23 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
         binding.reviewConstAll.post {
             run { plusClose(true) }
         }
+
+        getApi()
+    }
+
+    private fun getApi(){
+        val call = ApiCilent.getInstance().getService().GetReviewItem()
+        call.enqueue(object: Callback<ReviewFragmentModel> {
+            override fun onFailure(call: Call<ReviewFragmentModel>?, t: Throwable?) {
+                    DLog.e("message : " + t?.message)
+            }
+
+            override fun onResponse(call: Call<ReviewFragmentModel>?, response: Response<ReviewFragmentModel>?) {
+                DLog.e("response: " + response?.body().toString())
+            }
+
+        })
+
     }
 
     private fun returnlist(): ArrayList<ReviewModel> {
@@ -240,6 +262,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
                         binding.reviewMainQuestion.naviItems.requestFocus()
 //                        binding.mainGridRv.setBackgroundColor(ContextCompat.getColor(context!!,R.color.trans))
 //                        binding.appBarLayout.setBackgroundColor(ContextCompat.getColor(context!!,R.color.trans))
+
                         binding.reviewMainRegi.text = "-"
 
                         DLog.e("isOpend: $isOpened")

@@ -72,6 +72,15 @@ public class BaseBindingAdapter {
     public static void CommunityMainImage(final ImageView imageView, String url) {
         Uri uri;
         Log.d("ee", url);
+
+        if (url == null) {
+            imageView.setBackground(null);
+            return;
+        } else if (url.isEmpty()){
+            imageView.setBackground(null);
+            return;
+        }
+
         if (!url.contains("resource"))
             uri = Uri.parse("file://" + url);
         else

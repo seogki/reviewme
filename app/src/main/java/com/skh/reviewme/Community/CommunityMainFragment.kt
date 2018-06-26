@@ -68,7 +68,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         var title: TextView? = null
 
         for (i in 0..(view as ViewGroup).childCount) {
-            val child = view.getChildAt(i)
+//            val child = view.getChildAt(i)
             title = (view.getChildAt(0) as TextView)
             text = view.getChildAt(1) as TextView
             Images = view.getChildAt(2) as ImageView
