@@ -53,7 +53,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
 
         binding.onClickListener = this
         binding.reviewMainQuestion.onClickListener = this
-
+        binding.appBarLayout.isEnabled = false // Include 한 레이아웃이 상위로 가기 위해 사용
         setView()
 
         return binding.root
@@ -61,7 +61,32 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
 
 
     private fun setView() {
-//        var list: ArrayList<String> = ArrayList()
+
+
+
+
+        reviewAdpater = ReviewMainAdapter(context!!, returnlist())
+        layoutManager = GridLayoutManager(context!!, 2, LinearLayoutManager.VERTICAL, false)
+        layoutManager.isItemPrefetchEnabled = true
+        (layoutManager as GridLayoutManager).initialPrefetchItemCount = 5
+        binding.mainGridRv.layoutManager = layoutManager
+        binding.mainGridRv.adapter = reviewAdpater
+        binding.mainGridRv.setItemViewCacheSize(20)
+        binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+        binding.mainGridRv.setHasFixedSize(false)
+
+        val decorVertical = ContextCompat.getDrawable(context!!, R.drawable.survey_divder)
+        val decorHorizontal = ContextCompat.getDrawable(context!!, R.drawable.survey_divder_horizontal)
+
+        binding.mainGridRv.addItemDecoration(GridDividerItemDecoration(decorHorizontal, decorVertical, 2))
+
+        binding.reviewConstAll.post {
+            run { plusClose(true) }
+        }
+    }
+
+    private fun returnlist(): ArrayList<ReviewModel> {
+        //        var list: ArrayList<String> = ArrayList()
 //
 //        for (i in 1..16) {
 //            list.add(i.toString())
@@ -111,26 +136,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
         list.add(model11)
         list.add(model12)
 
-
-
-        reviewAdpater = ReviewMainAdapter(context!!, list)
-        layoutManager = GridLayoutManager(context!!, 2, LinearLayoutManager.VERTICAL, false)
-        layoutManager.isItemPrefetchEnabled = true
-        (layoutManager as GridLayoutManager).initialPrefetchItemCount = 5
-        binding.mainGridRv.layoutManager = layoutManager
-        binding.mainGridRv.adapter = reviewAdpater
-        binding.mainGridRv.setItemViewCacheSize(20)
-        binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
-        binding.mainGridRv.setHasFixedSize(false)
-
-        val decorVertical = ContextCompat.getDrawable(context!!, R.drawable.survey_divder)
-        val decorHorizontal = ContextCompat.getDrawable(context!!, R.drawable.survey_divder_horizontal)
-
-        binding.mainGridRv.addItemDecoration(GridDividerItemDecoration(decorHorizontal, decorVertical, 2))
-
-        binding.reviewConstAll.post {
-            run { plusClose(true) }
-        }
+        return list
     }
 
     override fun onClick(v: View?) {
@@ -215,7 +221,6 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
                         binding.reviewMainQuestion.naviItems.isClickable = false
                         binding.reviewMainRegi.text = "+"
 
-
                         if (isFirst)
                             view.visibility = View.VISIBLE
                     }
@@ -233,10 +238,17 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
                         isOpened = true
                         binding.reviewMainQuestion.naviItems.isClickable = true
                         binding.reviewMainQuestion.naviItems.requestFocus()
+//                        binding.mainGridRv.setBackgroundColor(ContextCompat.getColor(context!!,R.color.trans))
+//                        binding.appBarLayout.setBackgroundColor(ContextCompat.getColor(context!!,R.color.trans))
                         binding.reviewMainRegi.text = "-"
+
                         DLog.e("isOpend: $isOpened")
                     }
                 })
+    }
+
+    private fun blurredView(){
+
     }
 
 }// Required empty public constructor

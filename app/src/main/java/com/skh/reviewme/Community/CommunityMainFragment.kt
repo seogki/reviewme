@@ -2,9 +2,9 @@ package com.skh.reviewme.Community
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
@@ -71,30 +71,12 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
             val child = view.getChildAt(i)
             title = (view.getChildAt(0) as TextView)
             text = view.getChildAt(1) as TextView
-
-
-            if (child is TextView) {
-                DLog.e("child + ${child.text}")
-
-            } else if (child is ImageView) {
-                DLog.e("child + image ${child.drawable}")
-                Images = child
-            }
+            Images = view.getChildAt(2) as ImageView
         }
 
         val frag = CommunityInnerFragment()
-        val bundle = Bundle()
-
-        if (Images != null) {
-            bundle.putString("title", title?.text.toString())
-            bundle.putString("text", text?.text.toString())
-            bundle.putParcelable("IMAGE", (Images.drawable as? BitmapDrawable)?.bitmap)
-        } else {
-            bundle.putString("title", title?.text.toString())
-            bundle.putString("text", text?.text.toString())
-        }
-
-        startFragmentWithBundle(bundle, frag)
+        frag.arguments = setBundle(title?.text.toString(), text?.text.toString(), (Images?.drawable as? BitmapDrawable)?.bitmap)
+        addFragment(activity, R.id.frame_layout, frag, false, true)
     }
 
     override fun onClick(v: View?) {
@@ -105,12 +87,19 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         }
     }
 
-    private fun startFragmentWithBundle(bundle: Bundle, frag: Fragment) {
+    private fun setBundle(title: String, text: String, Images: Bitmap?): Bundle {
+        val bundle = Bundle()
 
-        if (frag is CommunityMainFragment) {
-            frag.arguments = bundle
-            addFragment(activity, R.id.frame_layout, frag, false, true)
+        if (Images != null) {
+            bundle.putString("title", title)
+            bundle.putString("text", text)
+            bundle.putParcelable("IMAGE", Images)
+        } else {
+            bundle.putString("title", title)
+            bundle.putString("text", text)
         }
+
+        return bundle
     }
 
     private fun addlist(): ArrayList<CommunityModel> {

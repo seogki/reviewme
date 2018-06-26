@@ -18,7 +18,7 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:background="#f4f4f4"
+        android:background="#fff"
         app:keyboardDetect="@{empty}"
 
         >

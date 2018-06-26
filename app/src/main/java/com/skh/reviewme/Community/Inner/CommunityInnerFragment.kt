@@ -1,7 +1,6 @@
 package com.skh.reviewme.Community.Inner
 
 
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -12,7 +11,6 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Community.model.CommunityInnerModel
 import com.skh.reviewme.R
@@ -39,13 +37,12 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
         binding.innerInnerImg1Content.setImageBitmap(bitmap)
         arguments?.getString("text").let { binding.innerTxtTitle.text = it }
         arguments?.getString("title").let { binding.innerTxtRegiName.text = it }
-        binding.innerInnerTxtContent.text = "이거 이거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거ㅎㅎㅎ ㅎㅎㅎ거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거 이거거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이거거 이거ㅎㅎㅎ거 이거거 이 이거거 이거거 이거거 이거거 이거거 이거거 이거ㅎㅎㅎㅎㅎㅎㅎㅎㅎㅎ"
         binding.innerInnerImg2Content.setImageBitmap(bitmap)
         binding.innerInnerImg3Content.setImageBitmap(bitmap)
         binding.innerInnerImg4Content.setImageBitmap(bitmap)
         setRv()
 
-        if(bitmap == null){
+        if (bitmap == null) {
             binding.innerInnerImg1Content.visibility = View.GONE
             binding.innerInnerImg2Content.visibility = View.GONE
             binding.innerInnerImg3Content.visibility = View.GONE
@@ -95,18 +92,15 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
     }
 
     private fun addComment() {
-        if (!binding.innerEditComment.text.toString().isEmpty())
+        if (!binding.innerEditComment.text.toString().isEmpty()) {
             communityInnerAdapter.addItem(CommunityInnerModel("SEOGKI", binding.innerEditComment.text.toString()))
-        val view = activity?.currentFocus
-        if (view != null) {
-            val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-            imm?.hideSoftInputFromWindow(view.windowToken, 0)
-        }
-        binding.innerEditComment.setText("")
-        Handler().postDelayed({
-            layoutManager.smoothScrollToPosition(binding.innerRvComment, null, communityInnerAdapter.itemCount - 1)
+            closeKeyboard()
+            binding.innerEditComment.setText("")
+            Handler().postDelayed({
+                layoutManager.smoothScrollToPosition(binding.innerRvComment, null, communityInnerAdapter.itemCount - 1)
 
-        }, 100)
+            }, 100)
+        }
 
     }
 
