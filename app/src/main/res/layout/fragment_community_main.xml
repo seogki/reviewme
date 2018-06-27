@@ -54,7 +54,7 @@
                         android:layout_height="45dp"
                         android:text="ReviewMe"
                         android:gravity="center"
-                        android:textColor="#000"
+                        android:textColor="#fff"
                         android:textSize="18sp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"

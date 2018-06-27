@@ -15,15 +15,12 @@
     </data>
 
 
-
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/main_coordi_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
 
         >
-
-
 
 
         <android.support.design.widget.AppBarLayout
@@ -49,39 +46,39 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@drawable/horizontal_title"
-                    android:focusableInTouchMode="true"
                     android:focusable="true"
+                    android:focusableInTouchMode="true"
                     >
 
                     <TextView
                         android:id="@+id/main_search_reviewtitle"
                         android:layout_width="match_parent"
                         android:layout_height="45dp"
-                        android:text="ReviewMe"
                         android:gravity="center"
+                        android:text="ReviewMe"
                         android:textColor="@color/white"
                         android:textSize="18sp"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         />
 
                     <EditText
                         android:id="@+id/main_search_edit"
                         android:layout_width="0dp"
                         android:layout_height="0dp"
-                        android:layout_marginStart="10dp"
                         android:layout_marginBottom="10dp"
+                        android:layout_marginStart="10dp"
+                        android:background="@drawable/btn_grey_border"
+                        android:inputType="text"
+                        android:paddingEnd="5dp"
+                        android:paddingStart="5dp"
                         android:textColor="#000"
                         android:textColorHint="#000"
-                        android:paddingStart="5dp"
-                        android:paddingEnd="5dp"
-                        app:layout_constraintEnd_toStartOf="@id/main_search_txt"
                         app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/main_search_txt"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/main_search_reviewtitle"
-                        android:inputType="text"
-                        android:background="@drawable/btn_grey_border"
                         tools:ignore="LabelFor"
                         />
 
@@ -89,17 +86,17 @@
                         android:id="@+id/main_search_txt"
                         android:layout_width="50dp"
                         android:layout_height="0dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_marginEnd="10dp"
                         android:layout_marginStart="10dp"
-                        app:layout_constraintStart_toEndOf="@id/main_search_edit"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/main_search_reviewtitle"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         android:gravity="center"
+                        android:text="검색"
                         android:textColor="#000"
                         android:textSize="13sp"
-                        android:layout_marginEnd="10dp"
-                        android:layout_marginBottom="10dp"
-                        android:text="검색"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/main_search_edit"
+                        app:layout_constraintTop_toBottomOf="@id/main_search_reviewtitle"
                         />
 
                 </android.support.constraint.ConstraintLayout>
@@ -108,14 +105,30 @@
 
         </android.support.design.widget.AppBarLayout>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/main_grid_rv"
+
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/appBarLayout"
+            android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            android:background="#fff"
-            />
+            >
+
+            <android.support.v4.widget.SwipeRefreshLayout
+                android:id="@+id/swipe_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/main_grid_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/appBarLayout"
+                    android:background="@color/grey"
+                    tools:listitem="@layout/item_review_main"
+                    />
+
+            </android.support.v4.widget.SwipeRefreshLayout>
+        </RelativeLayout>
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/review_const_all"
@@ -129,33 +142,33 @@
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_marginBottom="100dp"
+                android:background="#5000"
+                android:onClick="@{onClickListener::onClick}"
                 android:text="+"
                 android:textSize="25sp"
                 android:textStyle="bold"
-                android:background="#5000"
-                app:layout_constraintEnd_toStartOf="@id/review_main_question"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/review_main_question"
                 app:layout_constraintHorizontal_chainStyle="spread"
-                android:onClick="@{onClickListener::onClick}"
                 />
+
             <include
 
                 android:id="@+id/review_main_question"
+                layout="@layout/item_navi_question"
                 android:layout_width="300dp"
                 android:layout_height="match_parent"
-                layout="@layout/item_navi_question"
                 android:background="@color/colorPrimary"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_chainStyle="spread"
                 app:layout_anchor="@id/review_main_regi"
                 app:layout_anchorGravity="bottom|end"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="spread"
+                app:layout_constraintTop_toTopOf="parent"
                 />
 
         </android.support.constraint.ConstraintLayout>
-
 
 
     </android.support.design.widget.CoordinatorLayout>

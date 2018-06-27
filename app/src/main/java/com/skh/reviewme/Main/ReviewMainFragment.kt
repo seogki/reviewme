@@ -12,7 +12,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v4.content.ContextCompat
+import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -24,16 +24,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
-import com.dgreenhalgh.android.simpleitemdecoration.grid.GridDividerItemDecoration
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Main.Photos.ReviewPhotoActivity
 import com.skh.reviewme.Main.model.ReviewFragmentModel
-import com.skh.reviewme.Main.model.ReviewModel
+import com.skh.reviewme.Main.model.ReviewFragmentModels
 import com.skh.reviewme.Network.ApiCilent
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
+import com.skh.reviewme.Util.GridSpacingItemDecoration
 import com.skh.reviewme.databinding.FragmentReviewMainBinding
 import retrofit2.Call
 import retrofit2.Callback
@@ -43,7 +43,8 @@ import retrofit2.Response
 /**
  * A simple [Fragment] subclass.
  */
-open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
+open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+
 
     private lateinit var binding: FragmentReviewMainBinding
     private lateinit var reviewAdpater: ReviewMainAdapter
@@ -68,9 +69,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
     private fun setView() {
 
 
-
-
-        reviewAdpater = ReviewMainAdapter(context!!, returnlist())
+        reviewAdpater = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
         layoutManager = GridLayoutManager(context!!, 2, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
         (layoutManager as GridLayoutManager).initialPrefetchItemCount = 5
@@ -80,85 +79,31 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         binding.mainGridRv.setHasFixedSize(false)
 
-        val decorVertical = ContextCompat.getDrawable(context!!, R.drawable.survey_divder)
-        val decorHorizontal = ContextCompat.getDrawable(context!!, R.drawable.survey_divder_horizontal)
-
-        binding.mainGridRv.addItemDecoration(GridDividerItemDecoration(decorHorizontal, decorVertical, 2))
+        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(2, 25, true, 0))
 
         binding.reviewConstAll.post {
+
             run { plusClose(true) }
         }
+        binding.swipeLayout.setDistanceToTriggerSync(350)
+        binding.swipeLayout.setOnRefreshListener(this)
 
         getApi()
     }
 
-    private fun getApi(){
-        val call = ApiCilent.getInstance().getService().GetReviewItem()
-        call.enqueue(object: Callback<ReviewFragmentModel> {
-            override fun onFailure(call: Call<ReviewFragmentModel>?, t: Throwable?) {
-                    DLog.e("message : " + t?.message)
+    private fun getApi() {
+
+        val call2 = ApiCilent.getInstance().getService().GetReviewItem2()
+        call2.enqueue(object : Callback<ReviewFragmentModels> {
+            override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {
+                DLog.e("message : " + t?.message)
             }
 
-            override fun onResponse(call: Call<ReviewFragmentModel>?, response: Response<ReviewFragmentModel>?) {
-                DLog.e("response: " + response?.body().toString())
-            }
+            override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
+                reviewAdpater.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
 
+            }
         })
-
-    }
-
-    private fun returnlist(): ArrayList<ReviewModel> {
-        //        var list: ArrayList<String> = ArrayList()
-//
-//        for (i in 1..16) {
-//            list.add(i.toString())
-//        }
-        val list: ArrayList<ReviewModel> = ArrayList()
-
-//        val model = ReviewModel("이렇게 잘뽑힘",getURLForResource(R.drawable.test1),"돼지 코팩 쑥쑥 뽑혀 나옴")
-//
-//
-//        val model2 = ReviewModel("정말 딱맞음",getURLForResource(R.drawable.test2),"맞춤구두 하는이유")
-//
-//        val model3 = ReviewModel("내 최 메뉴 탄생",getURLForResource(R.drawable.test3),"감자랑 케첩은 진리")
-//        val model4 = ReviewModel("완전 잘되는 뽑기샵",getURLForResource(R.drawable.test4),"ㄲㄲㄲㄲ")
-//        val model5 = ReviewModel("2호선 실화임",getURLForResource(R.drawable.test5),"안가")
-//        val model6 = ReviewModel("대박적",getURLForResource(R.drawable.test6),"인생템 말 필요 없음")
-
-        val model = ReviewModel("1",getURLForResource(R.drawable.test1),"1")
-
-
-        val model2 = ReviewModel("2",getURLForResource(R.drawable.test2),"2")
-
-        val model3 = ReviewModel("3",getURLForResource(R.drawable.test3),"3")
-        val model4 = ReviewModel("4",getURLForResource(R.drawable.test4),"4")
-        val model5 = ReviewModel("5",getURLForResource(R.drawable.test5),"5")
-        val model6 = ReviewModel("6",getURLForResource(R.drawable.test6),"6")
-
-        val model7 = ReviewModel("1",getURLForResource(R.drawable.test1),"1")
-
-
-        val model8 = ReviewModel("2",getURLForResource(R.drawable.test2),"2")
-
-        val model9 = ReviewModel("3",getURLForResource(R.drawable.test3),"3")
-        val model10 = ReviewModel("4",getURLForResource(R.drawable.test4),"4")
-        val model11 = ReviewModel("5",getURLForResource(R.drawable.test5),"5")
-        val model12 = ReviewModel("6",getURLForResource(R.drawable.test6),"6")
-
-        list.add(model)
-        list.add(model2)
-        list.add(model3)
-        list.add(model4)
-        list.add(model5)
-        list.add(model6)
-        list.add(model7)
-        list.add(model8)
-        list.add(model9)
-        list.add(model10)
-        list.add(model11)
-        list.add(model12)
-
-        return list
     }
 
     override fun onClick(v: View?) {
@@ -181,7 +126,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
 
     private fun addReview() {
         if (name != "empty") {
-            reviewAdpater.addItem(ReviewModel(binding.reviewMainQuestion.naviTextTitle.text.toString(),name,binding.reviewMainQuestion.naviTxtQuestion.text.toString()))
+//            reviewAdpater.addItem(ReviewModel(binding.reviewMainQuestion.naviTextTitle.text.toString(),name,binding.reviewMainQuestion.naviTxtQuestion.text.toString()))
             plusClose(false)
             binding.reviewMainQuestion.naviImg.setImageDrawable(null)
             name = "empty"
@@ -229,6 +174,13 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
         }
     }
 
+    override fun onRefresh() {
+        reviewAdpater.clearItems()
+        reviewAdpater.notifyDataSetChanged()
+        getApi()
+        binding.swipeLayout.isRefreshing = false
+    }
+
     private fun plusClose(isFirst: Boolean) {
         val view: View = binding.reviewConstAll
         if (isFirst)
@@ -268,10 +220,6 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener {
                         DLog.e("isOpend: $isOpened")
                     }
                 })
-    }
-
-    private fun blurredView(){
-
     }
 
 }// Required empty public constructor
