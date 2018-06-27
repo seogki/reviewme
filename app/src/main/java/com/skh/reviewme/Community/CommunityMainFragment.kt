@@ -105,37 +105,6 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
     private fun addlist(): ArrayList<CommunityModel> {
         val list = ArrayList<CommunityModel>()
 
-        val model1 = CommunityModel("skh", "닌텐도 게임 사고싶다", getURLForResource(R.drawable.test1))
-        val model2 = CommunityModel("skh", "흠ㅎ므", "")
-        val model3 = CommunityModel("skh", "ㅇㄴㅇㅁ", "")
-        val model4 = CommunityModel("skh", "ㄲㄲ", getURLForResource(R.drawable.test3))
-        val model5 = CommunityModel("skh", "ㅃㅃㅃㅃㅃ", "")
-        val model6 = CommunityModel("skh", "ㅁㅁㅁㅁㅁㅁㅁㅁ", getURLForResource(R.drawable.test6))
-        val model7 = CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ", "")
-
-        val model8 = CommunityModel("skh", "닌텐도 게임 사고싶다", "")
-        val model9 = CommunityModel("skh", "흠ㅎ므", getURLForResource(R.drawable.test2))
-        val model10 = CommunityModel("skh", "ㅇㄴㅇㅁ", "")
-        val model11 = CommunityModel("skh", "ㄲㄲ", getURLForResource(R.drawable.test5))
-        val model12 = CommunityModel("skh", "ㅃㅃㅃㅃㅃ", "")
-        val model13 = CommunityModel("skh", "ㅁㅁㅁㅁㅁㅁㅁㅁ", getURLForResource(R.drawable.test4))
-        val model14 = CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ", "")
-
-        list.add(model1)
-        list.add(model2)
-        list.add(model3)
-        list.add(model4)
-        list.add(model5)
-        list.add(model6)
-        list.add(model7)
-        list.add(model8)
-        list.add(model9)
-        list.add(model10)
-        list.add(model11)
-        list.add(model12)
-        list.add(model13)
-        list.add(model14)
-
         list.add(CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ", ""))
         list.add(CommunityModel("skh", "ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ", ""))
 

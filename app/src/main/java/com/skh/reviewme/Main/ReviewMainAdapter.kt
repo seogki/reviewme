@@ -2,10 +2,18 @@ package com.skh.reviewme.Main
 
 import android.content.Context
 import android.databinding.DataBindingUtil
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
 import com.skh.reviewme.Main.model.ReviewFragmentModel
 import com.skh.reviewme.R
@@ -19,6 +27,27 @@ open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFrag
     override fun onBindView(holder: viewholder, position: Int) {
 //        holder.binding.item = getItem(position)
         holder.binding.model = getItem(position)
+        setimage(holder.binding.reviewMainIdImg)
+    }
+
+    private fun setimage(imageView: ImageView) {
+
+
+        val uri2 = Uri.parse("android.resource://" + R::class.java.`package`.name + "/" + R.drawable.test_10).toString()
+
+        Glide.with(imageView.context)
+                .load(uri2)
+                .apply(RequestOptions()
+                        .centerCrop()
+                        .circleCrop()
+                        .override(50, 50)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                .thumbnail(0.1f)
+                .into(object : SimpleTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        imageView.setImageDrawable(resource)
+                    }
+                })
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
@@ -34,13 +63,7 @@ open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFrag
         override fun onClick(v: View?) {
             when (v?.id) {
                 R.id.main_review_img -> {
-//                    if (getItem(adapterPosition)!!.images.contains("jpg") || getItem(adapterPosition)!!.images?.contains("png")) {
-//
-//                        DLog.e("getItem : " + getItem(position = adapterPosition)!!.images)
-//                        val intent = Intent(context, GalleryMaxActivity::class.java)
-//                        intent.putExtra("file", "file://" + getItem(position = adapterPosition)!!.images)
-//                        context?.startActivity(intent)
-//                    }
+
                 }
             }
         }

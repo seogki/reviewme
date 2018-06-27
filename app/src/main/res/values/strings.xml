@@ -5,4 +5,5 @@
     <string name="kakao_app_key">b77b68d0cbbb915282c1468b005247a6</string>
     <string name="radio_male">M</string>
     <string name="radio_female">F</string>
+    <string name="main_title">ReviewMe</string>
 </resources>
