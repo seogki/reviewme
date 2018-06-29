@@ -20,6 +20,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
@@ -34,10 +35,16 @@ import com.skh.reviewme.Network.ApiCilent
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.GridSpacingItemDecoration
+import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.FragmentReviewMainBinding
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 
 
 /**
@@ -72,14 +79,14 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         reviewAdpater = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
         layoutManager = GridLayoutManager(context!!, 2, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
-        (layoutManager as GridLayoutManager).initialPrefetchItemCount = 5
+        (layoutManager as GridLayoutManager).initialPrefetchItemCount = 4
         binding.mainGridRv.layoutManager = layoutManager
         binding.mainGridRv.adapter = reviewAdpater
         binding.mainGridRv.setItemViewCacheSize(20)
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         binding.mainGridRv.setHasFixedSize(false)
 
-        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(2, 25, true, 0))
+        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(2, 20, true, 0))
 
         binding.reviewConstAll.post {
 
@@ -101,7 +108,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
             override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
                 reviewAdpater.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
-
+                DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdpater.itemCount))
             }
         })
     }
@@ -126,14 +133,59 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
     private fun addReview() {
         if (name != "empty") {
-//            reviewAdpater.addItem(ReviewModel(binding.reviewMainQuestion.naviTextTitle.text.toString(),name,binding.reviewMainQuestion.naviTxtQuestion.text.toString()))
-            plusClose(false)
-            binding.reviewMainQuestion.naviImg.setImageDrawable(null)
-            name = "empty"
-            closeKeyboard()
+            when {
+                binding.reviewMainQuestion.naviTextTitle.text.toString().isEmpty() -> {
+                    Toast.makeText(context, "타이틀을 입력해 주세요.", Toast.LENGTH_SHORT).show()
+                    return
+                }
+                binding.reviewMainQuestion.naviTxtQuestion.text.toString().isEmpty() -> {
+                    Toast.makeText(context, "리뷰를 입력해 주세요.", Toast.LENGTH_SHORT).show()
+                    return
+                }
+                else -> {
+                    sendReviewToServer()
+                }
+            }
         } else {
-
+            Toast.makeText(context, "이미지를 정해 주세요.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+
+    private fun sendReviewToServer() {
+        val file = UtilMethod.getCompressed(context!!, File(name).toString())
+
+        val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file).let { MultipartBody.Part.createFormData("images", file.name, it) }
+
+
+        val title = binding.reviewMainQuestion.naviTextTitle.text.toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
+        val text = binding.reviewMainQuestion.naviTxtQuestion.text.toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
+
+        val call = ApiCilent.getInstance().getService().SetReviewPhotos(title, text, requestFile)
+        call.enqueue(object : Callback<JSONObject> {
+            override fun onFailure(call: Call<JSONObject>?, t: Throwable?) {
+                closeKeyboard()
+                DLog.e("이미지 업로드 fail")
+                DLog.e("t : " + t?.message)
+            }
+
+            override fun onResponse(call: Call<JSONObject>?, response: Response<JSONObject>?) {
+                DLog.e("이미지 업로드 success")
+                plusClose(false)
+                setNavigationNull()
+                closeKeyboard()
+                onRefresh()
+            }
+
+        })
+    }
+
+
+    private fun setNavigationNull() {
+        binding.reviewMainQuestion.naviImg.setImageDrawable(null)
+        binding.reviewMainQuestion.naviTextTitle.text = null
+        binding.reviewMainQuestion.naviTxtQuestion.text = null
+
     }
 
 
@@ -144,7 +196,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                     override fun onPermissionGranted() {
                         Handler().postDelayed({
                             beginNewActivity(Intent(context, ReviewPhotoActivity::class.java))
-                        }, 100)
+                        }, 10)
                     }
 
                     override fun onPermissionDenied(deniedPermissions: java.util.ArrayList<String>) {
@@ -172,11 +224,11 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                                 })
                     }
         }
+        pref.edit().remove("fileName").apply()
     }
 
     override fun onRefresh() {
         reviewAdpater.clearItems()
-        reviewAdpater.notifyDataSetChanged()
         getApi()
         binding.swipeLayout.isRefreshing = false
     }
@@ -211,10 +263,6 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                         super.onAnimationEnd(animation)
                         isOpened = true
                         binding.reviewMainQuestion.naviItems.isClickable = true
-                        binding.reviewMainQuestion.naviItems.requestFocus()
-//                        binding.mainGridRv.setBackgroundColor(ContextCompat.getColor(context!!,R.color.trans))
-//                        binding.appBarLayout.setBackgroundColor(ContextCompat.getColor(context!!,R.color.trans))
-
                         binding.reviewMainRegi.text = "-"
 
                         DLog.e("isOpend: $isOpened")

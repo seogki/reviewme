@@ -17,7 +17,7 @@
         android:id="@+id/navi_items"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
+        android:background="@color/grey"
         >
 
         <TextView
@@ -80,7 +80,7 @@
             android:background="@drawable/btn_grey_border"
             android:gravity="center_vertical"
             android:padding="10dp"
-            android:hint="한줄평"
+            android:hint="한줄평 (최대 7자)"
             android:textColor="#000"
             android:textColorHint="#BFBFBF"
             app:layout_constraintBottom_toTopOf="@id/navi_btn_register"

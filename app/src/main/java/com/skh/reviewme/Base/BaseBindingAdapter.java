@@ -3,8 +3,6 @@ package com.skh.reviewme.Base;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.BindingAdapter;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -34,17 +32,10 @@ public class BaseBindingAdapter {
 
 
 
-        Log.d("tag","string url : " + url);
-
-
-        byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
-        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-
-
-        Log.d("tag","string url  after : " + decodedByte);
+        Uri uri = Uri.parse("file://" + url);
 
         Glide.with(imageView.getContext())
-                .load(decodedString)
+                .load(uri)
                 .apply(new RequestOptions()
                         .centerCrop()
                         .override(175, 175)
