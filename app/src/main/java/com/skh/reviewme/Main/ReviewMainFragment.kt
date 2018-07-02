@@ -54,7 +54,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
 
     private lateinit var binding: FragmentReviewMainBinding
-    private lateinit var reviewAdpater: ReviewMainAdapter
+    private lateinit var reviewAdapter: ReviewMainAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var name: String
     private var isOpened: Boolean = false
@@ -76,13 +76,13 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     private fun setView() {
 
 
-        reviewAdpater = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
+        reviewAdapter = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
         layoutManager = GridLayoutManager(context!!, 2, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
-        (layoutManager as GridLayoutManager).initialPrefetchItemCount = 4
+        (layoutManager as GridLayoutManager).initialPrefetchItemCount = 6
         binding.mainGridRv.layoutManager = layoutManager
-        binding.mainGridRv.adapter = reviewAdpater
-        binding.mainGridRv.setItemViewCacheSize(20)
+        binding.mainGridRv.adapter = reviewAdapter
+        binding.mainGridRv.setItemViewCacheSize(12)
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         binding.mainGridRv.setHasFixedSize(false)
 
@@ -107,8 +107,10 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
             }
 
             override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
-                reviewAdpater.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
-                DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdpater.itemCount))
+                DLog.e("ReviewModel data : " + response?.toString())
+                reviewAdapter.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
+                reviewAdapter.notifyDataSetChanged()
+                DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
             }
         })
     }
@@ -215,7 +217,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                     .let {
                         Glide.with(this@ReviewMainFragment)
                                 .load(it)
-                                .apply(RequestOptions().centerCrop().override(500, 500))
+                                .apply(RequestOptions().centerCrop().override(400, 400))
                                 .into(object : SimpleTarget<Drawable>() {
                                     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                                         binding.reviewMainQuestion.naviImg.setImageDrawable(resource)
@@ -228,7 +230,8 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     }
 
     override fun onRefresh() {
-        reviewAdpater.clearItems()
+        reviewAdapter.clearItems()
+        reviewAdapter.notifyDataSetChanged()
         getApi()
         binding.swipeLayout.isRefreshing = false
     }

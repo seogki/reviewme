@@ -25,9 +25,10 @@ import com.skh.reviewme.databinding.ItemReviewMainBinding
 open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFragmentModel>) : BaseRecyclerViewAdapter<ReviewFragmentModel, ReviewMainAdapter.viewholder>(context, arrayList) {
 
     override fun onBindView(holder: viewholder, position: Int) {
-//        holder.binding.item = getItem(position)
         holder.binding.model = getItem(position)
+        holder.setIsRecyclable(true)
         setimage(holder.binding.reviewMainIdImg)
+
     }
 
     private fun setimage(imageView: ImageView) {

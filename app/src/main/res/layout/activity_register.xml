@@ -8,10 +8,13 @@
 
 
     <android.support.constraint.ConstraintLayout
+        android:id="@+id/regist_constraint"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/grey"
         >
+
+
 
         <TextView
             android:id="@+id/regist_txt_title"
@@ -154,6 +157,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/regist_empty_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
             />
 
     </android.support.constraint.ConstraintLayout>

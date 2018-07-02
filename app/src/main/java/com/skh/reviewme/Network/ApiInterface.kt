@@ -1,5 +1,6 @@
 package com.skh.reviewme.Network
 
+import com.google.gson.JsonObject
 import com.skh.reviewme.Main.model.ReviewFragmentModels
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -16,7 +17,7 @@ import retrofit2.http.Query
 interface ApiInterface {
 
     @POST("api/isUserOn")
-    fun isUserOn(@Query("UserId") userid: String): Call<JSONObject>
+    fun isUserOn(@Query("UserId") userid: String): Call<JsonObject>
 
     @POST("api/RegisterAccount")
     fun registerAccount(@Query("UserId") userid: String
@@ -25,7 +26,7 @@ interface ApiInterface {
                         , @Query("Age") age: String
                         , @Query("Gender") gender: String
                         , @Query("isKakao") isKakao: String)
-            : Call<JSONObject>
+            : Call<JsonObject>
 
     @POST("api/GetReviewItem2")
     fun GetReviewItem2(): Call<ReviewFragmentModels>

@@ -86,7 +86,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         DLog.e("account : " + account.toString())
         if (account != null) {
             ApplicationClass.setIsKakao(false)
-//            redirectReviewMainActivity()
             redirectRegisterActivity()
             finish()
         }
@@ -120,7 +119,6 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         override fun onSessionOpened() {
             DLog.e("onSessionOpened")
             ApplicationClass.setIsKakao(true)
-//            redirectReviewMainActivity()
             redirectRegisterActivity()
             finish()
         }
@@ -136,6 +134,11 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     override fun onDestroy() {
         super.onDestroy()
         Session.getCurrentSession().removeCallback(callback) //destroy 될 경우 콜백 삭제
+    }
+
+
+    private fun isUserLogin(){
+
     }
 
 }

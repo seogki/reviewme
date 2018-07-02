@@ -29,11 +29,7 @@ public class BaseBindingAdapter {
     @BindingAdapter("galleryImageUrl")
     public static void galleryImage(final ImageView imageView, String url) {
 
-
-
-
         Uri uri = Uri.parse("file://" + url);
-
         Glide.with(imageView.getContext())
                 .load(uri)
                 .apply(new RequestOptions()
@@ -53,15 +49,15 @@ public class BaseBindingAdapter {
     public static void ReviewImage(final ImageView imageView, String url) {
 
 
-        Log.d("tag","string url : " + url);
         byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
 
         Glide.with(imageView.getContext())
                 .load(decodedString)
                 .apply(new RequestOptions()
                         .centerCrop()
-                        .override(200, 200)
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                        .override(190, 190)
+                        .diskCacheStrategy(DiskCacheStrategy.DATA)
+                        .skipMemoryCache(true))
                 .thumbnail(0.1f)
                 .into(new SimpleTarget<Drawable>() {
                     @Override
