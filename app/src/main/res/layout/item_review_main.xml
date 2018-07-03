@@ -9,11 +9,6 @@
     <data>
 
         <variable
-            name="onClickListener"
-            type="android.view.View.OnClickListener"
-            />
-
-        <variable
             name="item"
             type="java.lang.String"
             />
@@ -89,11 +84,8 @@
             android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:reviewImageUrl="@{model.images}"
-            android:onClick="@{onClickListener::onClick}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/review_main_text"
-
             android:layout_margin="10dp"
 
             tools:src="@drawable/test_10"

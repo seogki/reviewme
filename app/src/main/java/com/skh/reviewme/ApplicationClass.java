@@ -2,8 +2,10 @@ package com.skh.reviewme;
 
 import android.content.Context;
 import android.support.annotation.Nullable;
+import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.bumptech.glide.Glide;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
@@ -34,6 +36,7 @@ public class ApplicationClass extends MultiDexApplication{
     public void onCreate() {
         super.onCreate();
         instance = this;
+        MultiDex.install(this);
         KakaoSDK.init(new KakaoSDKAdapter());
     }
 
@@ -88,6 +91,19 @@ public class ApplicationClass extends MultiDexApplication{
                 }
             };
         }
+    }
+
+
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        Glide.get(getApplicationContext()).clearMemory();
+    }
+
+    @Override
+    public void onTrimMemory(int level) {
+        super.onTrimMemory(level);
+        Glide.get(this).trimMemory(level);
     }
 
 

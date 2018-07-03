@@ -71,6 +71,10 @@ dependencies {
     //권한 설정용
     implementation 'gun0912.ted:tedpermission:2.2.0'
 
+
+    //progressbar
+    implementation 'com.github.d-max:spots-dialog:1.1@aar'
+
     //글라이드 이미지변환
     compile 'jp.wasabeef:glide-transformations:2.0.2'
 

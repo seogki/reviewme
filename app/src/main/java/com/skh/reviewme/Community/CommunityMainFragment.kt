@@ -31,6 +31,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
     private lateinit var communityMainAdapter: CommunityMainAdapter
     private lateinit var layoutManager: RecyclerView.LayoutManager
 
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_main, container, false)

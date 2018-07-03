@@ -37,6 +37,7 @@ import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.GridSpacingItemDecoration
 import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.FragmentReviewMainBinding
+import dmax.dialog.SpotsDialog
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -55,8 +56,9 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
     private lateinit var binding: FragmentReviewMainBinding
     private lateinit var reviewAdapter: ReviewMainAdapter
-    private lateinit var layoutManager: RecyclerView.LayoutManager
+    private lateinit var layoutManager: GridLayoutManager
     private lateinit var name: String
+    private lateinit var dialog: android.app.AlertDialog
     private var isOpened: Boolean = false
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -73,16 +75,26 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     }
 
 
+    private fun setSpotDialog() {
+        dialog = SpotsDialog
+                .Builder()
+                .setContext(context!!)
+                .setMessage("데이터를 불러오는 중...")
+                .setCancelable(false)
+                .build().apply { show() }
+    }
+
+
     private fun setView() {
 
 
         reviewAdapter = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
         layoutManager = GridLayoutManager(context!!, 2, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
-        (layoutManager as GridLayoutManager).initialPrefetchItemCount = 6
+        layoutManager.initialPrefetchItemCount = 4
         binding.mainGridRv.layoutManager = layoutManager
         binding.mainGridRv.adapter = reviewAdapter
-        binding.mainGridRv.setItemViewCacheSize(12)
+        binding.mainGridRv.setItemViewCacheSize(6)
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         binding.mainGridRv.setHasFixedSize(false)
 
@@ -92,28 +104,51 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
             run { plusClose(true) }
         }
-        binding.swipeLayout.setDistanceToTriggerSync(350)
+        binding.swipeLayout.setDistanceToTriggerSync(300)
         binding.swipeLayout.setOnRefreshListener(this)
 
+
         getApi()
+
+
     }
 
-    private fun getApi() {
 
+    private fun getApi() {
+        setSpotDialog()
         val call2 = ApiCilent.getInstance().getService().GetReviewItem2()
         call2.enqueue(object : Callback<ReviewFragmentModels> {
             override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {
                 DLog.e("message : " + t?.message)
+                dialog.dismiss()
             }
 
             override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
                 DLog.e("ReviewModel data : " + response?.toString())
                 reviewAdapter.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
                 reviewAdapter.notifyDataSetChanged()
+
                 DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
+                dialog.dismiss()
+
+                setRecylcerViewScrollbar()
+
             }
         })
     }
+    private fun setRecylcerViewScrollbar(){
+        binding.mainGridRv.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if(!recyclerView!!.canScrollVertically(1)){
+                    dialog.show()
+                    scrollToEnd()
+                }
+            }
+        })
+    }
+
 
     override fun onClick(v: View?) {
         when (v?.id) {
@@ -182,6 +217,30 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         })
     }
 
+    private fun scrollToEnd() {
+        val call = reviewAdapter
+                .getItem(reviewAdapter.itemCount - 1)
+                ?.reviewId
+                ?.let { ApiCilent.getInstance().getService().ScrollGetReviewItem2(it) }
+        call?.enqueue(object : Callback<ReviewFragmentModels> {
+            override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {
+                dialog.dismiss()
+            }
+
+            override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
+                if(response?.body()?.reviewModel?.isEmpty() == true){
+                    dialog.dismiss()
+                    return
+                }
+                reviewAdapter.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
+                reviewAdapter.notifyDataSetChanged()
+                DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
+                dialog.dismiss()
+            }
+
+        })
+    }
+
 
     private fun setNavigationNull() {
         binding.reviewMainQuestion.naviImg.setImageDrawable(null)
@@ -231,6 +290,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
     override fun onRefresh() {
         reviewAdapter.clearItems()
+        binding.mainGridRv?.removeOnScrollListener(null)
         reviewAdapter.notifyDataSetChanged()
         getApi()
         binding.swipeLayout.isRefreshing = false
@@ -271,6 +331,12 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                         DLog.e("isOpend: $isOpened")
                     }
                 })
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Glide.get(context!!).clearMemory()
     }
 
 }// Required empty public constructor

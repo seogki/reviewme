@@ -16,6 +16,7 @@ import com.skh.reviewme.R
  */
 open class BaseFragment : Fragment() {
 
+
     fun Fragment.beginNewActivity(intent: Intent) {
         startActivity(intent)
     }
@@ -53,6 +54,8 @@ open class BaseFragment : Fragment() {
         val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
     }
+
+
 
 
 }

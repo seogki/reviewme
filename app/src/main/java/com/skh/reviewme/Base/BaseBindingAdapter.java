@@ -48,23 +48,21 @@ public class BaseBindingAdapter {
     @BindingAdapter("reviewImageUrl")
     public static void ReviewImage(final ImageView imageView, String url) {
 
-
-        byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
-
-        Glide.with(imageView.getContext())
-                .load(decodedString)
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .override(190, 190)
-                        .diskCacheStrategy(DiskCacheStrategy.DATA)
-                        .skipMemoryCache(true))
-                .thumbnail(0.1f)
-                .into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        imageView.setImageDrawable(resource);
-                    }
-                });
+            byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
+            Glide.with(imageView.getContext())
+                    .load(decodedString)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .override(190, 190)
+                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE))
+                    .thumbnail(0.1f)
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+//        }
     }
 
     @BindingAdapter("CommunityMainImageUrl")
@@ -75,7 +73,7 @@ public class BaseBindingAdapter {
         if (url == null) {
             imageView.setBackground(null);
             return;
-        } else if (url.isEmpty()){
+        } else if (url.isEmpty()) {
             imageView.setBackground(null);
             return;
         }

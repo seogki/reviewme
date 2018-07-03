@@ -3,8 +3,8 @@ package com.skh.reviewme.Main
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.support.v7.widget.RecyclerView
+import android.util.Base64
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,53 +22,51 @@ import com.skh.reviewme.databinding.ItemReviewMainBinding
 /**
  * Created by Seogki on 2018. 6. 5..
  */
-open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFragmentModel>) : BaseRecyclerViewAdapter<ReviewFragmentModel, ReviewMainAdapter.viewholder>(context, arrayList) {
+open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFragmentModel>) : BaseRecyclerViewAdapter<ReviewFragmentModel, ReviewMainAdapter.ReviewMainViewholder>(context, arrayList) {
 
-    override fun onBindView(holder: viewholder, position: Int) {
-        holder.binding.model = getItem(position)
-        holder.setIsRecyclable(true)
-        setimage(holder.binding.reviewMainIdImg)
+    override fun onBindView(holder: ReviewMainViewholder, position: Int) {
+        holder.setIsRecyclable(false)
+        holder.binding.model = getItem(holder.adapterPosition)
+        holder.binding.mainReviewImg.setImageURI(null)
+        Glide.with(context!!).clear(holder.binding.mainReviewImg)
+        setImage(holder.binding.mainReviewImg, getItem(holder.adapterPosition)?.images)
 
     }
 
-    private fun setimage(imageView: ImageView) {
+    private fun setImage(imageView: ImageView, images: String?) {
 
+        if (images == null) {
+            Glide.with(context!!).clear(imageView)
+            imageView.setImageDrawable(null)
+        } else {
+            val decodedString = Base64.decode(images, Base64.DEFAULT)
+            Glide.with(imageView.context)
+                    .load(decodedString)
+                    .apply(RequestOptions()
+                            .centerCrop()
+                            .override(190, 190)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .thumbnail(0.1f)
+                    .into(object : SimpleTarget<Drawable>() {
+                        override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                            imageView.setImageDrawable(resource)
+                        }
+                    })
 
-        val uri2 = Uri.parse("android.resource://" + R::class.java.`package`.name + "/" + R.drawable.test_10).toString()
-
-        Glide.with(imageView.context)
-                .load(uri2)
-                .apply(RequestOptions()
-                        .centerCrop()
-                        .circleCrop()
-                        .override(50, 50)
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                .thumbnail(0.1f)
-                .into(object : SimpleTarget<Drawable>() {
-                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                        imageView.setImageDrawable(resource)
-                    }
-                })
+        }
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_review_main, parent, false).let { viewholder(it) }
+            LayoutInflater.from(parent.context).inflate(R.layout.item_review_main, parent, false).let { ReviewMainViewholder(it) }
 
-    inner class viewholder(itemView: View?) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
-        val binding: ItemReviewMainBinding = DataBindingUtil.bind(itemView)
+    inner class ReviewMainViewholder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
+        var binding: ItemReviewMainBinding
 
         init {
-            binding.onClickListener = this
+            super.itemView
+            binding = DataBindingUtil.bind(itemView)
         }
-
-        override fun onClick(v: View?) {
-            when (v?.id) {
-                R.id.main_review_img -> {
-
-                }
-            }
-        }
-
-
     }
 }

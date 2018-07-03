@@ -31,6 +31,9 @@ interface ApiInterface {
     @POST("api/GetReviewItem2")
     fun GetReviewItem2(): Call<ReviewFragmentModels>
 
+    @POST("api/ScrollGetReviewItem2")
+    fun ScrollGetReviewItem2(@Query("ReviewId") reviewid: String): Call<ReviewFragmentModels>
+
     @POST("api/SetReviewPhotos")
     @Multipart
     fun SetReviewPhotos(@Part("review_titles") titles: RequestBody

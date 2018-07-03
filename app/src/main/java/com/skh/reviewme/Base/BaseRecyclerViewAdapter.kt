@@ -2,7 +2,6 @@ package com.skh.reviewme.Base
 
 import android.content.Context
 import android.os.Handler
-import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
@@ -91,7 +90,7 @@ abstract class BaseRecyclerViewAdapter<T, H : RecyclerView.ViewHolder> : Recycle
         }
         DLog.e("Base : $itemCount")
         DLog.e("Base item : " + items.size)
-        Handler(Looper.getMainLooper()).post { notifyItemRangeInserted(this@BaseRecyclerViewAdapter.itemCount + 1, items.size) }
+//        Handler(Looper.getMainLooper()).post { notifyItemRangeInserted(this@BaseRecyclerViewAdapter.itemCount + 1, items.size) }
     }
 
     fun addItem(item: T) {
