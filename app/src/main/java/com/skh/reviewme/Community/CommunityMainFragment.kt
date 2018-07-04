@@ -5,8 +5,6 @@ import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -21,6 +19,7 @@ import com.skh.reviewme.Community.Question.CommunityQuestionActivity
 import com.skh.reviewme.Community.model.CommunityModel
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
+import com.skh.reviewme.Util.GridSpacingItemDecoration
 import com.skh.reviewme.databinding.FragmentCommunityMainBinding
 
 
@@ -53,9 +52,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO
         binding.mainGridRv.setHasFixedSize(false)
 
-        val decor = DividerItemDecoration(context, DividerItemDecoration.VERTICAL)
-        decor.setDrawable(ContextCompat.getDrawable(context!!, R.drawable.survey_divder)!!)
-        binding.mainGridRv.addItemDecoration(decor)
+        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(1, 20, false, 0))
 
         communityMainAdapter.setOnItemClickListener(this)
     }

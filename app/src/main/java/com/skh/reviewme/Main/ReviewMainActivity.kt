@@ -2,6 +2,7 @@ package com.skh.reviewme.Main
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import com.skh.reviewme.Base.BaseActivity
@@ -21,7 +22,7 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_review_main)
         binding.layoutBottomTab.onClickListener = this
         addFragment(R.id.frame_layout, ReviewMainFragment(), false, false)
-
+        binding.layoutBottomTab.bottomLayoutBtn1.setBackgroundColor(Color.parseColor("#0ABFB5"))
 
     }
 

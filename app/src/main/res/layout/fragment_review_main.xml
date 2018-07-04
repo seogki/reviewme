@@ -53,7 +53,7 @@
                     <TextView
                         android:id="@+id/main_search_reviewtitle"
                         android:layout_width="match_parent"
-                        android:layout_height="45dp"
+                        android:layout_height="40dp"
                         android:gravity="center"
                         android:textStyle="bold"
                         android:text="@string/main_title"
@@ -67,8 +67,8 @@
                     <EditText
                         android:id="@+id/main_search_edit"
                         android:layout_width="0dp"
-                        android:layout_height="0dp"
-                        android:layout_marginBottom="10dp"
+                        android:layout_height="33dp"
+                        android:layout_marginBottom="5dp"
                         android:layout_marginStart="10dp"
                         android:background="@drawable/btn_grey_border"
                         android:inputType="text"
@@ -122,7 +122,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/appBarLayout"
-                    android:background="@color/grey"
+
                     tools:listitem="@layout/item_review_main"
                     />
 
@@ -131,9 +131,10 @@
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/review_const_all"
-            android:layout_width="wrap_content"
+            android:layout_width="351dp"
             android:layout_height="match_parent"
             android:layout_gravity="end"
+            tools:layout_editor_absoluteX="9dp"
             >
 
             <Button

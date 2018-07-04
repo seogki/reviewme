@@ -33,6 +33,7 @@ abstract class BaseRecyclerViewAdapter<T, H : RecyclerView.ViewHolder> : Recycle
     }
 
     fun getItem(position: Int): T? {
+
         return if (arrayList == null) null else arrayList!![position]
 
 

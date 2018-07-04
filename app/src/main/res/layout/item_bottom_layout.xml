@@ -10,9 +10,11 @@
             name="onClickListener"
             type="android.view.View.OnClickListener"
             />
+
         <variable
             name="empty"
-            type="String"/>
+            type="String"
+            />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -23,52 +25,81 @@
 
         >
 
-
-
-        <ImageView
-
+        <TextView
             android:id="@+id/bottom_layout_btn1"
             android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:text="메인"
-            android:src="@drawable/icons8_main_page_24"
+            android:layout_height="0dp"
             android:onClick="@{onClickListener::onClick}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn2"
             />
+
         <ImageView
-            android:id="@+id/bottom_layout_btn2"
+
+            android:id="@+id/bottom_layout_btn1_txt"
             android:layout_width="0dp"
             android:layout_height="25dp"
-            android:src="@drawable/icons8_user_account_24"
+            android:src="@drawable/icons8_main_page_24"
+            android:text="메인"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn2_txt"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
+            android:id="@+id/bottom_layout_btn2"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:onClick="@{onClickListener::onClick}"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn3"
             app:layout_constraintStart_toEndOf="@id/bottom_layout_btn1"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
-            android:text="게시판"
             />
+
         <ImageView
+            android:id="@+id/bottom_layout_btn2_txt"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:src="@drawable/icons8_user_account_24"
+            android:text="게시판"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn3_txt"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/bottom_layout_btn1_txt"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <TextView
             android:id="@+id/bottom_layout_btn3"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:onClick="@{onClickListener::onClick}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bottom_layout_btn2"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <ImageView
+            android:id="@+id/bottom_layout_btn3_txt"
             android:layout_width="0dp"
             android:layout_height="25dp"
             android:src="@drawable/icons8_settings_24"
-            android:onClick="@{onClickListener::onClick}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toEndOf="@id/bottom_layout_btn2"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_chainStyle="spread"
             android:text="설정"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toEndOf="@id/bottom_layout_btn2_txt"
+            app:layout_constraintTop_toTopOf="parent"
             />
-
 
 
     </android.support.constraint.ConstraintLayout>
