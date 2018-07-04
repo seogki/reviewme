@@ -199,7 +199,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
 
     private fun sendReviewToServer() {
-        val file = UtilMethod.getCompressed(context!!, File(name).toString())
+        val file = UtilMethod.getCompressed(context!!, File(name).toString(),"drawable1")
 
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file).let { MultipartBody.Part.createFormData("images", file.name, it) }
 

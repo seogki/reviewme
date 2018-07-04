@@ -1,6 +1,8 @@
 package com.skh.reviewme.Login.ReviewRegister
 
+import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
@@ -29,13 +31,14 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
     lateinit var binding: ActivityRegisterBinding
     lateinit var id: String
-
+    lateinit var pref: SharedPreferences
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
         binding.registBtnRegister.visibility = View.GONE
         binding.registBtnRegister.setOnClickListener(this)
         checkRegistration()
+
 
     }
 
@@ -64,6 +67,10 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun isUserOn(id: String) {
+        pref = getSharedPreferences("UserId", Activity.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("userLoginId", id)
+        editor.apply()
         val call = ApiCilent.getInstance().getService().isUserOn(id)
         call.enqueue(object : Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
@@ -72,14 +79,18 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
                 DLog.e("" + response?.body()?.get("result").toString())
-                isUserAvailable(response?.body()?.get("result").toString())
+                DLog.e("" + response?.body()?.toString())
+                isUserAvailable(response?.body()?.get("result").toString(), response?.body()?.get("name").toString())
             }
 
         })
     }
 
-    private fun isUserAvailable(isAvailable: String) {
+    private fun isUserAvailable(isAvailable: String, username: String) {
         if (isAvailable.contains("200")) {
+            val editor = pref.edit()
+            editor.putString("UserNick", username)
+            editor.apply()
             redirectReviewMainActivity()
             finish()
         } else {
@@ -106,6 +117,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     val nickname = binding.registEditNickname.text.toString()
                     val gender = binding.registRadiogroupAge.checkedRadioButtonId.let { findViewById<RadioButton>(it).text.toString() }
                     val isKakao = ApplicationClass.getIsKakao().toString()
+
 
                     val call = ApiCilent.getInstance().getService().registerAccount(id, nickname, email, age, gender, isKakao)
 

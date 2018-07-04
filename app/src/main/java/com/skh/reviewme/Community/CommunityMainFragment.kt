@@ -6,7 +6,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
 
     lateinit var binding: FragmentCommunityMainBinding
     private lateinit var communityMainAdapter: CommunityMainAdapter
-    private lateinit var layoutManager: RecyclerView.LayoutManager
+    private lateinit var layoutManager: LinearLayoutManager
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
@@ -45,14 +44,14 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         communityMainAdapter = CommunityMainAdapter(context!!, addlist())
         layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
-        (layoutManager as LinearLayoutManager).initialPrefetchItemCount = 5
+        layoutManager.initialPrefetchItemCount = 5
         binding.mainGridRv.layoutManager = layoutManager
         binding.mainGridRv.adapter = communityMainAdapter
         binding.mainGridRv.setItemViewCacheSize(20)
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO
         binding.mainGridRv.setHasFixedSize(false)
 
-        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(1, 20, false, 0))
+        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(1, 25, false, 0))
 
         communityMainAdapter.setOnItemClickListener(this)
     }
@@ -66,7 +65,6 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         var title: TextView? = null
 
         for (i in 0..(view as ViewGroup).childCount) {
-//            val child = view.getChildAt(i)
             title = (view.getChildAt(0) as TextView)
             text = view.getChildAt(1) as TextView
             Images = view.getChildAt(2) as ImageView

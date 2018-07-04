@@ -8,17 +8,28 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.Toast
+import com.google.gson.JsonObject
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.skh.reviewme.Base.BaseActivity
+import com.skh.reviewme.Network.ApiCilent
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
+import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.ActivityCommunityQuestionBinding
+import okhttp3.MediaType
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import retrofit2.Call
+import retrofit2.Response
+import java.io.File
 
 class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
     lateinit var binding: ActivityCommunityQuestionBinding
     private var ImageCode: Int = 1234
+    var questions: ArrayList<Bitmap>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +46,74 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
                 setPhoto()
             }
             R.id.question_btn_register -> {
-
+                setRegisterCommunityToSever()
             }
         }
+    }
+
+    private fun setRegisterCommunityToSever() {
+        if (!binding.questionTextTitle.text.isNotEmpty() && !binding.questionTxtQuestion.text.isNotEmpty()) {
+            Toast.makeText(this@CommunityQuestionActivity, "모두 입력해 주세요.", Toast.LENGTH_SHORT).show()
+        } else {
+            setRequestServer()
+        }
+    }
+
+    private fun setRequestServer() {
+        val multiPartImages = ArrayList<MultipartBody.Part>()
+        val pref = getSharedPreferences("UserId", Activity.MODE_PRIVATE)
+
+        val file1: File?
+        val file2: File?
+        val file3: File?
+        val file4: File?
+
+        val requestFile1: MultipartBody.Part?
+        val requestFile2: MultipartBody.Part?
+        val requestFile3: MultipartBody.Part?
+        val requestFile4: MultipartBody.Part?
+
+        val title = binding.questionTextTitle.text.toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
+        val text = binding.questionTxtQuestion.text.toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
+        val userid = pref.getString("userLoginId", "").trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
+        val userNick = pref.getString("UserNick", "").trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
+
+        if (binding.questionImg1.drawable != null) {
+            file1 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable11111", questions?.get(0)).toString(),"drawable1")
+            requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), file1).let { MultipartBody.Part.createFormData("images", file1?.name, it) }
+            multiPartImages.add(requestFile1)
+        }
+
+        if (binding.questionImg2.drawable != null) {
+            file2 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable212222", questions?.get(1)).toString(),"drawable2")
+            requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), file2).let { MultipartBody.Part.createFormData("images", file2?.name, it) }
+            multiPartImages.add(requestFile2)
+        }
+        if (binding.questionImg3.drawable != null) {
+            file3 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable333333", questions?.get(2)).toString(),"drawable3")
+            requestFile3 = RequestBody.create(MediaType.parse("multipart/form-data"), file3).let { MultipartBody.Part.createFormData("images", file3?.name, it) }
+            multiPartImages.add(requestFile3)
+        }
+        if (binding.questionImg4.drawable != null) {
+            file4 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable444444", questions?.get(3)).toString(),"drawable4")
+            requestFile4 = RequestBody.create(MediaType.parse("multipart/form-data"), file4).let { MultipartBody.Part.createFormData("images", file4?.name, it) }
+            multiPartImages.add(requestFile4)
+        }
+
+        DLog.e("multipart: $multiPartImages")
+
+
+        val call = ApiCilent.getInstance().getService().setCommunityPhotos(userid, userNick, title, text, multiPartImages)
+        call.enqueue(object : retrofit2.Callback<JsonObject> {
+            override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
+                DLog.e(t?.message.toString())
+            }
+
+            override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
+                finish()
+            }
+
+        })
     }
 
 
@@ -71,7 +147,7 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
     private fun setImage(receivedDrawable: ArrayList<Bitmap>) {
         DLog.e("setImage : $receivedDrawable")
-
+        questions = receivedDrawable
         var bitmap1: Bitmap? = null
         var bitmap2: Bitmap? = null
         var bitmap3: Bitmap? = null
@@ -85,30 +161,23 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
             }
             receivedDrawable.size == 1 -> {
                 bitmap1 = receivedDrawable[0]
-
             }
             receivedDrawable.size == 2 -> {
                 bitmap1 = receivedDrawable[0]
                 bitmap2 = receivedDrawable[1]
-
             }
             receivedDrawable.size == 3 -> {
                 bitmap1 = receivedDrawable[0]
                 bitmap2 = receivedDrawable[1]
                 bitmap3 = receivedDrawable[2]
-
-
             }
             receivedDrawable.size == 4 -> {
                 bitmap1 = receivedDrawable[0]
                 bitmap2 = receivedDrawable[1]
                 bitmap3 = receivedDrawable[2]
                 bitmap4 = receivedDrawable[3]
-
-
             }
         }
-
 
         if (bitmap1 != null)
             binding.questionImg1.setImageBitmap(bitmap1)
@@ -124,7 +193,7 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
     }
 
-    private fun setImageNull(){
+    private fun setImageNull() {
         binding.questionImg1.setImageDrawable(null)
         binding.questionImg2.setImageDrawable(null)
         binding.questionImg3.setImageDrawable(null)

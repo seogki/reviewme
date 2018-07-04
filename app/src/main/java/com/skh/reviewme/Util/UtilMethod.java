@@ -7,8 +7,8 @@ import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.support.media.ExifInterface;
 import android.support.annotation.Nullable;
+import android.support.media.ExifInterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -61,7 +61,7 @@ public class UtilMethod {
     //SDF to generate a unique name for the compressed file.
     private static final SimpleDateFormat SDF = new SimpleDateFormat("yyyymmddhhmmss", Locale.getDefault());
 
-    public static File getCompressed(Context context, String path) throws IOException {
+    public static File getCompressed(Context context, String path, String AdditionalName) throws IOException {
         Bitmap bitmap;
         if (context == null)
             throw new NullPointerException("Context must not be null.");
@@ -88,10 +88,12 @@ public class UtilMethod {
         int rotation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
         int rotationInDegrees = exifToDegrees(rotation);
         Matrix matrix = new Matrix();
-        if (rotation != 0f) {matrix.preRotate(rotationInDegrees);}
+        if (rotation != 0f) {
+            matrix.preRotate(rotationInDegrees);
+        }
         Bitmap bitmaps = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 //create placeholder for the compressed image file
-        File compressed = new File(root, SDF.format(new Date()) + ".jpg" /*Your desired format*/);
+        File compressed = new File(root, AdditionalName+"_"+SDF.format(new Date()) + ".jpg" /*Your desired format*/);
 
 //convert the decoded bitmap to stream
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -134,11 +136,43 @@ Where Quality ranges from 1–100.
         outOptions.inSampleSize = scale;
         return BitmapFactory.decodeFile(path, outOptions);
     }
+
     private static int exifToDegrees(int exifOrientation) {
 
-        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) { return 90; }
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {  return 180; }
-        else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {  return 270; }
+        if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_90) {
+            return 90;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_180) {
+            return 180;
+        } else if (exifOrientation == ExifInterface.ORIENTATION_ROTATE_270) {
+            return 270;
+        }
         return 0;
+    }
+
+    public static File bitmapToFile(Context context, String filename, Bitmap myBitmap) {
+        //create a file to write bitmap data
+        try {
+            File f = new File(context.getCacheDir(), filename);
+            f.createNewFile();
+
+
+            //Convert bitmap to byte array
+            Bitmap bitmap = myBitmap;
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+            byte[] bitmapdata = bos.toByteArray();
+
+            //write the bytes in file
+            FileOutputStream fos = new FileOutputStream(f);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+
+            return f;
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

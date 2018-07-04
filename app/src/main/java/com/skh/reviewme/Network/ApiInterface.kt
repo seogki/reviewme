@@ -39,4 +39,12 @@ interface ApiInterface {
     fun SetReviewPhotos(@Part("review_titles") titles: RequestBody
                         , @Part("review_texts") texts: RequestBody
                         , @Part file: MultipartBody.Part): Call<JSONObject>
+
+    @POST("api/SetCommunityPhotos")
+    @Multipart
+    fun setCommunityPhotos(@Part("UserId") userid: RequestBody
+                           , @Part("UserNick") usernick: RequestBody
+                           , @Part("QuestionTitle") questiontitle: RequestBody
+                           , @Part("QuestionText") questiontext: RequestBody
+                           , @Part file: ArrayList<MultipartBody.Part>): Call<JsonObject>
 }
