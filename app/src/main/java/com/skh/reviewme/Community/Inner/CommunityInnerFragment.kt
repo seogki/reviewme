@@ -2,7 +2,6 @@ package com.skh.reviewme.Community.Inner
 
 
 import android.databinding.DataBindingUtil
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -13,8 +12,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Community.model.CommunityInnerModel
+import com.skh.reviewme.Network.ApiCilent
 import com.skh.reviewme.R
+import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.databinding.FragmentCommunityInnerBinding
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 /**
@@ -33,29 +37,32 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
 
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_inner, container, false)
         binding.onClickListener = this
-        val bitmap = arguments?.getParcelable("IMAGE") as? Bitmap
-        binding.innerInnerImg1Content.setImageBitmap(bitmap)
-        arguments?.getString("text").let { binding.innerTxtTitle.text = it }
-        arguments?.getString("title").let { binding.innerTxtRegiName.text = it }
-        binding.innerInnerImg2Content.setImageBitmap(bitmap)
-        binding.innerInnerImg3Content.setImageBitmap(bitmap)
-        binding.innerInnerImg4Content.setImageBitmap(bitmap)
+        val id = arguments?.getString("communityid")
+        setView(id)
         setRv()
 
-        if (bitmap == null) {
-            binding.innerInnerImg1Content.visibility = View.GONE
-            binding.innerInnerImg2Content.visibility = View.GONE
-            binding.innerInnerImg3Content.visibility = View.GONE
-            binding.innerInnerImg4Content.visibility = View.GONE
-        }
+
 
 
 
         return binding.root
     }
 
-    private fun setRv() {
+    private fun setView(id: String?) {
+        val call = id?.let { ApiCilent.getInstance().getService().GetInnerCommunityItem(it) }
+        call?.enqueue(object : Callback<CommunityInnerModel> {
+            override fun onFailure(call: Call<CommunityInnerModel>?, t: Throwable?) {
+                DLog.e("t message ${t?.message.toString()}")
+            }
 
+            override fun onResponse(call: Call<CommunityInnerModel>?, response: Response<CommunityInnerModel>?) {
+                binding.item = response?.body()
+            }
+
+        })
+    }
+
+    private fun setRv() {
 
         communityInnerAdapter = CommunityInnerAdapter(context!!, setdata())
         layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)

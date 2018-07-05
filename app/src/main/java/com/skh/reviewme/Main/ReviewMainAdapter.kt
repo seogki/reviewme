@@ -44,7 +44,7 @@ open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFrag
                     .load(decodedString)
                     .apply(RequestOptions()
                             .centerCrop()
-                            .override(190, 190)
+                            .override(400, 400)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.NONE))
                     .thumbnail(0.1f)

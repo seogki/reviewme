@@ -24,7 +24,7 @@
         <TextView
             android:layout_marginTop="5dp"
             android:id="@+id/inner_text_regi_name"
-            android:text="@{item.name}"
+            android:text="@{item.nickname}"
             android:layout_width="150dp"
             android:textStyle="bold"
             android:textSize="15sp"

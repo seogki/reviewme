@@ -4,11 +4,14 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.media.ExifInterface;
+import android.support.v7.app.AlertDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -81,7 +84,7 @@ public class UtilMethod {
 
 
 //decode and resize the original bitmap from @param path.
-        bitmap = decodeImageFromFiles(path, /* your desired width*/200, /*your desired height*/ 200);
+        bitmap = decodeImageFromFiles(path, /* your desired width*/1280, /*your desired height*/ 1024);
 
 
         ExifInterface exif = new ExifInterface(path);
@@ -103,7 +106,7 @@ public class UtilMethod {
 
 Where Quality ranges from 1–100.
  */
-        bitmaps.compress(Bitmap.CompressFormat.JPEG, 85, byteArrayOutputStream);
+        bitmaps.compress(Bitmap.CompressFormat.JPEG, 95, byteArrayOutputStream);
 
 /*
  Right now, we have our bitmap inside byteArrayOutputStream Object, all we need next is to write it to the compressed file we created earlier,
@@ -159,7 +162,7 @@ Where Quality ranges from 1–100.
             //Convert bitmap to byte array
             Bitmap bitmap = myBitmap;
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100 /*ignored for PNG*/, bos);
             byte[] bitmapdata = bos.toByteArray();
 
             //write the bytes in file
@@ -174,5 +177,17 @@ Where Quality ranges from 1–100.
             e.printStackTrace();
             return null;
         }
+    }
+    public static void showAlertDialog(@NonNull Context c, @NonNull String msg) {
+        new AlertDialog.Builder(c)
+                .setMessage(msg)
+                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).setNegativeButton(null, null)
+                .show();
+
     }
 }

@@ -89,7 +89,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     private fun isUserAvailable(isAvailable: String, username: String) {
         if (isAvailable.contains("200")) {
             val editor = pref.edit()
-            editor.putString("UserNick", username)
+            editor.putString("UserNick", username.replace("\"",""))
             editor.apply()
             redirectReviewMainActivity()
             finish()

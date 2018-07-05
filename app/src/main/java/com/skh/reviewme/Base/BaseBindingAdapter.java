@@ -65,6 +65,28 @@ public class BaseBindingAdapter {
 //        }
     }
 
+    @BindingAdapter("innerCommunityImageUrl")
+    public static void innerCommunityImage(final ImageView imageView, String url) {
+
+        if(url != null) {
+            byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
+            Glide.with(imageView.getContext())
+                    .load(decodedString)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .override(500, 500)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .thumbnail(0.1f)
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
+    }
+
     @BindingAdapter("CommunityMainImageUrl")
     public static void CommunityMainImage(final ImageView imageView, String url) {
         Uri uri;

@@ -1,6 +1,8 @@
 package com.skh.reviewme.Network
 
 import com.google.gson.JsonObject
+import com.skh.reviewme.Community.model.CommunityInnerModel
+import com.skh.reviewme.Community.model.CommunityModels
 import com.skh.reviewme.Main.model.ReviewFragmentModels
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -16,6 +18,10 @@ import retrofit2.http.Query
  */
 interface ApiInterface {
 
+    /**
+     *  유저 로그인
+     */
+
     @POST("api/isUserOn")
     fun isUserOn(@Query("UserId") userid: String): Call<JsonObject>
 
@@ -27,6 +33,11 @@ interface ApiInterface {
                         , @Query("Gender") gender: String
                         , @Query("isKakao") isKakao: String)
             : Call<JsonObject>
+
+
+    /**
+     *  리뷰 메인
+     */
 
     @POST("api/GetReviewItem2")
     fun GetReviewItem2(): Call<ReviewFragmentModels>
@@ -40,6 +51,9 @@ interface ApiInterface {
                         , @Part("review_texts") texts: RequestBody
                         , @Part file: MultipartBody.Part): Call<JSONObject>
 
+    /**
+     *  커뮤니티 메인
+     */
     @POST("api/SetCommunityPhotos")
     @Multipart
     fun setCommunityPhotos(@Part("UserId") userid: RequestBody
@@ -47,4 +61,14 @@ interface ApiInterface {
                            , @Part("QuestionTitle") questiontitle: RequestBody
                            , @Part("QuestionText") questiontext: RequestBody
                            , @Part file: ArrayList<MultipartBody.Part>): Call<JsonObject>
+
+
+    @POST("api/GetCommunityItem")
+    fun GetCommunityItem(): Call<CommunityModels>
+
+    @POST("api/ScrollGetCommunityItem")
+    fun ScrollGetCommunityItem(@Query("CommunityId") communityid: String): Call<CommunityModels>
+
+    @POST("api/GetInnerCommunityItem")
+    fun GetInnerCommunityItem(@Query("CommunityId") communityid: String): Call<CommunityInnerModel>
 }

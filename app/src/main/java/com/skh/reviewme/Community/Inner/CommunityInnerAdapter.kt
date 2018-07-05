@@ -25,7 +25,7 @@ class CommunityInnerAdapter(context: Context, commu: ArrayList<CommunityInnerMod
 
     override fun onBindView(holder: CommunityInnerViewHolder, position: Int) {
         holder.binding.item = getItem(position)
-        holder.setIsRecyclable(true)
+        holder.setIsRecyclable(false)
     }
 
 

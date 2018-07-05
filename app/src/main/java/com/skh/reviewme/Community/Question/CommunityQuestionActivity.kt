@@ -7,6 +7,7 @@ import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Handler
+import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.Toast
 import com.google.gson.JsonObject
@@ -74,28 +75,28 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
         val requestFile4: MultipartBody.Part?
 
         val title = binding.questionTextTitle.text.toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
-        val text = binding.questionTxtQuestion.text.toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
+        val text = binding.questionTxtQuestion.text.toString().let { RequestBody.create(MediaType.parse("text/plain"), it) }
         val userid = pref.getString("userLoginId", "").trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
         val userNick = pref.getString("UserNick", "").trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
 
         if (binding.questionImg1.drawable != null) {
-            file1 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable11111", questions?.get(0)).toString(),"drawable1")
+            file1 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable11111", questions?.get(0)).toString(), "drawable1")
             requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), file1).let { MultipartBody.Part.createFormData("images", file1?.name, it) }
             multiPartImages.add(requestFile1)
         }
 
         if (binding.questionImg2.drawable != null) {
-            file2 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable212222", questions?.get(1)).toString(),"drawable2")
+            file2 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable212222", questions?.get(1)).toString(), "drawable2")
             requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), file2).let { MultipartBody.Part.createFormData("images", file2?.name, it) }
             multiPartImages.add(requestFile2)
         }
         if (binding.questionImg3.drawable != null) {
-            file3 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable333333", questions?.get(2)).toString(),"drawable3")
+            file3 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable333333", questions?.get(2)).toString(), "drawable3")
             requestFile3 = RequestBody.create(MediaType.parse("multipart/form-data"), file3).let { MultipartBody.Part.createFormData("images", file3?.name, it) }
             multiPartImages.add(requestFile3)
         }
         if (binding.questionImg4.drawable != null) {
-            file4 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable444444", questions?.get(3)).toString(),"drawable4")
+            file4 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable444444", questions?.get(3)).toString(), "drawable4")
             requestFile4 = RequestBody.create(MediaType.parse("multipart/form-data"), file4).let { MultipartBody.Part.createFormData("images", file4?.name, it) }
             multiPartImages.add(requestFile4)
         }
@@ -110,7 +111,17 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
             }
 
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
-                finish()
+                val pref = getSharedPreferences("CommunityDone", Activity.MODE_PRIVATE)
+                val editor = pref.edit()
+                editor.putBoolean("isDone", true)
+                editor.commit()
+                AlertDialog.Builder(this@CommunityQuestionActivity,R.style.MyDialogTheme)
+                        .setMessage("등록 되었습니다")
+                        .setPositiveButton("확인", { dialog, _ ->
+                            dialog.dismiss()
+                            finish()
+                        }).setNegativeButton(null, null)
+                        .show()
             }
 
         })

@@ -9,6 +9,7 @@ import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Main.ReviewMainActivity
 import com.skh.reviewme.R
 import com.skh.reviewme.Setting.SettingMainActivity
+import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.databinding.ActivityCommunityMainBinding
 
 class CommunityMainActivity : BaseActivity(), View.OnClickListener {
@@ -21,7 +22,7 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_main)
         binding.layoutBottomTab.onClickListener = this
-        addFragment(R.id.frame_layout, CommunityMainFragment(), false, false)
+        addFragment(R.id.frame_layout, CommunityMainFragment(), false, false, "CommunityMainFragment")
         binding.layoutBottomTab.bottomLayoutBtn2.setBackgroundColor(Color.parseColor("#0ABFB5"))
     }
 
@@ -41,6 +42,7 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
 
 
     override fun onBackPressed() {
+        DLog.e("onBack Pressed" + isFirstFragment())
 
         if (isFirstFragment()) {
             if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
@@ -60,8 +62,8 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
 
     private fun isFirstFragment(): Boolean {
         val curFragment = supportFragmentManager.findFragmentById(R.id.frame_layout)
-
-        return curFragment.tag == "CheeseMainTabFragment"
+        DLog.e("current Fragment ${curFragment.tag}")
+        return curFragment.tag == "CommunityMainFragment"
     }
 
 

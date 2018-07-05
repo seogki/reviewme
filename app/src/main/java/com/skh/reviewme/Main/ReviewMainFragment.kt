@@ -148,7 +148,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                 super.onScrolled(recyclerView, dx, dy)
 
                 if (!recyclerView!!.canScrollVertically(1)) {
-                    if (!isLoading) {
+                    if (!dialog.isShowing && !isLoading) {
                         isLoading = true
                         dialog.show()
                         scrollToEnd()

@@ -18,8 +18,8 @@ open class BaseActivity : AppCompatActivity() {
 
     private lateinit var toast: Toast
 
-    fun AppCompatActivity.addFragment(@IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean, backstack: Boolean) {
-        val transaction = supportFragmentManager?.beginTransaction()?.add(frameId, fragment, fragment.tag)
+    fun AppCompatActivity.addFragment(@IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean, backstack: Boolean, tag: String) {
+        val transaction = supportFragmentManager?.beginTransaction()?.add(frameId, fragment, tag)
 
         if (backstack) {
             transaction?.addToBackStack(fragment.tag)
