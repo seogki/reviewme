@@ -30,7 +30,8 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
     lateinit var binding: ActivityCommunityQuestionBinding
     private var ImageCode: Int = 1234
-    var questions: ArrayList<Bitmap>? = null
+    private var questions: ArrayList<Bitmap>? = null
+    private lateinit var imagePath: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -80,23 +81,24 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
         val userNick = pref.getString("UserNick", "").trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
 
         if (binding.questionImg1.drawable != null) {
-            file1 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable11111", questions?.get(0)).toString(), "drawable1")
+
+            file1 = UtilMethod.getCompressed(this@CommunityQuestionActivity, File(imagePath[0]).toString(), "drawable1")
             requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), file1).let { MultipartBody.Part.createFormData("images", file1?.name, it) }
+
             multiPartImages.add(requestFile1)
         }
-
         if (binding.questionImg2.drawable != null) {
-            file2 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable212222", questions?.get(1)).toString(), "drawable2")
+            file2 = UtilMethod.getCompressed(this@CommunityQuestionActivity, File(imagePath[1]).toString(), "drawable2")
             requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), file2).let { MultipartBody.Part.createFormData("images", file2?.name, it) }
             multiPartImages.add(requestFile2)
         }
         if (binding.questionImg3.drawable != null) {
-            file3 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable333333", questions?.get(2)).toString(), "drawable3")
+            file3 = UtilMethod.getCompressed(this@CommunityQuestionActivity, File(imagePath[2]).toString(), "drawable3")
             requestFile3 = RequestBody.create(MediaType.parse("multipart/form-data"), file3).let { MultipartBody.Part.createFormData("images", file3?.name, it) }
             multiPartImages.add(requestFile3)
         }
         if (binding.questionImg4.drawable != null) {
-            file4 = UtilMethod.getCompressed(this@CommunityQuestionActivity, UtilMethod.bitmapToFile(this@CommunityQuestionActivity, "drawable444444", questions?.get(3)).toString(), "drawable4")
+            file4 = UtilMethod.getCompressed(this@CommunityQuestionActivity, File(imagePath[3]).toString(), "drawable4")
             requestFile4 = RequestBody.create(MediaType.parse("multipart/form-data"), file4).let { MultipartBody.Part.createFormData("images", file4?.name, it) }
             multiPartImages.add(requestFile4)
         }
@@ -114,7 +116,7 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
                 val pref = getSharedPreferences("CommunityDone", Activity.MODE_PRIVATE)
                 val editor = pref.edit()
                 editor.putBoolean("isDone", true)
-                editor.commit()
+                editor.apply()
                 AlertDialog.Builder(this@CommunityQuestionActivity,R.style.MyDialogTheme)
                         .setMessage("등록 되었습니다")
                         .setPositiveButton("확인", { dialog, _ ->
@@ -147,11 +149,14 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
     }
 
+    @Suppress("UNCHECKED_CAST")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == ImageCode) {
             if (resultCode == Activity.RESULT_OK) {
-                @Suppress("UNCHECKED_CAST")
-                setImage(data?.getSerializableExtra("PhotoFromQuestion") as ArrayList<Bitmap>)
+
+                imagePath = data?.getStringArrayListExtra("imagePath") as ArrayList<String>
+                DLog.e("path " + imagePath.toString())
+                setImage(data.getSerializableExtra("PhotoFromQuestion") as ArrayList<Bitmap>)
             }
         }
     }

@@ -21,6 +21,7 @@ import com.skh.reviewme.Network.ApiCilent
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.GridSpacingItemDecoration
+import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.FragmentCommunityMainBinding
 import dmax.dialog.SpotsDialog
 import retrofit2.Call
@@ -57,7 +58,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         binding.mainGridRv.setItemViewCacheSize(20)
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO
         binding.mainGridRv.setHasFixedSize(false)
-        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(1, 25, false, 0))
+        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(1, 50, false, 0))
         communityMainAdapter.setOnItemClickListener(this)
 
 
@@ -119,6 +120,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
                             communityMainAdapter.addItems(response.body()!!.CommunityModel as MutableList<CommunityModel>)
                             communityMainAdapter.notifyDataSetChanged()
                             dialog.dismiss()
+                            DLog.e("memory: " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
                             isLoading = false
                         }
                         else -> {
@@ -179,6 +181,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         communityMainAdapter.clearItems()
         communityMainAdapter.notifyDataSetChanged()
         binding.mainGridRv.removeOnScrollListener(null)
+        dialog.show()
         getCommunityItemFromServer()
         binding.swipeLayout.isRefreshing = false
     }

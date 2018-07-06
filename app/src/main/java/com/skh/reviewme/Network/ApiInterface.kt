@@ -1,6 +1,7 @@
 package com.skh.reviewme.Network
 
 import com.google.gson.JsonObject
+import com.skh.reviewme.Community.model.CommunityInnerCommentModels
 import com.skh.reviewme.Community.model.CommunityInnerModel
 import com.skh.reviewme.Community.model.CommunityModels
 import com.skh.reviewme.Main.model.ReviewFragmentModels
@@ -71,4 +72,14 @@ interface ApiInterface {
 
     @POST("api/GetInnerCommunityItem")
     fun GetInnerCommunityItem(@Query("CommunityId") communityid: String): Call<CommunityInnerModel>
+
+    @POST("api/GetInnerCommunityComment")
+    fun GetInnerCommunityComment(@Query("CommunityId") communityid: String): Call<CommunityInnerCommentModels>
+
+    @POST("api/SetInnerCommunityComment")
+    fun SetInnerCommunityComment(@Query("UserId") userid: String
+                                 , @Query("CommunityId") communityid: String
+                                 , @Query("UserNick") username: String
+                                 , @Query("Comment") comment: String
+                                 , @Query("UserImage") userimage: String): Call<JsonObject>
 }

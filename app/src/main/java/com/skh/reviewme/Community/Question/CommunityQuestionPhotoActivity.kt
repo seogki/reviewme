@@ -17,20 +17,23 @@ import android.widget.ImageView
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
 import com.skh.reviewme.Main.Interface.HashMapListener
 import com.skh.reviewme.R
+import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.ImageFile
 import com.skh.reviewme.databinding.ActivityCommunityQuestionPhotoBinding
 
-class CommunityQuestionPhotoActivity : AppCompatActivity(), HashMapListener, View.OnClickListener, BaseRecyclerViewAdapter.OnItemClickListener{
+class CommunityQuestionPhotoActivity : AppCompatActivity(), HashMapListener, View.OnClickListener, BaseRecyclerViewAdapter.OnItemClickListener {
 
 
     lateinit var binding: ActivityCommunityQuestionPhotoBinding
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var communityQuestionPhotoAdapter: CommunityQuestionPhotoAdapter
+    private lateinit var imagePath: ArrayList<String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_question_photo)
 
+        imagePath = ArrayList<String>()
 
         setRv()
     }
@@ -54,7 +57,8 @@ class CommunityQuestionPhotoActivity : AppCompatActivity(), HashMapListener, Vie
         when (v?.id) {
             R.id.question_btn_register -> {
                 val returnIntent = Intent()
-                returnIntent.putParcelableArrayListExtra("PhotoFromQuestion",getDrawable())
+                returnIntent.putParcelableArrayListExtra("PhotoFromQuestion", getDrawable())
+                returnIntent.putStringArrayListExtra("imagePath",imagePath)
                 setResult(Activity.RESULT_OK, returnIntent)
                 finish()
             }
@@ -63,6 +67,10 @@ class CommunityQuestionPhotoActivity : AppCompatActivity(), HashMapListener, Vie
     }
 
     override fun onItemClick(view: View, position: Int) {
+
+        DLog.e("data + " + communityQuestionPhotoAdapter.getItem(position).toString())
+        imagePath.add(communityQuestionPhotoAdapter.getItem(position).toString())
+
         for (i in 0..(view as ViewGroup).childCount) {
             val child = view.getChildAt(i)
 

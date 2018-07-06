@@ -23,17 +23,28 @@
         >
 
 
+        <View
+            android:id="@+id/view_above_all"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@color/darkGrey"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
         <TextView
             android:id="@+id/text_regi_name"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="25dp"
             android:layout_marginStart="20dp"
             android:layout_marginTop="15dp"
             android:gravity="center_vertical"
             android:text="@{item.nickname}"
-            android:textColor="#000"
+            android:textColor="@color/black"
             android:textSize="13sp"
             android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/text_regi_timestamp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="홍석기"
@@ -62,6 +73,7 @@
             android:text="@{item.time}"
             android:textColor="@color/darkGrey"
             android:textSize="12sp"
+            app:layout_constraintEnd_toStartOf="@id/img_regi_comment"
             app:layout_constraintStart_toEndOf="@id/text_regi_name"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="7시 30분 11:28"
@@ -104,7 +116,7 @@
             android:text="@{item.title}"
             android:layout_marginTop="5dp"
             android:textColor="@color/colorPrimaryDark"
-            app:layout_constraintEnd_toStartOf="@id/img_thumbnail"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
 
             app:layout_constraintTop_toBottomOf="@id/view_bottom"
@@ -120,30 +132,46 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="5dp"
             android:maxLines="2"
+            android:ellipsize="end"
             android:text="@{item.text}"
             android:textColor="@color/black"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/img_thumbnail"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txt_regi_title"
             tools:text="wrqwrqwrqwtqwetewqtewteqtewtdstdsgasdtewtqtd"
             />
 
+        <View
+            android:id="@+id/view_above_img"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@color/darkGrey"
+            app:layout_constraintBottom_toTopOf="@id/img_thumbnail"
+            />
+
         <ImageView
             android:id="@+id/img_thumbnail"
-            android:layout_width="80dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginEnd="25dp"
-            app:layout_constraintTop_toBottomOf="@id/view_bottom"
-
-            android:transitionName="innerImage"
-            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:scaleType="fitXY"
+            android:layout_marginTop="10dp"
+            app:CommunityMainImageUrl="@{item.image}"
+            app:layout_constraintTop_toBottomOf="@id/txt_regi_content"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+
+            app:layout_constraintBottom_toBottomOf="parent"
+
             tools:src="@drawable/test_10"
             tools:ignore="UnusedAttribute"
+            />
+
+        <View
+            android:id="@+id/view_below_img"
+            android:layout_width="match_parent"
+            android:layout_height="0.3dp"
+            android:background="@color/darkGrey"
+            app:layout_constraintTop_toBottomOf="@id/img_thumbnail"
             />
 
 

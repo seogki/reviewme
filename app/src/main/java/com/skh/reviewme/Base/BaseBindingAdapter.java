@@ -8,7 +8,6 @@ import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Base64;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -48,27 +47,27 @@ public class BaseBindingAdapter {
     @BindingAdapter("reviewImageUrl")
     public static void ReviewImage(final ImageView imageView, String url) {
 
-            byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
-            Glide.with(imageView.getContext())
-                    .load(decodedString)
-                    .apply(new RequestOptions()
-                            .centerCrop()
-                            .override(190, 190)
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE))
-                    .thumbnail(0.1f)
-                    .into(new SimpleTarget<Drawable>() {
-                        @Override
-                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                            imageView.setImageDrawable(resource);
-                        }
-                    });
+        byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
+        Glide.with(imageView.getContext())
+                .load(decodedString)
+                .apply(new RequestOptions()
+                        .centerCrop()
+                        .override(190, 190)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE))
+                .thumbnail(0.1f)
+                .into(new SimpleTarget<Drawable>() {
+                    @Override
+                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                        imageView.setImageDrawable(resource);
+                    }
+                });
 //        }
     }
 
     @BindingAdapter("innerCommunityImageUrl")
     public static void innerCommunityImage(final ImageView imageView, String url) {
 
-        if(url != null) {
+        if (url != null) {
             byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
             Glide.with(imageView.getContext())
                     .load(decodedString)
@@ -89,36 +88,27 @@ public class BaseBindingAdapter {
 
     @BindingAdapter("CommunityMainImageUrl")
     public static void CommunityMainImage(final ImageView imageView, String url) {
-        Uri uri;
-        Log.d("ee", url);
-
         if (url == null) {
-            imageView.setBackground(null);
-            return;
-        } else if (url.isEmpty()) {
-            imageView.setBackground(null);
-            return;
+            Glide.with(imageView).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+            byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
+            Glide.with(imageView)
+                    .load(decodedString)
+                    .apply(new RequestOptions()
+                            .dontTransform()
+                            .override(800, 800)
+                            .skipMemoryCache(true)
+                            .diskCacheStrategy(DiskCacheStrategy.NONE))
+                    .thumbnail(0.1f)
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+
+                    });
         }
-
-        if (!url.contains("resource"))
-            uri = Uri.parse("file://" + url);
-        else
-            uri = Uri.parse(url);
-
-        Glide.with(imageView.getContext())
-                .load(uri)
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .circleCrop()
-                        .override(150, 150)
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                .thumbnail(0.1f)
-                .into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        imageView.setImageDrawable(resource);
-                    }
-                });
     }
 
     @BindingAdapter("keyboardDetect")

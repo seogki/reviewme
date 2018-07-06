@@ -7,7 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
-import com.skh.reviewme.Community.model.CommunityInnerModel
+import com.skh.reviewme.Community.model.CommunityInnerCommentModel
 import com.skh.reviewme.R
 import com.skh.reviewme.databinding.ItemCommunityInnerBinding
 import java.util.*
@@ -16,16 +16,16 @@ import java.util.*
  * Created by Seogki on 2018. 4. 12..
  */
 
-class CommunityInnerAdapter(context: Context, commu: ArrayList<CommunityInnerModel>) : BaseRecyclerViewAdapter<CommunityInnerModel, CommunityInnerAdapter.CommunityInnerViewHolder>(context, commu) {
+class CommunityInnerAdapter(context: Context, commu: ArrayList<CommunityInnerCommentModel>) : BaseRecyclerViewAdapter<CommunityInnerCommentModel, CommunityInnerAdapter.CommunityInnerViewHolder>(context, commu) {
 
 
-    private var commu: ArrayList<CommunityInnerModel>? = commu
+    private var commu: ArrayList<CommunityInnerCommentModel>? = commu
     private var mcontext: Context? = context
 
 
     override fun onBindView(holder: CommunityInnerViewHolder, position: Int) {
         holder.binding.item = getItem(position)
-        holder.setIsRecyclable(false)
+        holder.setIsRecyclable(true)
     }
 
 

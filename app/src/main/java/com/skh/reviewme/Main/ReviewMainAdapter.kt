@@ -25,7 +25,7 @@ import com.skh.reviewme.databinding.ItemReviewMainBinding
 open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFragmentModel>) : BaseRecyclerViewAdapter<ReviewFragmentModel, ReviewMainAdapter.ReviewMainViewholder>(context, arrayList) {
 
     override fun onBindView(holder: ReviewMainViewholder, position: Int) {
-        holder.setIsRecyclable(false)
+        holder.setIsRecyclable(true)
         holder.binding.model = getItem(holder.adapterPosition)
         holder.binding.mainReviewImg.setImageURI(null)
         Glide.with(context!!).clear(holder.binding.mainReviewImg)

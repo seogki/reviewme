@@ -19,6 +19,7 @@
     </data>
 
     <android.support.design.widget.CoordinatorLayout
+        android:id="@+id/inner_const_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         >
@@ -86,7 +87,6 @@
                     android:id="@+id/view_profile_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="0.3dp"
-
                     android:layout_marginTop="8dp"
                     android:background="@color/darkGrey"
                     app:layout_constraintTop_toBottomOf="@id/inner_img_profile"
@@ -122,6 +122,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/inner_txt_titles"
+                    app:layout_constraintBottom_toTopOf="@id/view_content_bottom"
                     tools:text="이야아아양야 이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야이야아아양야"
                     />
 
@@ -129,10 +130,11 @@
                     android:id="@+id/view_content_bottom"
                     android:layout_width="match_parent"
                     android:layout_height="0.3dp"
-
                     android:layout_marginTop="13dp"
-                    android:background="@color/darkGrey"
                     app:layout_constraintTop_toBottomOf="@id/inner_txt_content"
+                    app:layout_constraintBottom_toTopOf="@id/inner_img_first"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
 
                     />
 
@@ -142,12 +144,14 @@
                     android:layout_height="160dp"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
+                    android:scaleType="fitXY"
                     app:innerCommunityImageUrl="@{item.image1}"
                     app:layout_constraintBottom_toTopOf="@id/inner_img_third"
                     app:layout_constraintEnd_toStartOf="@id/inner_img_second"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/view_content_bottom"
                     tools:src="@drawable/test_10"
+
                     />
 
                 <ImageView
@@ -156,6 +160,7 @@
                     android:layout_height="160dp"
                     android:layout_marginEnd="10dp"
                     android:layout_marginTop="15dp"
+                    android:scaleType="fitXY"
                     app:innerCommunityImageUrl="@{item.image2}"
                     app:layout_constraintBottom_toTopOf="@id/inner_img_fourth"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -176,6 +181,7 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/inner_img_first"
                     tools:src="@drawable/test_10"
+                    android:scaleType="fitXY"
                     />
 
                 <ImageView
@@ -187,6 +193,7 @@
                     app:innerCommunityImageUrl="@{item.image4}"
                     app:layout_constraintBottom_toTopOf="@id/bottom_view"
                     app:layout_constraintEnd_toEndOf="parent"
+                    android:scaleType="fitXY"
                     app:layout_constraintStart_toEndOf="@id/inner_img_third"
                     app:layout_constraintTop_toBottomOf="@id/inner_img_second"
                     tools:src="@drawable/test_10"
@@ -207,15 +214,13 @@
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/inner_rv_comment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:scrollbars="vertical"
-                    android:background="@color/grey"
-                    app:layout_constraintBottom_toTopOf="@id/inner_edit_comment"
+
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/bottom_view"
-                    tools:listitem="@layout/item_community_main"
+                    tools:listitem="@layout/item_community_inner"
                     />
 
 

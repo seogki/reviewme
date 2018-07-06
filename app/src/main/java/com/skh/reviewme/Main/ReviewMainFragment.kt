@@ -88,7 +88,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
     private fun setView() {
 
-
+        binding.mainGridRv.removeAllViews()
         reviewAdapter = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
         layoutManager = GridLayoutManager(context!!, 2, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
@@ -266,7 +266,6 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         binding.reviewMainQuestion.naviImg.setImageDrawable(null)
         binding.reviewMainQuestion.naviTextTitle.text = null
         binding.reviewMainQuestion.naviTxtQuestion.text = null
-
     }
 
 
