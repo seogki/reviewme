@@ -9,5 +9,6 @@ data class CommunityModel(val userid: String? = null
                           , val time: String? = null
                           , val title: String? = null
                           , val text: String? = null
-                          , val image: String? = null)
+                          , val image: String? = null
+                          , val comments: String? = null)
 

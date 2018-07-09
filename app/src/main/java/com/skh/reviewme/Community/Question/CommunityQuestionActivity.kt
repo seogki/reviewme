@@ -48,16 +48,18 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
                 setPhoto()
             }
             R.id.question_btn_register -> {
+                binding.questionBtnRegister.isEnabled = false
                 setRegisterCommunityToSever()
             }
         }
     }
 
     private fun setRegisterCommunityToSever() {
-        if (!binding.questionTextTitle.text.isNotEmpty() && !binding.questionTxtQuestion.text.isNotEmpty()) {
-            Toast.makeText(this@CommunityQuestionActivity, "모두 입력해 주세요.", Toast.LENGTH_SHORT).show()
-        } else {
+        if (binding.questionTextTitle.text.toString().isNotEmpty() && binding.questionTxtQuestion.text.toString().isNotEmpty()) {
             setRequestServer()
+        } else {
+            Toast.makeText(this@CommunityQuestionActivity, "모두 입력해 주세요.", Toast.LENGTH_SHORT).show()
+            binding.questionBtnRegister.isEnabled = true
         }
     }
 
@@ -110,6 +112,7 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
         call.enqueue(object : retrofit2.Callback<JsonObject> {
             override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
                 DLog.e(t?.message.toString())
+                binding.questionBtnRegister.isEnabled = true
             }
 
             override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
@@ -122,6 +125,7 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
                         .setPositiveButton("확인", { dialog, _ ->
                             dialog.dismiss()
                             finish()
+                            binding.questionBtnRegister.isEnabled = true
                         }).setNegativeButton(null, null)
                         .show()
             }

@@ -98,6 +98,8 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
                 RecyclerView.LayoutParams.MATCH_PARENT
         )
 
+
+        setSpotDialog()
         getCommunityCommentFromServer()
     }
 
@@ -107,13 +109,14 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
 
         call.enqueue(object : Callback<CommunityInnerCommentModels> {
             override fun onFailure(call: Call<CommunityInnerCommentModels>?, t: Throwable?) {
-
+                dismissSpotDialog()
             }
 
             override fun onResponse(call: Call<CommunityInnerCommentModels>?, response: Response<CommunityInnerCommentModels>?) {
                 DLog.e("response.body : ${response?.body()?.CommunityInnerCommentModel.toString()}")
                 communityInnerAdapter.addItems(response?.body()?.CommunityInnerCommentModel as MutableList<CommunityInnerCommentModel>)
                 communityInnerAdapter.notifyDataSetChanged()
+                dismissSpotDialog()
             }
 
         })

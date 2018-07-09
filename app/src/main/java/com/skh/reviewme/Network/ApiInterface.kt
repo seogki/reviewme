@@ -36,6 +36,17 @@ interface ApiInterface {
             : Call<JsonObject>
 
 
+    @POST("api/RegisterAccountImage")
+    @Multipart
+    fun registerAccountImage(@Part("UserId") userid: RequestBody
+                             , @Part("Nick") nickname: RequestBody
+                             , @Part("Email") email: RequestBody
+                             , @Part("Age") age: RequestBody
+                             , @Part("Gender") gender: RequestBody
+                             , @Part("isKakao") isKakao: RequestBody
+                             , @Part file: MultipartBody.Part): Call<JsonObject>
+
+
     /**
      *  리뷰 메인
      */

@@ -50,7 +50,6 @@ dependencies {
     compile 'com.android.support:support-v4:27.1.1'
     compile 'com.android.support:multidex:1.0.3'
 
-
     //Network
     compile 'com.squareup.retrofit2:retrofit:2.4.0'
     compile 'com.google.code.gson:gson:2.8.0'
@@ -70,7 +69,6 @@ dependencies {
     compile 'com.github.bumptech.glide:annotations:4.7.1'
     //권한 설정용
     implementation 'gun0912.ted:tedpermission:2.2.0'
-
 
     //progressbar
     implementation 'com.github.d-max:spots-dialog:1.1@aar'

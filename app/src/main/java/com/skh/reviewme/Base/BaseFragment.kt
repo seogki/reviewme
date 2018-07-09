@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentActivity
 import android.view.inputmethod.InputMethodManager
 import com.skh.reviewme.Login.LoginActivity
 import com.skh.reviewme.R
+import dmax.dialog.SpotsDialog
 
 
 /**
@@ -16,6 +17,7 @@ import com.skh.reviewme.R
  */
 open class BaseFragment : Fragment() {
 
+    private lateinit var dialog: android.app.AlertDialog
 
     fun Fragment.beginNewActivity(intent: Intent) {
         startActivity(intent)
@@ -53,6 +55,25 @@ open class BaseFragment : Fragment() {
     fun openKeyboard() {
         val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, 0)
+    }
+
+    fun setSpotDialog() {
+        dialog = SpotsDialog
+                .Builder()
+                .setContext(context!!)
+                .setMessage("데이터를 불러오는 중...")
+                .setCancelable(false)
+                .build().apply { show() }
+    }
+
+    fun showSpotDialog(){
+        if(!dialog.isShowing && !activity!!.isFinishing){
+            dialog.show()
+        }
+    }
+
+    fun dismissSpotDialog(){
+        dialog.dismiss()
     }
 
 

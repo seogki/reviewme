@@ -76,7 +76,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     }
 
 
-    private fun setSpotDialog() {
+    private fun setSpotDialogs() {
         dialog = SpotsDialog
                 .Builder()
                 .setContext(context!!)
@@ -116,7 +116,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
 
     private fun getApi() {
-        setSpotDialog()
+        setSpotDialogs()
         val call2 = ApiCilent.getInstance().getService().GetReviewItem2()
         call2.enqueue(object : Callback<ReviewFragmentModels> {
             override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {

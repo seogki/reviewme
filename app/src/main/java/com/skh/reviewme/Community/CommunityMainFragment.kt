@@ -64,12 +64,12 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
 
         binding.swipeLayout.setDistanceToTriggerSync(300)
         binding.swipeLayout.setOnRefreshListener(this)
-        setSpotDialog()
+        setSpotDialogs()
         getCommunityItemFromServer()
 
     }
 
-    private fun setSpotDialog() {
+    private fun setSpotDialogs() {
         dialog = SpotsDialog
                 .Builder()
                 .setContext(context!!)
