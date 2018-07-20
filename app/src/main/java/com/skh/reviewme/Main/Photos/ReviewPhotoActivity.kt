@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.os.Handler
 import android.provider.MediaStore
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
@@ -27,19 +28,24 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_review_photo)
-
+        binding.onClickListener = this
         setView()
     }
 
     private fun setView() {
-        binding.reviewPhotoRv.setHasFixedSize(true)
+
         layoutManager = GridLayoutManager(this, 4, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
         binding.reviewPhotoRv.layoutManager = layoutManager
         galleryAdapter = GalleryAdapter(this, ImageFile().fetchAllImages(this))
-        binding.reviewPhotoRv.adapter = galleryAdapter
+        galleryAdapter.setHasStableIds(true)
         galleryAdapter.sethash(this)
-        binding.onClickListener = this
+        binding.reviewPhotoRv.setHasFixedSize(true)
+
+        Handler().postDelayed({
+            binding.reviewPhotoRv.adapter = galleryAdapter
+            galleryAdapter.notifyDataSetChanged()
+        }, 100)
     }
 
     override fun onClick(v: View?) {
@@ -49,6 +55,7 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
             }
         }
     }
+
 
     private fun startCamera() {
         val cameraIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)

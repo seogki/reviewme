@@ -32,7 +32,7 @@ class CommunityQuestionPhotoActivity : AppCompatActivity(), HashMapListener, Vie
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_question_photo)
-
+        binding.onClickListener = this
         imagePath = ArrayList<String>()
 
         setRv()
@@ -46,7 +46,8 @@ class CommunityQuestionPhotoActivity : AppCompatActivity(), HashMapListener, Vie
         communityQuestionPhotoAdapter = CommunityQuestionPhotoAdapter(this, ImageFile().fetchAllImages(this))
         binding.questionPhotoRv.adapter = communityQuestionPhotoAdapter
         communityQuestionPhotoAdapter.sethash(this)
-        binding.onClickListener = this
+
+        communityQuestionPhotoAdapter.setHasStableIds(true)
         communityQuestionPhotoAdapter.setOnItemClickListener(this)
     }
 

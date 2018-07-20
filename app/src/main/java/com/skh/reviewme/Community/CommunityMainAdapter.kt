@@ -24,13 +24,20 @@ class CommunityMainAdapter(context: Context, commu: ArrayList<CommunityModel>) :
 
 
     override fun onBindView(holder: CommunityViewHolder, position: Int) {
-        holder.binding.item = getItem(holder.adapterPosition)
         holder.setIsRecyclable(true)
-        if (holder.binding.item.image.isNullOrEmpty()) {
-            holder.binding.imgThumbnail.visibility = View.GONE
-        } else {
+        holder.binding.item = getItem(holder.adapterPosition)
+        if (!holder.binding.item.image.isNullOrEmpty()) {
             holder.binding.imgThumbnail.visibility = View.VISIBLE
+            holder.binding.viewAboveImg.visibility = View.VISIBLE
+        } else {
+            holder.binding.imgThumbnail.visibility = View.GONE
+            holder.binding.viewAboveImg.visibility = View.GONE
         }
+    }
+
+    override fun getItemId(position: Int): Long {
+        val id = arrayList?.get(position)
+        return id!!.communityid!!.hashCode().toLong()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -39,22 +46,9 @@ class CommunityMainAdapter(context: Context, commu: ArrayList<CommunityModel>) :
     }
 
 
-    inner class CommunityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
+    inner class CommunityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         val binding: ItemCommunityMainBinding = DataBindingUtil.bind(itemView)
-
-        init {
-
-        }
-
-        override fun onClick(v: View) {
-
-            when (v.id) {
-
-
-            }
-
-        }
 
 
     }

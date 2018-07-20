@@ -17,7 +17,7 @@ import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Network.ApiCilent
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
-import com.skh.reviewme.Util.UtilMethod
+import com.skh.reviewme.Util.UtilMethodComunnity
 import com.skh.reviewme.databinding.ActivityCommunityQuestionBinding
 import okhttp3.MediaType
 import okhttp3.MultipartBody
@@ -84,23 +84,23 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
         if (binding.questionImg1.drawable != null) {
 
-            file1 = UtilMethod.getCompressed(this@CommunityQuestionActivity, File(imagePath[0]).toString(), "drawable1")
+            file1 = UtilMethodComunnity.getCompressed(this@CommunityQuestionActivity, File(imagePath[0]).toString(), "drawable1")
             requestFile1 = RequestBody.create(MediaType.parse("multipart/form-data"), file1).let { MultipartBody.Part.createFormData("images", file1?.name, it) }
 
             multiPartImages.add(requestFile1)
         }
         if (binding.questionImg2.drawable != null) {
-            file2 = UtilMethod.getCompressed(this@CommunityQuestionActivity, File(imagePath[1]).toString(), "drawable2")
+            file2 = UtilMethodComunnity.getCompressed(this@CommunityQuestionActivity, File(imagePath[1]).toString(), "drawable2")
             requestFile2 = RequestBody.create(MediaType.parse("multipart/form-data"), file2).let { MultipartBody.Part.createFormData("images", file2?.name, it) }
             multiPartImages.add(requestFile2)
         }
         if (binding.questionImg3.drawable != null) {
-            file3 = UtilMethod.getCompressed(this@CommunityQuestionActivity, File(imagePath[2]).toString(), "drawable3")
+            file3 = UtilMethodComunnity.getCompressed(this@CommunityQuestionActivity, File(imagePath[2]).toString(), "drawable3")
             requestFile3 = RequestBody.create(MediaType.parse("multipart/form-data"), file3).let { MultipartBody.Part.createFormData("images", file3?.name, it) }
             multiPartImages.add(requestFile3)
         }
         if (binding.questionImg4.drawable != null) {
-            file4 = UtilMethod.getCompressed(this@CommunityQuestionActivity, File(imagePath[3]).toString(), "drawable4")
+            file4 = UtilMethodComunnity.getCompressed(this@CommunityQuestionActivity, File(imagePath[3]).toString(), "drawable4")
             requestFile4 = RequestBody.create(MediaType.parse("multipart/form-data"), file4).let { MultipartBody.Part.createFormData("images", file4?.name, it) }
             multiPartImages.add(requestFile4)
         }

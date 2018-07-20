@@ -7,7 +7,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Base64;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -16,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
+import com.skh.reviewme.Util.Const;
 import com.skh.reviewme.Util.KeyboardUtils;
 import com.skh.reviewme.Util.UtilMethod;
 
@@ -47,35 +47,72 @@ public class BaseBindingAdapter {
     @BindingAdapter("reviewImageUrl")
     public static void ReviewImage(final ImageView imageView, String url) {
 
-        byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
-        Glide.with(imageView.getContext())
-                .load(decodedString)
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .override(190, 190)
-                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE))
-                .thumbnail(0.1f)
-                .into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        imageView.setImageDrawable(resource);
-                    }
-                });
-//        }
+        if (url == null) {
+            Glide.with(imageView.getContext()).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+//            byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
+            String murl = Const.Companion.getServer_url() +url;
+            Uri uri = Uri.parse(murl);
+
+            Glide.with(imageView.getContext())
+                    .load(uri)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .override(250, 250)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
+    }
+
+    @BindingAdapter("reviewThumbnailImageUrl")
+    public static void reviewThumbnailImageUrl(final ImageView imageView, String url) {
+
+        if (url == null) {
+            Glide.with(imageView.getContext()).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+            String murl = Const.Companion.getServer_url() +url;
+            Uri uri = Uri.parse(murl);
+            Glide.with(imageView.getContext())
+                    .load(uri)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .circleCrop()
+                            .override(60, 60)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                    .thumbnail(0.1f)
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
     }
 
     @BindingAdapter("innerCommunityImageUrl")
     public static void innerCommunityImage(final ImageView imageView, String url) {
 
-        if (url != null) {
-            byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
+        if (url == null) {
+            Glide.with(imageView).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+            String murl = Const.Companion.getServer_url() +url;
+            Uri uri = Uri.parse(murl);
             Glide.with(imageView.getContext())
-                    .load(decodedString)
+                    .load(uri)
                     .apply(new RequestOptions()
                             .centerCrop()
-                            .override(500, 500)
+                            .override(600, 600)
                             .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE))
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .thumbnail(0.1f)
                     .into(new SimpleTarget<Drawable>() {
                         @Override
@@ -92,14 +129,15 @@ public class BaseBindingAdapter {
             Glide.with(imageView).clear(imageView);
             imageView.setImageDrawable(null);
         } else {
-            byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
+            String murl = Const.Companion.getServer_url() +url;
+            Uri uri = Uri.parse(murl);
             Glide.with(imageView)
-                    .load(decodedString)
+                    .load(uri)
                     .apply(new RequestOptions()
                             .dontTransform()
-                            .override(800, 800)
+                            .override(500, 500)
                             .skipMemoryCache(true)
-                            .diskCacheStrategy(DiskCacheStrategy.NONE))
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .thumbnail(0.1f)
                     .into(new SimpleTarget<Drawable>() {
                         @Override

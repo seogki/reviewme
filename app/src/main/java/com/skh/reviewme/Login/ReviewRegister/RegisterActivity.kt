@@ -51,9 +51,8 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         binding.registBtnRegister.visibility = View.GONE
         binding.registBtnRegister.setOnClickListener(this)
         binding.registImgProfileimage.setOnClickListener(this)
+        binding.registBtnClearImage.setOnClickListener(this)
         checkRegistration()
-
-
     }
 
 
@@ -108,6 +107,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             redirectReviewMainActivity()
             finish()
         } else {
+            binding.registBtnClearImage.visibility = View.VISIBLE
             binding.registEmptyBackground.visibility = View.GONE
             binding.registBtnRegister.visibility = View.VISIBLE
 
@@ -137,6 +137,9 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                 beginActivity(Intent(this@RegisterActivity, RegisterProfileImageActivity::class.java))
 
             }
+            R.id.regist_btn_clearImage -> {
+                binding.registImgProfileimage.setImageDrawable(null)
+            }
         }
     }
 
@@ -154,7 +157,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             val isKakao = ApplicationClass.getIsKakao().toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
 
 
-            val call = ApiCilent.getInstance().getService().registerAccountImage(userid, age, email, nickname, gender, isKakao, requestFile)
+            val call = ApiCilent.getInstance().getService().registerAccountImage(userid, nickname, email, age, gender, isKakao, requestFile)
 
             call.enqueue(object : Callback<JsonObject> {
                 override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
@@ -213,8 +216,8 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                         Glide.with(this@RegisterActivity)
                                 .load(it)
                                 .apply(RequestOptions()
-                                        .circleCrop()
                                         .centerCrop()
+                                        .circleCrop()
                                         .override(300, 300))
                                 .into(object : SimpleTarget<Drawable>() {
                                     override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {

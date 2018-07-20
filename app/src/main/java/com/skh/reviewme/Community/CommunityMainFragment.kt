@@ -2,6 +2,7 @@ package com.skh.reviewme.Community
 
 import android.app.Activity
 import android.content.Intent
+import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Handler
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
 import com.skh.reviewme.Community.Inner.CommunityInnerFragment
@@ -37,12 +39,14 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
     private lateinit var layoutManager: LinearLayoutManager
     private lateinit var dialog: android.app.AlertDialog
     private var isLoading: Boolean = false
-
+    private var isSearch: Boolean = false
+    private var searchText: String = ""
+    private var pref: SharedPreferences? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_main, container, false)
         binding.onClickListener = this
-
+        pref = activity?.getSharedPreferences("UserId", Activity.MODE_PRIVATE)
         setView()
         return binding.root
     }
@@ -54,18 +58,25 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         layoutManager.isItemPrefetchEnabled = true
         layoutManager.initialPrefetchItemCount = 4
         binding.mainGridRv.layoutManager = layoutManager
-        binding.mainGridRv.adapter = communityMainAdapter
+
+        binding.mainGridRv.itemAnimator = null
+        binding.mainGridRv.setHasFixedSize(true)
+        binding.mainGridRv.isDrawingCacheEnabled = true
         binding.mainGridRv.setItemViewCacheSize(20)
-        binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO
-        binding.mainGridRv.setHasFixedSize(false)
+        binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
+        communityMainAdapter.setHasStableIds(true)
         binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(1, 50, false, 0))
         communityMainAdapter.setOnItemClickListener(this)
 
 
-        binding.swipeLayout.setDistanceToTriggerSync(300)
+        binding.swipeLayout.setDistanceToTriggerSync(350)
         binding.swipeLayout.setOnRefreshListener(this)
         setSpotDialogs()
         getCommunityItemFromServer()
+
+        Handler().postDelayed({
+            binding.mainGridRv.adapter = communityMainAdapter
+        }, 100)
 
     }
 
@@ -86,9 +97,15 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
 
                 if (!recyclerView!!.canScrollVertically(1)) {
                     if (!dialog.isShowing && !isLoading) {
-                        isLoading = true
-                        dialog.show()
-                        scrollToEnd()
+                        if (!isSearch) {
+                            isLoading = true
+                            dialog.show()
+                            scrollToEnd()
+                        } else {
+                            isLoading = true
+                            dialog.show()
+                            getSearchScrollApi()
+                        }
                     }
                 }
             }
@@ -115,17 +132,17 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
                 }
 
                 override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
-                    when {
+                    isLoading = when {
                         response?.body()?.CommunityModel?.isNotEmpty() == true -> {
                             communityMainAdapter.addItems(response.body()!!.CommunityModel as MutableList<CommunityModel>)
-                            communityMainAdapter.notifyDataSetChanged()
+                            //                            communityMainAdapter.notifyDataSetChanged()
                             dialog.dismiss()
                             DLog.e("memory: " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
-                            isLoading = false
+                            false
                         }
                         else -> {
                             dialog.dismiss()
-                            isLoading = false
+                            false
                         }
                     }
                 }
@@ -148,7 +165,6 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
 
             override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
                 communityMainAdapter.addItems(response?.body()?.CommunityModel as MutableList<CommunityModel>)
-                communityMainAdapter.notifyDataSetChanged()
                 dialog.dismiss()
                 Handler().postDelayed({
                     setRecyclerViewScrollbar()
@@ -174,6 +190,70 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
             R.id.community_btn_cat -> {
                 beginNewActivity(Intent(context, CommunityQuestionActivity::class.java))
             }
+            R.id.community_search_img -> {
+                getSearchedApi()
+            }
+        }
+    }
+
+    private fun getSearchedApi() {
+        searchText = binding.mainSearchEdit.text.toString()
+        if (searchText.isNotEmpty()) {
+            onRefreshWithoutApi()
+            val userid = pref?.getString("userLoginId", "") ?: return
+            val call = ApiCilent.getInstance().getService().GetSearchedCommunityItem(userid, searchText)
+            call.enqueue(object : Callback<CommunityModels> {
+                override fun onFailure(call: Call<CommunityModels>?, t: Throwable?) {
+                    DLog.e(t?.message.toString())
+                }
+
+                override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
+                    binding.mainSearchEdit.text.clear()
+                    communityMainAdapter.addItems(response?.body()?.CommunityModel as MutableList<CommunityModel>)
+
+                }
+
+            })
+        } else {
+            Toast.makeText(context, "뭐라도 치세요.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun getSearchScrollApi() {
+        if (communityMainAdapter.itemCount > 0) {
+            val userid = pref?.getString("userLoginId", "") ?: return
+            val call = communityMainAdapter
+                    .getItem(communityMainAdapter.itemCount - 1)
+                    ?.communityid
+                    ?.let { ApiCilent.getInstance().getService().GetScrollSearchedCommunityItem(userid, searchText, it) }
+
+            call?.enqueue(object : Callback<CommunityModels> {
+                override fun onFailure(call: Call<CommunityModels>?, t: Throwable?) {
+                    DLog.e("t ${t?.message.toString()}")
+                    dialog.dismiss()
+                    isLoading = false
+                }
+
+                override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
+                    isLoading = when {
+                        response?.body()?.CommunityModel?.isNotEmpty() == true -> {
+                            communityMainAdapter.addItems(response.body()!!.CommunityModel as MutableList<CommunityModel>)
+                            //                            communityMainAdapter.notifyDataSetChanged()
+                            dialog.dismiss()
+                            DLog.e("memory: " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
+                            false
+                        }
+                        else -> {
+                            dialog.dismiss()
+                            false
+                        }
+                    }
+                }
+
+            })
+        } else {
+            dialog.dismiss()
+            isLoading = false
         }
     }
 
@@ -182,10 +262,17 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         communityMainAdapter.notifyDataSetChanged()
         binding.mainGridRv.removeOnScrollListener(null)
         dialog.show()
+        isSearch = false
         getCommunityItemFromServer()
         binding.swipeLayout.isRefreshing = false
     }
 
+    private fun onRefreshWithoutApi() {
+        communityMainAdapter.clearItems()
+        communityMainAdapter.notifyDataSetChanged()
+        isSearch = true
+        binding.mainGridRv.removeOnScrollListener(null)
+    }
 
     override fun onResume() {
 

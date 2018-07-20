@@ -20,7 +20,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="230dp"
         android:background="@drawable/view_shadow_btm"
         tools:ignore="UnusedAttribute"
         >
@@ -70,7 +70,7 @@
             android:layout_marginTop="5dp"
             android:layout_marginEnd="10dp"
             app:layout_constraintEnd_toEndOf="parent"
-
+            app:reviewThumbnailImageUrl="@{model.thumbnail}"
             app:layout_constraintStart_toEndOf="@id/review_main_title"
             android:id="@+id/review_main_id_img"
             android:layout_marginBottom="5dp"
@@ -82,11 +82,16 @@
             android:id="@+id/main_review_img"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:scaleType="fitXY"
+            app:reviewImageUrl="@{model.images}"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/review_main_text"
-            android:layout_margin="10dp"
+            android:layout_marginBottom="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="2dp"
 
             tools:src="@drawable/test_10"
             />

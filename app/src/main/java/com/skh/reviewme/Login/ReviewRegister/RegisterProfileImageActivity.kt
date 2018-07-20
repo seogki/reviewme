@@ -39,6 +39,7 @@ class RegisterProfileImageActivity : AppCompatActivity() , HashMapListener, View
         galleryAdapter = RegisterImageAdapter(this, ImageFile().fetchAllImages(this))
         binding.registerPhotoRv.adapter = galleryAdapter
         galleryAdapter.sethash(this)
+        galleryAdapter.setHasStableIds(true)
         binding.onClickListener = this
     }
 

@@ -57,9 +57,19 @@ interface ApiInterface {
     @POST("api/ScrollGetReviewItem2")
     fun ScrollGetReviewItem2(@Query("ReviewId") reviewid: String): Call<ReviewFragmentModels>
 
+    @POST("api/GetSearchedReviewItem2")
+    fun GetSearchedReviewItem2(@Query("UserId") userid: String,
+                               @Query("SearchText") searchtext: String): Call<ReviewFragmentModels>
+
+    @POST("api/GetScrollSearchedReviewItem2")
+    fun GetScrollSearchedReviewItem2(@Query("UserId") userid: String,
+                                     @Query("SearchText") searchtext: String,
+                                     @Query("ReviewId") reviewid: String): Call<ReviewFragmentModels>
+
     @POST("api/SetReviewPhotos")
     @Multipart
-    fun SetReviewPhotos(@Part("review_titles") titles: RequestBody
+    fun SetReviewPhotos(@Part("UserId") userid: RequestBody
+                        , @Part("review_titles") titles: RequestBody
                         , @Part("review_texts") texts: RequestBody
                         , @Part file: MultipartBody.Part): Call<JSONObject>
 
@@ -80,6 +90,15 @@ interface ApiInterface {
 
     @POST("api/ScrollGetCommunityItem")
     fun ScrollGetCommunityItem(@Query("CommunityId") communityid: String): Call<CommunityModels>
+
+    @POST("api/GetSearchedCommunityItem")
+    fun GetSearchedCommunityItem(@Query("UserId") userid: String,
+                                 @Query("SearchText") searchtext: String): Call<CommunityModels>
+
+    @POST("api/GetScrollSearchedCommunityItem")
+    fun GetScrollSearchedCommunityItem(@Query("UserId") userid: String,
+                                       @Query("SearchText") searchtext: String,
+                                       @Query("CommunityId") communityid: String): Call<CommunityModels>
 
     @POST("api/GetInnerCommunityItem")
     fun GetInnerCommunityItem(@Query("CommunityId") communityid: String): Call<CommunityInnerModel>

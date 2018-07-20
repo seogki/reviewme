@@ -26,7 +26,6 @@ class RegisterImageAdapter(context: Context, images: ArrayList<String>) : BaseRe
 
 
     override fun onBindView(holder: GalleryViewHolder, position: Int) {
-
         holder.binding.item = getItem(position)
         holder.setIsRecyclable(true)
     }
@@ -39,6 +38,11 @@ class RegisterImageAdapter(context: Context, images: ArrayList<String>) : BaseRe
 
     fun sethash(hashMapListener: HashMapListener) {
         this.hashMapListener = hashMapListener
+    }
+
+    override fun getItemId(position: Int): Long {
+        val id = images?.get(position)
+        return id!!.hashCode().toLong()
     }
 
 

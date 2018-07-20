@@ -1,6 +1,5 @@
 package com.skh.reviewme.Util;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
@@ -25,7 +24,7 @@ import java.util.Locale;
  * Created by Seogki on 2018. 6. 18..
  */
 
-public class UtilMethod {
+public class UtilMethodComunnity {
 
     @Nullable
     public static Activity getActivity(Context context) {
@@ -36,29 +35,6 @@ public class UtilMethod {
             context = ((ContextWrapper) context).getBaseContext();
         }
         return null;
-    }
-
-    @SuppressLint("DefaultLocale")
-    public static String getMemoryUsage(int i) {
-        String heapSize = String.format("%.3f", (float) (Runtime.getRuntime().totalMemory() / 1024.00 / 1024.00));
-        String freeMemory = String.format("%.3f", (float) (Runtime.getRuntime().freeMemory() / 1024.00 / 1024.00));
-
-        String allocatedMemory = String
-                .format("%.3f", (float) ((Runtime.getRuntime()
-                        .totalMemory() - Runtime.getRuntime()
-                        .freeMemory()) / 1024.00 / 1024.00));
-        String heapSizeLimit = String.format("%.3f", (float) (Runtime.getRuntime().maxMemory() / 1024.00 / 1024.00));
-
-        String nObjects = "Objects Allocated: " + i;
-
-        return "Current Heap Size: " + heapSize
-                + "\n Free memory: "
-                + freeMemory
-                + "\n Allocated Memory: "
-                + allocatedMemory
-                + "\n Heap Size Limit:  "
-                + heapSizeLimit
-                + "\n" + nObjects;
     }
 
     //SDF to generate a unique name for the compressed file.
@@ -84,7 +60,7 @@ public class UtilMethod {
 
 
 //decode and resize the original bitmap from @param path.
-        bitmap = decodeImageFromFiles(path, /* your desired width*/640, /*your desired height*/ 480);
+        bitmap = decodeImageFromFiles(path, /* your desired width*/1024, /*your desired height*/ 768);
 
 
         ExifInterface exif = new ExifInterface(path);
@@ -106,7 +82,7 @@ public class UtilMethod {
 
 Where Quality ranges from 1–100.
  */
-        bitmaps.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        bitmaps.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
 
 /*
  Right now, we have our bitmap inside byteArrayOutputStream Object, all we need next is to write it to the compressed file we created earlier,

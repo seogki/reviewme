@@ -2,6 +2,7 @@ package com.skh.reviewme.Base
 
 import android.content.Context
 import android.os.Handler
+import android.os.Looper
 import android.support.v7.widget.RecyclerView
 import android.view.MotionEvent
 import android.view.View
@@ -11,7 +12,7 @@ import com.skh.reviewme.Util.DLog
  * Created by TedPark on 15. 9. 10..
  */
 abstract class BaseRecyclerViewAdapter<T, H : RecyclerView.ViewHolder> : RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    private var arrayList: MutableList<T>? = null
+    var arrayList: MutableList<T>? = null
     private var onItemClickListener: OnItemClickListener? = null
     private var onItemLongClickListener: OnItemLongClickListener? = null
     private var onItemTouchLister: OnItemTouchLister? = null
@@ -91,7 +92,7 @@ abstract class BaseRecyclerViewAdapter<T, H : RecyclerView.ViewHolder> : Recycle
         }
         DLog.e("Base : $itemCount")
         DLog.e("Base item : " + items.size)
-//        Handler(Looper.getMainLooper()).post { notifyItemRangeInserted(this@BaseRecyclerViewAdapter.itemCount + 1, items.size) }
+        Handler(Looper.getMainLooper()).post { notifyItemRangeInserted(this@BaseRecyclerViewAdapter.itemCount + 1, items.size) }
     }
 
     fun addItem(item: T) {

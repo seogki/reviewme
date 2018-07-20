@@ -70,7 +70,8 @@
                         android:layout_marginStart="10dp"
                         android:background="@drawable/btn_grey_border"
                         android:inputType="text"
-                        android:paddingEnd="5dp"
+                        android:paddingEnd="12dp"
+                        android:textSize="15sp"
                         android:paddingStart="5dp"
                         android:textColor="#000"
                         android:textColorHint="#000"
@@ -79,6 +80,21 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/community_search_reviewtitle"
                         tools:ignore="LabelFor"
+                        tools:text="검색ㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴㅇㅁㄴ"
+                        />
+
+                    <ImageView
+                        android:id="@+id/community_search_img"
+                        android:layout_width="50dp"
+                        android:layout_height="0dp"
+                        android:gravity="center"
+                        android:padding="9dp"
+                        android:onClick="@{onClickListener::onClick}"
+                        android:src="@drawable/if_shop_search_1469731"
+                        app:layout_constraintEnd_toEndOf="@id/main_search_edit"
+                        app:layout_constraintBottom_toBottomOf="parent"
+
+                        app:layout_constraintTop_toBottomOf="@id/community_search_reviewtitle"
                         />
 
 
@@ -92,6 +108,7 @@
                         android:text="등록"
                         android:textColor="#000"
                         android:textSize="13sp"
+                        app:layout_constraintStart_toEndOf="@id/community_search_img"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/community_search_reviewtitle"

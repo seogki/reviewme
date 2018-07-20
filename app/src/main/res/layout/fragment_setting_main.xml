@@ -65,22 +65,38 @@
             tools:text="seogkihong333@gmail.com"
             />
 
+        <View
+            android:id="@+id/view_above_logoutbtn"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            app:layout_constraintBottom_toTopOf="@id/setting_btn_out"
+            android:background="@color/grey"
+            />
 
         <Button
             android:id="@+id/setting_btn_out"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="로그아웃"
-            android:textColor="#fff"
+            android:textColor="@color/black"
             android:textSize="15sp"
-            android:background="@drawable/btn_color_border"
+            android:background="#fff"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="50dp"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
             />
+
+        <!--<View-->
+            <!--android:id="@+id/view_below_logoutbtn"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--android:background="@color/grey"-->
+            <!--/>-->
+
+        <!--android:layout_marginBottom="50dp"-->
+        <!--android:layout_marginStart="20dp"-->
+        <!--android:layout_marginEnd="20dp"-->
 
 
 
