@@ -7,6 +7,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -44,11 +45,14 @@ class CommunityQuestionPhotoActivity : AppCompatActivity(), HashMapListener, Vie
         layoutManager.isItemPrefetchEnabled = true
         binding.questionPhotoRv.layoutManager = layoutManager
         communityQuestionPhotoAdapter = CommunityQuestionPhotoAdapter(this, ImageFile().fetchAllImages(this))
-        binding.questionPhotoRv.adapter = communityQuestionPhotoAdapter
-        communityQuestionPhotoAdapter.sethash(this)
 
+        communityQuestionPhotoAdapter.sethash(this)
         communityQuestionPhotoAdapter.setHasStableIds(true)
         communityQuestionPhotoAdapter.setOnItemClickListener(this)
+
+        Handler().postDelayed({
+            binding.questionPhotoRv.adapter = communityQuestionPhotoAdapter
+        }, 100)
     }
 
     override fun onHash(pos: Int, filename: String?) {

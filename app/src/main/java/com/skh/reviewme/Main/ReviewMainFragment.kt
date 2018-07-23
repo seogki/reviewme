@@ -92,6 +92,9 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
 
     private fun setView() {
+        binding.reviewConstAll.post {
+            run { plusClose(true) }
+        }
 
         binding.mainGridRv.removeAllViews()
         reviewAdapter = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
@@ -99,7 +102,6 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         layoutManager.isItemPrefetchEnabled = true
         layoutManager.initialPrefetchItemCount = 3
         binding.mainGridRv.layoutManager = layoutManager
-        binding.mainGridRv.isDrawingCacheEnabled = true
         binding.mainGridRv.setHasFixedSize(true)
         binding.mainGridRv.isDrawingCacheEnabled = true
         binding.mainGridRv.setItemViewCacheSize(20)
@@ -108,10 +110,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         binding.mainGridRv.itemAnimator = null
         binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(2, 15, false, 0))
 
-        binding.reviewConstAll.post {
 
-            run { plusClose(true) }
-        }
         binding.swipeLayout.setDistanceToTriggerSync(350)
         binding.swipeLayout.setOnRefreshListener(this)
 
@@ -209,6 +208,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
                 override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
                     binding.mainSearchEdit.text.clear()
+                    closeKeyboard()
                     reviewAdapter.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
                 }
 
@@ -225,10 +225,12 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
             val call = reviewAdapter
                     .getItem(reviewAdapter.itemCount - 1)
                     ?.reviewId
-                    ?.let{ ApiCilent
-                            .getInstance()
-                            .getService()
-                            .GetScrollSearchedReviewItem2(userid, searchedText!!, it) }
+                    ?.let {
+                        ApiCilent
+                                .getInstance()
+                                .getService()
+                                .GetScrollSearchedReviewItem2(userid, searchedText!!, it)
+                    }
             call?.enqueue(object : Callback<ReviewFragmentModels> {
                 override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {
                     dialog.dismiss()

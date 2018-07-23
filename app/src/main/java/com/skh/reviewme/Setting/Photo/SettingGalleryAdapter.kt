@@ -1,4 +1,4 @@
-package com.skh.reviewme.Main.Photos
+package com.skh.reviewme.Setting.Photo
 
 import android.content.Context
 import android.content.Intent
@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
 import com.skh.reviewme.Main.Interface.HashMapListener
+import com.skh.reviewme.Main.Photos.GalleryMaxActivity
 import com.skh.reviewme.R
 import com.skh.reviewme.databinding.ItemPhotosBinding
 import java.util.*
@@ -17,7 +18,7 @@ import java.util.*
  * Created by Seogki on 2018. 4. 12..
  */
 
-class RegisterImageAdapter(context: Context, images: ArrayList<String>) : BaseRecyclerViewAdapter<String, RegisterImageAdapter.GalleryViewHolder>(context, images) {
+class SettingGalleryAdapter(context: Context, images: ArrayList<String>) : BaseRecyclerViewAdapter<String, SettingGalleryAdapter.GalleryViewHolder>(context, images) {
 
 
     private var images: ArrayList<String>? = images
@@ -26,6 +27,7 @@ class RegisterImageAdapter(context: Context, images: ArrayList<String>) : BaseRe
 
 
     override fun onBindView(holder: GalleryViewHolder, position: Int) {
+
         holder.binding.item = getItem(position)
         holder.setIsRecyclable(true)
     }

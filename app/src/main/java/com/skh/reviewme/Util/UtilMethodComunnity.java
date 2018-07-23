@@ -82,7 +82,7 @@ public class UtilMethodComunnity {
 
 Where Quality ranges from 1–100.
  */
-        bitmaps.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+        bitmaps.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
 
 /*
  Right now, we have our bitmap inside byteArrayOutputStream Object, all we need next is to write it to the compressed file we created earlier,

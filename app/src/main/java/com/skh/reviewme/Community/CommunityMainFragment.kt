@@ -209,6 +209,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
 
                 override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
                     binding.mainSearchEdit.text.clear()
+                    closeKeyboard()
                     communityMainAdapter.addItems(response?.body()?.CommunityModel as MutableList<CommunityModel>)
 
                 }

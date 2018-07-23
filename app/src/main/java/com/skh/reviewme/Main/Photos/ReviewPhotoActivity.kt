@@ -38,13 +38,11 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
         layoutManager.isItemPrefetchEnabled = true
         binding.reviewPhotoRv.layoutManager = layoutManager
         galleryAdapter = GalleryAdapter(this, ImageFile().fetchAllImages(this))
-        galleryAdapter.setHasStableIds(true)
         galleryAdapter.sethash(this)
-        binding.reviewPhotoRv.setHasFixedSize(true)
+        binding.reviewPhotoRv.setHasFixedSize(false)
 
         Handler().postDelayed({
             binding.reviewPhotoRv.adapter = galleryAdapter
-            galleryAdapter.notifyDataSetChanged()
         }, 100)
     }
 

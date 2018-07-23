@@ -67,6 +67,8 @@
         </activity>
         <activity android:name=".Login.ReviewRegister.RegisterProfileImageActivity">
         </activity>
+        <activity android:name=".Setting.Photo.SettingPhotoActivity">
+        </activity>
     </application>
 
 </manifest>

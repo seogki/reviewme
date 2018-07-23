@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -18,6 +19,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.skh.reviewme.Util.Const;
 import com.skh.reviewme.Util.KeyboardUtils;
 import com.skh.reviewme.Util.UtilMethod;
+
+import java.util.Objects;
 
 /**
  * Created by Seogki on 2018. 4. 12..
@@ -59,7 +62,7 @@ public class BaseBindingAdapter {
                     .load(uri)
                     .apply(new RequestOptions()
                             .centerCrop()
-                            .override(250, 250)
+                            .override(225, 225)
                             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
 
                     .into(new SimpleTarget<Drawable>() {
@@ -85,7 +88,7 @@ public class BaseBindingAdapter {
                     .apply(new RequestOptions()
                             .centerCrop()
                             .circleCrop()
-                            .override(60, 60)
+                            .override(100, 100)
                             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .thumbnail(0.1f)
                     .into(new SimpleTarget<Drawable>() {
@@ -134,8 +137,8 @@ public class BaseBindingAdapter {
             Glide.with(imageView)
                     .load(uri)
                     .apply(new RequestOptions()
-                            .dontTransform()
-                            .override(500, 500)
+                            .fitCenter()
+                            .override(750, 750)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .thumbnail(0.1f)
@@ -146,6 +149,42 @@ public class BaseBindingAdapter {
                         }
 
                     });
+        }
+    }
+
+    @BindingAdapter("settingImageUrl")
+    public static void SettingImage(final ImageView imageView, String url) {
+
+        if (url == null) {
+            Glide.with(imageView.getContext()).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+            String murl = Const.Companion.getServer_url() +url;
+            Uri uri = Uri.parse(murl);
+
+            Glide.with(imageView.getContext())
+                    .load(uri)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .circleCrop()
+                            .override(350, 350)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
+    }
+
+    @BindingAdapter("checkGender")
+    public static void genderCheck(final TextView textView, final String data){
+        if(Objects.equals(data, "M")){
+            textView.setText("남자");
+        } else if(Objects.equals(data, "F")){
+            textView.setText("여자");
         }
     }
 

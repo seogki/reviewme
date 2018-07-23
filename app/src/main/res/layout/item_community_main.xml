@@ -86,7 +86,7 @@
             android:layout_height="25dp"
             android:layout_marginEnd="8dp"
             android:layout_marginTop="15dp"
-            android:src="@drawable/icons8_topic_24"
+            android:src="@drawable/outline_comment_black_18dp"
             app:layout_constraintEnd_toStartOf="@id/text_regi_comment"
             app:layout_constraintTop_toTopOf="parent"
             />
@@ -153,8 +153,8 @@
         <ImageView
             android:id="@+id/img_thumbnail"
             android:layout_width="match_parent"
-            android:layout_height="430dp"
-            android:scaleType="fitXY"
+            android:layout_height="wrap_content"
+            android:adjustViewBounds="true"
             android:layout_marginTop="10dp"
             app:CommunityMainImageUrl="@{item.image}"
             app:layout_constraintTop_toBottomOf="@id/txt_regi_content"

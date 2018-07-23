@@ -77,6 +77,23 @@
             app:layout_constraintTop_toTopOf="parent"
             />
 
+        <!--<ImageView-->
+            <!--android:id="@+id/main_review_img"-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:adjustViewBounds="true"-->
+            <!--app:reviewImageUrl="@{model.images}"-->
+            <!--app:layout_constraintStart_toStartOf="parent"-->
+            <!--app:layout_constraintEnd_toEndOf="parent"-->
+            <!--app:layout_constraintBottom_toBottomOf="parent"-->
+            <!--app:layout_constraintTop_toBottomOf="@id/review_main_text"-->
+            <!--android:layout_marginBottom="2dp"-->
+            <!--android:layout_marginEnd="3dp"-->
+            <!--android:layout_marginTop="10dp"-->
+            <!--android:layout_marginStart="3dp"-->
+
+            <!--tools:src="@drawable/test_10"-->
+            <!--/>-->
 
         <ImageView
             android:id="@+id/main_review_img"
@@ -89,9 +106,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/review_main_text"
             android:layout_marginBottom="2dp"
-            android:layout_marginEnd="2dp"
+            android:layout_marginEnd="3dp"
             android:layout_marginTop="10dp"
-            android:layout_marginStart="2dp"
+            android:layout_marginStart="3dp"
 
             tools:src="@drawable/test_10"
             />

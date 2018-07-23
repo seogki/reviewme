@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
@@ -37,10 +38,13 @@ class RegisterProfileImageActivity : AppCompatActivity() , HashMapListener, View
         layoutManager.isItemPrefetchEnabled = true
         binding.registerPhotoRv.layoutManager = layoutManager
         galleryAdapter = RegisterImageAdapter(this, ImageFile().fetchAllImages(this))
-        binding.registerPhotoRv.adapter = galleryAdapter
+
         galleryAdapter.sethash(this)
-        galleryAdapter.setHasStableIds(true)
         binding.onClickListener = this
+
+        Handler().postDelayed({
+            binding.registerPhotoRv.adapter = galleryAdapter
+        }, 100)
     }
 
     override fun onClick(v: View?) {

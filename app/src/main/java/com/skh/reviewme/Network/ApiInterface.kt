@@ -5,6 +5,7 @@ import com.skh.reviewme.Community.model.CommunityInnerCommentModels
 import com.skh.reviewme.Community.model.CommunityInnerModel
 import com.skh.reviewme.Community.model.CommunityModels
 import com.skh.reviewme.Main.model.ReviewFragmentModels
+import com.skh.reviewme.Setting.Model.SettingUserProfileModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import org.json.JSONObject
@@ -112,4 +113,16 @@ interface ApiInterface {
                                  , @Query("UserNick") username: String
                                  , @Query("Comment") comment: String
                                  , @Query("UserImage") userimage: String): Call<JsonObject>
+
+
+    /***
+     *  세팅 메인
+     */
+    @POST("api/GetSettingUserProfile")
+    fun GetSettingUserProfile(@Query("UserId") userid: String): Call<SettingUserProfileModel>
+
+    @POST("api/SetSettingProfileImage")
+    @Multipart
+    fun SetSettingProfileImage(@Part("UserId") userid: RequestBody
+                               , @Part file: MultipartBody.Part): Call<JsonObject>
 }

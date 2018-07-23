@@ -40,10 +40,6 @@ class GalleryAdapter(context: Context, images: ArrayList<String>) : BaseRecycler
     fun sethash(hashMapListener: HashMapListener) {
         this.hashMapListener = hashMapListener
     }
-    override fun getItemId(position: Int): Long {
-        val id = images?.get(position)
-        return id!!.hashCode().toLong()
-    }
 
 
     inner class GalleryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
