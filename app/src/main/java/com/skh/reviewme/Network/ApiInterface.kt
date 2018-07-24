@@ -5,6 +5,7 @@ import com.skh.reviewme.Community.model.CommunityInnerCommentModels
 import com.skh.reviewme.Community.model.CommunityInnerModel
 import com.skh.reviewme.Community.model.CommunityModels
 import com.skh.reviewme.Main.model.ReviewFragmentModels
+import com.skh.reviewme.Setting.Model.SettingErrorModels
 import com.skh.reviewme.Setting.Model.SettingUserProfileModel
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -125,4 +126,18 @@ interface ApiInterface {
     @Multipart
     fun SetSettingProfileImage(@Part("UserId") userid: RequestBody
                                , @Part file: MultipartBody.Part): Call<JsonObject>
+
+
+    /***
+     *  세팅 에러
+     */
+
+    @POST("api/SetSettingErrorItem")
+    fun SetSettingErrorItem(@Query("UserId") userid: String
+                            , @Query("ErrorTitle") errortitle: String
+                            , @Query("ErrorContent") errorcontent: String
+                            , @Query("ErrorTab") errortab: String): Call<JsonObject>
+
+    @POST("api/GetSettingErrorItem")
+    fun GetSettingErrorItem(): Call<SettingErrorModels>
 }

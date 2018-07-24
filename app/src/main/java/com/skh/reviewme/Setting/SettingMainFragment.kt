@@ -20,6 +20,7 @@ import com.skh.reviewme.ApplicationClass
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Network.ApiCilent
 import com.skh.reviewme.R
+import com.skh.reviewme.Setting.Error.SettingErrorFragment
 import com.skh.reviewme.Setting.Model.SettingUserProfileModel
 import com.skh.reviewme.Setting.Photo.SettingPhotoActivity
 import com.skh.reviewme.Util.DLog
@@ -57,6 +58,10 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
             }
             R.id.setting_btn_changeimage -> {
                 beginNewActivity(Intent(context!!, SettingPhotoActivity::class.java))
+            }
+            R.id.setting_btn_errors -> {
+                val frag = SettingErrorFragment()
+                addFragment(activity, R.id.frame_layout, frag, true, true,"SettingErrorFragment")
             }
         }
     }
@@ -126,12 +131,6 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
                 binding.item = response?.body()
                 binding.executePendingBindings()
                 binding.settingAgeTxt.append("살")
-
-//                binding.settingNameTxt.text = "닉네임 : ${response?.body()?.UserNick}"
-//                binding.settingEmailTxt.text = "이메일 : ${response?.body()?.UserEmail}"
-//                binding.settingAgeTxt.text = "나이 : ${response?.body()?.UserAge}"
-//                binding.settingGenderTxt.text = "성별 : ${response?.body()?.UserGender}"
-
                 isCalled = true
             }
 

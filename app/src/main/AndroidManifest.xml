@@ -49,25 +49,35 @@
             android:name=".Main.ReviewMainActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Setting.SettingMainActivity">
+        <activity android:name=".Setting.SettingMainActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Community.CommunityMainActivity">
+        <activity android:name=".Community.CommunityMainActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Main.Photos.ReviewPhotoActivity">
+        <activity android:name=".Main.Photos.ReviewPhotoActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Main.Photos.GalleryMaxActivity">
+        <activity android:name=".Main.Photos.GalleryMaxActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Community.Question.CommunityQuestionActivity">
+        <activity android:name=".Community.Question.CommunityQuestionActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Login.LoginActivity">
+        <activity android:name=".Login.LoginActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Community.Question.CommunityQuestionPhotoActivity">
+        <activity android:name=".Community.Question.CommunityQuestionPhotoActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Login.ReviewRegister.RegisterActivity">
+        <activity android:name=".Login.ReviewRegister.RegisterActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Login.ReviewRegister.RegisterProfileImageActivity">
+        <activity android:name=".Login.ReviewRegister.RegisterProfileImageActivity"
+                  android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Setting.Photo.SettingPhotoActivity">
+        <activity android:name=".Setting.Photo.SettingPhotoActivity"
+                  android:screenOrientation="portrait">
         </activity>
     </application>
 

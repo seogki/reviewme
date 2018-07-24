@@ -72,6 +72,7 @@
                         android:inputType="text"
                         android:paddingEnd="12dp"
                         android:textSize="15sp"
+                        android:imeOptions="actionSearch"
                         android:paddingStart="5dp"
                         android:textColor="#000"
                         android:textColorHint="#000"

@@ -6,6 +6,7 @@ import android.net.Uri
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
+import android.support.v7.app.AlertDialog
 import android.view.inputmethod.InputMethodManager
 import com.skh.reviewme.Login.LoginActivity
 import com.skh.reviewme.R
@@ -28,9 +29,9 @@ open class BaseFragment : Fragment() {
     }
 
 
-    fun addFragment(activity: FragmentActivity?, @IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean, backstack: Boolean) {
+    fun addFragment(activity: FragmentActivity?, @IdRes frameId: Int, fragment: Fragment, AllowStateloss: Boolean, backstack: Boolean, tag: String) {
 
-        val transaction = activity?.supportFragmentManager?.beginTransaction()?.add(frameId, fragment, fragment.tag)
+        val transaction = activity?.supportFragmentManager?.beginTransaction()?.add(frameId, fragment, tag)
 
         if (backstack) {
             transaction?.addToBackStack(fragment.tag)
@@ -74,6 +75,15 @@ open class BaseFragment : Fragment() {
 
     fun dismissSpotDialog(){
         dialog.dismiss()
+    }
+
+
+    fun showAlertDialog(c: Context, msg: String) {
+        AlertDialog.Builder(c)
+                .setMessage(msg)
+                .setPositiveButton("확인") { dialog, _ -> dialog.dismiss() }.setNegativeButton(null, null)
+                .show()
+
     }
 
 

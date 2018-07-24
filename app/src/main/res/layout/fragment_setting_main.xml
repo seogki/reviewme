@@ -54,6 +54,21 @@
             app:layout_constraintTop_toBottomOf="@id/setting_img"
             />
 
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/setting_btn_errors"
+            android:layout_marginTop="15dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:text="오류 문의"
+            android:onClick="@{onClickListener::onClick}"
+            android:textColor="@color/black"
+            android:textSize="15sp"
+            android:background="@drawable/btn_grey_rec"
+            app:layout_constraintTop_toBottomOf="@id/setting_btn_changeimage"
+            />
+
         <TextView
             android:id="@+id/setting_name_txt"
             android:layout_width="0dp"

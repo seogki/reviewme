@@ -4,11 +4,13 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.support.annotation.IdRes
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.widget.Toast
 import com.skh.reviewme.Login.LoginActivity
 import com.skh.reviewme.Login.ReviewRegister.RegisterActivity
 import com.skh.reviewme.Main.ReviewMainActivity
+import com.skh.reviewme.R
 
 /**
  * Created by Seogki on 2018. 6. 7..
@@ -70,6 +72,16 @@ open class BaseActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         overridePendingTransition(0,0)
+    }
+
+    fun alertAndFinishDialog(){
+        AlertDialog.Builder(this@BaseActivity, R.style.MyDialogTheme)
+                .setMessage("앱 종료 후 다시 시도해주시기 바랍니다.")
+                .setPositiveButton("확인", { dialog, _ ->
+                    dialog.dismiss()
+                    finishAffinity()
+                }).setNegativeButton(null, null)
+                .show()
     }
 
 }

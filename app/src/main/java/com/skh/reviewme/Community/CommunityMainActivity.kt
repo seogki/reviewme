@@ -24,6 +24,7 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
         binding.layoutBottomTab.onClickListener = this
         addFragment(R.id.frame_layout, CommunityMainFragment(), false, false, "CommunityMainFragment")
         binding.layoutBottomTab.bottomLayoutBtn2.setBackgroundColor(Color.parseColor("#0ABFB5"))
+//        binding.layoutBottomTab.bottomLayoutBtn2Txt.setImageDrawable(ContextCompat.getDrawable(this@CommunityMainActivity, R.drawable.baseline_people_black_24dp))
     }
 
     override fun onClick(v: View?) {

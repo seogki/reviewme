@@ -100,17 +100,21 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun isUserAvailable(isAvailable: String, username: String) {
-        if (isAvailable.contains("200")) {
-            val editor = pref.edit()
-            editor.putString("UserNick", username.replace("\"", ""))
-            editor.apply()
-            redirectReviewMainActivity()
-            finish()
-        } else {
-            binding.registBtnClearImage.visibility = View.VISIBLE
-            binding.registEmptyBackground.visibility = View.GONE
-            binding.registBtnRegister.visibility = View.VISIBLE
+        when {
+            isAvailable.contains("200") -> {
+                val editor = pref.edit()
+                editor.putString("UserNick", username.replace("\"", ""))
+                editor.apply()
+                redirectReviewMainActivity()
+                finish()
+            }
+            isAvailable.contains("에러") -> alertAndFinishDialog()
+            else -> {
+                binding.registBtnClearImage.visibility = View.VISIBLE
+                binding.registEmptyBackground.visibility = View.GONE
+                binding.registBtnRegister.visibility = View.VISIBLE
 
+            }
         }
     }
 

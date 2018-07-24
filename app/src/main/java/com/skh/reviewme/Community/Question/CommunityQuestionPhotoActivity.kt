@@ -8,13 +8,13 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
 import com.skh.reviewme.Main.Interface.HashMapListener
 import com.skh.reviewme.R
@@ -22,7 +22,7 @@ import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.ImageFile
 import com.skh.reviewme.databinding.ActivityCommunityQuestionPhotoBinding
 
-class CommunityQuestionPhotoActivity : AppCompatActivity(), HashMapListener, View.OnClickListener, BaseRecyclerViewAdapter.OnItemClickListener {
+class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnClickListener, BaseRecyclerViewAdapter.OnItemClickListener {
 
 
     lateinit var binding: ActivityCommunityQuestionPhotoBinding

@@ -5,11 +5,11 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
+import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Main.Interface.HashMapListener
 import com.skh.reviewme.Main.Photos.RegisterImageAdapter
 import com.skh.reviewme.R
@@ -17,7 +17,7 @@ import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.ImageFile
 import com.skh.reviewme.databinding.ActivityRegisterProfileImageBinding
 
-class RegisterProfileImageActivity : AppCompatActivity() , HashMapListener, View.OnClickListener{
+class RegisterProfileImageActivity : BaseActivity() , HashMapListener, View.OnClickListener{
 
 
 

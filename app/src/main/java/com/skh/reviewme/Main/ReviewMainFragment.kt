@@ -18,10 +18,13 @@ import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -53,7 +56,7 @@ import java.io.File
 /**
  * A simple [Fragment] subclass.
  */
-open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener {
+open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, TextView.OnEditorActionListener {
 
 
     private lateinit var binding: FragmentReviewMainBinding
@@ -74,6 +77,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         pref = activity?.getSharedPreferences("UserId", Activity.MODE_PRIVATE)
         binding.onClickListener = this
         binding.reviewMainQuestion.onClickListener = this
+        binding.mainSearchEdit.setOnEditorActionListener(this)
         binding.appBarLayout.isEnabled = false // Include 한 레이아웃이 상위로 가기 위해 사용
         setView()
 
@@ -121,6 +125,16 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         getApi()
 
 
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+
+        when (actionId) {
+            EditorInfo.IME_ACTION_SEARCH -> {
+                callSearchApi()
+            }
+        }
+        return true
     }
 
 
@@ -215,7 +229,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
             })
             // 유저 아이디랑 , 서치한 텍스트
         } else {
-            Toast.makeText(context, "뭐라도 치세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "모두 입력해주세요", Toast.LENGTH_SHORT).show()
         }
     }
 

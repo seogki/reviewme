@@ -74,6 +74,7 @@
                         android:background="@drawable/btn_grey_border"
                         android:inputType="text"
                         android:paddingEnd="25dp"
+                        android:imeOptions="actionSearch"
                         android:paddingStart="5dp"
                         android:textColor="#000"
                         android:textSize="15sp"

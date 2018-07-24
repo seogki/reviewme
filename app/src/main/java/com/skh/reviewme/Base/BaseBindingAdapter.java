@@ -31,6 +31,16 @@ public class BaseBindingAdapter {
     @BindingAdapter("galleryImageUrl")
     public static void galleryImage(final ImageView imageView, String url) {
 
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
         Uri uri = Uri.parse("file://" + url);
         Glide.with(imageView.getContext())
                 .load(uri)
@@ -50,12 +60,21 @@ public class BaseBindingAdapter {
     @BindingAdapter("reviewImageUrl")
     public static void ReviewImage(final ImageView imageView, String url) {
 
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
         if (url == null) {
             Glide.with(imageView.getContext()).clear(imageView);
             imageView.setImageDrawable(null);
         } else {
-//            byte[] decodedString = Base64.decode(url, Base64.DEFAULT);
-            String murl = Const.Companion.getServer_url() +url;
+            String murl = Const.Companion.getServer_url() + url;
             Uri uri = Uri.parse(murl);
 
             Glide.with(imageView.getContext())
@@ -77,11 +96,21 @@ public class BaseBindingAdapter {
     @BindingAdapter("reviewThumbnailImageUrl")
     public static void reviewThumbnailImageUrl(final ImageView imageView, String url) {
 
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
         if (url == null) {
             Glide.with(imageView.getContext()).clear(imageView);
             imageView.setImageDrawable(null);
         } else {
-            String murl = Const.Companion.getServer_url() +url;
+            String murl = Const.Companion.getServer_url() + url;
             Uri uri = Uri.parse(murl);
             Glide.with(imageView.getContext())
                     .load(uri)
@@ -103,11 +132,21 @@ public class BaseBindingAdapter {
     @BindingAdapter("innerCommunityImageUrl")
     public static void innerCommunityImage(final ImageView imageView, String url) {
 
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
         if (url == null) {
             Glide.with(imageView).clear(imageView);
             imageView.setImageDrawable(null);
         } else {
-            String murl = Const.Companion.getServer_url() +url;
+            String murl = Const.Companion.getServer_url() + url;
             Uri uri = Uri.parse(murl);
             Glide.with(imageView.getContext())
                     .load(uri)
@@ -128,11 +167,22 @@ public class BaseBindingAdapter {
 
     @BindingAdapter("CommunityMainImageUrl")
     public static void CommunityMainImage(final ImageView imageView, String url) {
+
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
         if (url == null) {
             Glide.with(imageView).clear(imageView);
             imageView.setImageDrawable(null);
         } else {
-            String murl = Const.Companion.getServer_url() +url;
+            String murl = Const.Companion.getServer_url() + url;
             Uri uri = Uri.parse(murl);
             Glide.with(imageView)
                     .load(uri)
@@ -155,11 +205,21 @@ public class BaseBindingAdapter {
     @BindingAdapter("settingImageUrl")
     public static void SettingImage(final ImageView imageView, String url) {
 
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
         if (url == null) {
             Glide.with(imageView.getContext()).clear(imageView);
             imageView.setImageDrawable(null);
         } else {
-            String murl = Const.Companion.getServer_url() +url;
+            String murl = Const.Companion.getServer_url() + url;
             Uri uri = Uri.parse(murl);
 
             Glide.with(imageView.getContext())
@@ -180,11 +240,22 @@ public class BaseBindingAdapter {
     }
 
     @BindingAdapter("checkGender")
-    public static void genderCheck(final TextView textView, final String data){
-        if(Objects.equals(data, "M")){
+    public static void genderCheck(final TextView textView, final String data) {
+        if (Objects.equals(data, "M")) {
             textView.setText("남자");
-        } else if(Objects.equals(data, "F")){
+        } else if (Objects.equals(data, "F")) {
             textView.setText("여자");
+        }
+    }
+
+    @BindingAdapter("checkTag")
+    public static void checkTag(final TextView textView, final String data) {
+        if (Objects.equals(data, "메인")) {
+            textView.setText("[메인]");
+        } else if (Objects.equals(data, "커뮤니티")) {
+            textView.setText("[커뮤니티]");
+        } else if (Objects.equals(data, "세팅")) {
+            textView.setText("[세팅]");
         }
     }
 

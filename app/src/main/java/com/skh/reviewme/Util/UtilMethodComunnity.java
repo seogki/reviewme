@@ -3,14 +3,11 @@ package com.skh.reviewme.Util;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.media.ExifInterface;
-import android.support.v7.app.AlertDialog;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -154,16 +151,5 @@ Where Quality ranges from 1–100.
             return null;
         }
     }
-    public static void showAlertDialog(@NonNull Context c, @NonNull String msg) {
-        new AlertDialog.Builder(c)
-                .setMessage(msg)
-                .setPositiveButton("확인", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(@NonNull DialogInterface dialog, int which) {
-                        dialog.dismiss();
-                    }
-                }).setNegativeButton(null, null)
-                .show();
 
-    }
 }

@@ -96,7 +96,7 @@ public class UtilMethod {
         }
         Bitmap bitmaps = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
 //create placeholder for the compressed image file
-        File compressed = new File(root, AdditionalName+"_"+SDF.format(new Date()) + ".jpg" /*Your desired format*/);
+        File compressed = new File(root, AdditionalName + "_" + SDF.format(new Date()) + ".jpg" /*Your desired format*/);
 
 //convert the decoded bitmap to stream
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -178,6 +178,7 @@ Where Quality ranges from 1–100.
             return null;
         }
     }
+
     public static void showAlertDialog(@NonNull Context c, @NonNull String msg) {
         new AlertDialog.Builder(c)
                 .setMessage(msg)
@@ -190,4 +191,11 @@ Where Quality ranges from 1–100.
                 .show();
 
     }
+    public static void checkTime(String data){
+//        2018년07월24일 13:43:33
+        // 2018 07 24 13 43 33
+
+    }
+
+
 }

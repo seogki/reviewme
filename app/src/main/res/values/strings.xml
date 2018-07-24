@@ -1,9 +1,12 @@
 <resources>
-    <string name="app_name">ReviewUs</string>
+    <string name="app_name">ReviewMe</string>
 
 
     <string name="kakao_app_key">b77b68d0cbbb915282c1468b005247a6</string>
     <string name="radio_male">M</string>
     <string name="radio_female">F</string>
     <string name="main_title">ReviewMe</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

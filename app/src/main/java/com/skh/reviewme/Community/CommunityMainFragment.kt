@@ -9,9 +9,12 @@ import android.os.Handler
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
@@ -31,7 +34,10 @@ import retrofit2.Callback
 import retrofit2.Response
 
 
-class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecyclerViewAdapter.OnItemClickListener, SwipeRefreshLayout.OnRefreshListener {
+class CommunityMainFragment : BaseFragment()
+        , View.OnClickListener
+        , BaseRecyclerViewAdapter.OnItemClickListener
+        , SwipeRefreshLayout.OnRefreshListener, TextView.OnEditorActionListener {
 
 
     lateinit var binding: FragmentCommunityMainBinding
@@ -46,6 +52,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_main, container, false)
         binding.onClickListener = this
+        binding.mainSearchEdit.setOnEditorActionListener(this)
         pref = activity?.getSharedPreferences("UserId", Activity.MODE_PRIVATE)
         setView()
         return binding.root
@@ -78,6 +85,16 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
             binding.mainGridRv.adapter = communityMainAdapter
         }, 100)
 
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+
+        when (actionId) {
+            EditorInfo.IME_ACTION_SEARCH -> {
+                getSearchedApi()
+            }
+        }
+        return true
     }
 
     private fun setSpotDialogs() {
@@ -135,7 +152,6 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
                     isLoading = when {
                         response?.body()?.CommunityModel?.isNotEmpty() == true -> {
                             communityMainAdapter.addItems(response.body()!!.CommunityModel as MutableList<CommunityModel>)
-                            //                            communityMainAdapter.notifyDataSetChanged()
                             dialog.dismiss()
                             DLog.e("memory: " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
                             false
@@ -182,7 +198,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
         bundle.putString("communityid", id)
         val frag = CommunityInnerFragment()
         frag.arguments = bundle
-        addFragment(activity, R.id.frame_layout, frag, false, true)
+        addFragment(activity, R.id.frame_layout, frag, false, true,"CommunityInnerFragment")
     }
 
     override fun onClick(v: View?) {
@@ -216,7 +232,7 @@ class CommunityMainFragment : BaseFragment(), View.OnClickListener, BaseRecycler
 
             })
         } else {
-            Toast.makeText(context, "뭐라도 치세요.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "모두 입력해주세요", Toast.LENGTH_SHORT).show()
         }
     }
 
