@@ -10,20 +10,20 @@ import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.Toast
-import com.google.gson.JsonObject
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.skh.reviewme.Base.BaseActivity
-import com.skh.reviewme.Network.ApiCilent
+import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.UtilMethodComunnity
 import com.skh.reviewme.databinding.ActivityCommunityQuestionBinding
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Response
 import java.io.File
 
 class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
@@ -32,6 +32,8 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
     private var ImageCode: Int = 1234
     private var questions: ArrayList<Bitmap>? = null
     private lateinit var imagePath: ArrayList<String>
+    private val client by lazy { ApiCilentRx.create() }
+    private var disposable: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,32 +109,31 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
         DLog.e("multipart: $multiPartImages")
 
+        disposable = client.setCommunityPhotosRx(userid, userNick, title, text, multiPartImages).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    setCommunityDone()
+                }, { error ->
+                    DLog.e("t : ${error?.message.toString()}")
+                    binding.questionBtnRegister.isEnabled = true
+                })
 
-        val call = ApiCilent.getInstance().getService().setCommunityPhotos(userid, userNick, title, text, multiPartImages)
-        call.enqueue(object : retrofit2.Callback<JsonObject> {
-            override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
-                DLog.e(t?.message.toString())
-                binding.questionBtnRegister.isEnabled = true
-            }
-
-            override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
-                val pref = getSharedPreferences("CommunityDone", Activity.MODE_PRIVATE)
-                val editor = pref.edit()
-                editor.putBoolean("isDone", true)
-                editor.apply()
-                AlertDialog.Builder(this@CommunityQuestionActivity,R.style.MyDialogTheme)
-                        .setMessage("등록 되었습니다")
-                        .setPositiveButton("확인", { dialog, _ ->
-                            dialog.dismiss()
-                            finish()
-                            binding.questionBtnRegister.isEnabled = true
-                        }).setNegativeButton(null, null)
-                        .show()
-            }
-
-        })
     }
 
+    private fun setCommunityDone() {
+        val pref = getSharedPreferences("CommunityDone", Activity.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putBoolean("isDone", true)
+        editor.apply()
+
+        AlertDialog.Builder(this@CommunityQuestionActivity, R.style.MyDialogTheme)
+                .setMessage("등록 되었습니다")
+                .setPositiveButton("확인", { dialog, _ ->
+                    dialog.dismiss()
+                    finish()
+                    binding.questionBtnRegister.isEnabled = true
+                }).setNegativeButton(null, null)
+                .show()
+    }
 
     private fun setPhoto() {
         TedPermission.with(this)
@@ -218,5 +219,10 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
         binding.questionImg2.setImageDrawable(null)
         binding.questionImg3.setImageDrawable(null)
         binding.questionImg4.setImageDrawable(null)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 }

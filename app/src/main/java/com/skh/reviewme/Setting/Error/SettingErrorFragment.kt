@@ -13,19 +13,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RadioButton
 import android.widget.Toast
-import com.google.gson.JsonObject
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
-import com.skh.reviewme.Network.ApiCilent
+import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Setting.Model.SettingErrorModel
-import com.skh.reviewme.Setting.Model.SettingErrorModels
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.GridSpacingItemDecoration
 import com.skh.reviewme.databinding.FragmentSettingErrorBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 
 /**
@@ -38,6 +36,8 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
     private lateinit var settingErrorAdapter: SettingErrorAdapter
     private lateinit var layoutManager: LinearLayoutManager
     lateinit var pref: SharedPreferences
+    private val client by lazy { ApiCilentRx.create() }
+    private var disposable: Disposable? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -85,29 +85,13 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
             val title = binding.errorEditName.text.toString().trim()
             val tabs = binding.errorRadiogroupSetting.checkedRadioButtonId.let { activity!!.findViewById<RadioButton>(it).text.toString() }.trim()
             val content = binding.errorEditContent.text.toString().trim()
-            val call = ApiCilent.getInstance().getService().SetSettingErrorItem(userid, title, content, tabs)
-            call.enqueue(object : Callback<JsonObject> {
-                override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
-                    DLog.e(t?.message.toString())
-                    binding.errorBtnRegister.isEnabled = true
-                }
 
-                override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
-
-                    AlertDialog.Builder(context!!, R.style.MyDialogTheme)
-                            .setMessage("접수 되었습니다.")
-                            .setPositiveButton("확인", { dialog, _ ->
-                                dialog.dismiss()
-                                binding.errorBtnRegister.isEnabled = true
-                                binding.errorEditContent.text.clear()
-                                binding.errorEditName.text.clear()
-                                refreshRv()
-                            }).setNegativeButton(null, null)
-                            .show()
-
-                }
-
-            })
+            disposable = client.SetSettingErrorItemRx(userid, title, content, tabs).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        setErrorSucDialog()
+                    }, { error ->
+                        DLog.e("t : ${error?.message.toString()}"); binding.errorBtnRegister.isEnabled = true
+                    })
         } else {
             binding.errorBtnRegister.isEnabled = true
             Toast.makeText(context, "모두 입력해주세요", Toast.LENGTH_SHORT).show()
@@ -115,23 +99,29 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
     }
 
     private fun getErrorApi() {
-        val call = ApiCilent.getInstance().getService().GetSettingErrorItem()
-        call.enqueue(object : Callback<SettingErrorModels> {
-            override fun onFailure(call: Call<SettingErrorModels>?, t: Throwable?) {
-                DLog.e(t?.message.toString())
-            }
 
-            override fun onResponse(call: Call<SettingErrorModels>?, response: Response<SettingErrorModels>?) {
+        disposable = client.GetSettingErrorItemRx().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    if (result != null) {
+                        settingErrorAdapter.addItems(result.settingErrorModel as MutableList<SettingErrorModel>)
+                    }
+                }, { error ->
+                    DLog.e("t : ${error?.message.toString()}")
+                })
+    }
 
-//                    DLog.e("res : ${response.body()!!}")
-                if (response?.body() != null) {
-                    settingErrorAdapter.addItems(response.body()?.settingErrorModel as MutableList<SettingErrorModel>)
-                    settingErrorAdapter.notifyDataSetChanged()
-
-                }
-            }
-
-        })
+    private fun setErrorSucDialog() {
+        AlertDialog.Builder(context!!, R.style.MyDialogTheme)
+                .setMessage("접수 되었습니다.")
+                .setPositiveButton("확인", { dialog, _ ->
+                    dialog.dismiss()
+                    binding.errorBtnRegister.isEnabled = true
+                    binding.errorEditContent.text.clear()
+                    binding.errorEditName.text.clear()
+                    closeKeyboard()
+                    refreshRv()
+                }).setNegativeButton(null, null)
+                .show()
     }
 
     private fun refreshRv() {
@@ -141,6 +131,11 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
 
     override fun onItemClick(view: View, position: Int) {
 
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 
 }// Required empty public constructor

@@ -19,14 +19,15 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="40dp"
         android:background="#fff"
         app:keyboardDetect="@{empty}"
 
         >
 
-        <TextView
+        <com.rey.material.widget.TextView
             android:id="@+id/bottom_layout_btn1"
+            style="@style/ButtonRippleStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:onClick="@{onClickListener::onClick}"
@@ -34,16 +35,18 @@
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:rd_enable="true"
+
             />
 
-        <ImageView
 
+        <ImageView
             android:id="@+id/bottom_layout_btn1_txt"
             android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icons8_main_page_24"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/icons8_home_24"
             android:text="메인"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn2_txt"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintHorizontal_weight="1"
@@ -52,8 +55,22 @@
             />
 
         <TextView
+            android:id="@+id/bottom_layout_text1"
+            style="@style/text12Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="메인"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/bottom_layout_btn1_txt"
+            />
 
+        <com.rey.material.widget.TextView
             android:id="@+id/bottom_layout_btn2"
+            style="@style/ButtonRippleStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:onClick="@{onClickListener::onClick}"
@@ -61,15 +78,16 @@
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn3"
             app:layout_constraintStart_toEndOf="@id/bottom_layout_btn1"
             app:layout_constraintTop_toTopOf="parent"
+            app:rd_enable="true"
             />
 
         <ImageView
             android:id="@+id/bottom_layout_btn2_txt"
             android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icons8_user_account_24"
+            android:layout_height="20dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/icons8_people_24"
             android:text="게시판"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn3_txt"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintHorizontal_weight="1"
@@ -78,7 +96,22 @@
             />
 
         <TextView
+            android:id="@+id/bottom_layout_text2"
+            style="@style/text12Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="커뮤니티"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn3_txt"
+            app:layout_constraintStart_toEndOf="@id/bottom_layout_btn1_txt"
+            app:layout_constraintTop_toBottomOf="@id/bottom_layout_btn2_txt"
+            />
+
+        <com.rey.material.widget.TextView
             android:id="@+id/bottom_layout_btn3"
+            style="@style/ButtonRippleStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:onClick="@{onClickListener::onClick}"
@@ -86,20 +119,35 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/bottom_layout_btn2"
             app:layout_constraintTop_toTopOf="parent"
+            app:rd_enable="true"
             />
 
         <ImageView
             android:id="@+id/bottom_layout_btn3_txt"
             android:layout_width="0dp"
-            android:layout_height="25dp"
-            android:src="@drawable/icons8_settings_24"
+            android:layout_height="20dp"
+            android:src="@drawable/icons8_user_24"
             android:text="설정"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintHorizontal_chainStyle="spread"
             app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/bottom_layout_btn2_txt"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="5dp"
+            />
+
+        <TextView
+            android:id="@+id/bottom_layout_text3"
+            style="@style/text12Style"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:text="유저"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bottom_layout_btn2_txt"
+            app:layout_constraintTop_toBottomOf="@id/bottom_layout_btn3_txt"
             />
 
 

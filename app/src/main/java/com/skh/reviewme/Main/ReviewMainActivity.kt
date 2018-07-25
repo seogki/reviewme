@@ -3,7 +3,9 @@ package com.skh.reviewme.Main
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Community.CommunityMainActivity
@@ -23,8 +25,7 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_review_main)
         binding.layoutBottomTab.onClickListener = this
         addFragment(R.id.frame_layout, ReviewMainFragment(), false, false, "ReviewMainFragment")
-        binding.layoutBottomTab.bottomLayoutBtn1.setBackgroundColor(Color.parseColor("#0ABFB5"))
-
+        setCurrentTab()
     }
 
     override fun onClick(v: View?) {
@@ -41,6 +42,12 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
             }
 
         }
+    }
+
+    private fun setCurrentTab() {
+        binding.layoutBottomTab.bottomLayoutBtn1Txt.setImageDrawable(ContextCompat.getDrawable(this@ReviewMainActivity, R.drawable.icons8_home_24_fill))
+        binding.layoutBottomTab.bottomLayoutBtn1Txt.drawable.setColorFilter(Color.parseColor("#13A9AA"), PorterDuff.Mode.SRC_ATOP)
+        binding.layoutBottomTab.bottomLayoutText1.setTextColor(Color.parseColor("#000000"))
     }
 
 

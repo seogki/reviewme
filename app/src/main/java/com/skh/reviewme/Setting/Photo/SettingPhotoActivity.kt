@@ -13,20 +13,19 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.google.gson.JsonObject
 import com.skh.reviewme.Main.Interface.HashMapListener
-import com.skh.reviewme.Network.ApiCilent
+import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.ImageFile
 import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.ActivityReviewPhotoBinding
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
 
@@ -37,6 +36,8 @@ class SettingPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapL
     private lateinit var galleryAdapter: SettingGalleryAdapter
     private var requestFileCode: Int = 4798
     private lateinit var pref: SharedPreferences
+    private val client by lazy { ApiCilentRx.create() }
+    private var disposable: Disposable? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_review_photo)
@@ -94,31 +95,39 @@ class SettingPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapL
         val file = UtilMethod.getCompressed(this@SettingPhotoActivity, File(name).toString(), "drawable1")
         val userid = pref.getString("userLoginId", "").trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file).let { MultipartBody.Part.createFormData("images", file.name, it) }
-        val call = ApiCilent.getInstance().getService().SetSettingProfileImage(userid, requestFile)
-        call.enqueue(object : Callback<JsonObject> {
-            override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
-                DLog.e(t?.message.toString())
-                AlertDialog.Builder(this@SettingPhotoActivity, R.style.MyDialogTheme)
-                        .setMessage("오류 발생")
-                        .setPositiveButton("확인", { dialog, _ ->
-                            dialog.dismiss()
-                            binding.reviewPhotoRv.isEnabled = true
-                        }).setNegativeButton(null, null)
-                        .show()
-            }
 
-            override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
+        disposable = client.SetSettingProfileImageRx(userid, requestFile).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({
+                    successDialog()
+                }, { error ->
+                    DLog.e("t : ${error?.message.toString()}")
+                    errorDialog()
+                })
+    }
 
-                AlertDialog.Builder(this@SettingPhotoActivity, R.style.MyDialogTheme)
-                        .setMessage("프로필 사진이 변경 되었습니다")
-                        .setPositiveButton("확인", { dialog, _ ->
-                            dialog.dismiss()
-                            finish()
-                            binding.reviewPhotoRv.isEnabled = true
-                        }).setNegativeButton(null, null)
-                        .show()
-            }
+    private fun errorDialog() {
+        AlertDialog.Builder(this@SettingPhotoActivity, R.style.MyDialogTheme)
+                .setMessage("오류 발생")
+                .setPositiveButton("확인", { dialog, _ ->
+                    dialog.dismiss()
+                    binding.reviewPhotoRv.isEnabled = true
+                }).setNegativeButton(null, null)
+                .show()
+    }
 
-        })
+    private fun successDialog() {
+        AlertDialog.Builder(this@SettingPhotoActivity, R.style.MyDialogTheme)
+                .setMessage("프로필 사진이 변경 되었습니다")
+                .setPositiveButton("확인", { dialog, _ ->
+                    dialog.dismiss()
+                    finish()
+                    binding.reviewPhotoRv.isEnabled = true
+                }).setNegativeButton(null, null)
+                .show()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 }

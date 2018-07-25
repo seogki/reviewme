@@ -18,16 +18,15 @@ import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.skh.reviewme.ApplicationClass
 import com.skh.reviewme.Base.BaseFragment
-import com.skh.reviewme.Network.ApiCilent
+import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Setting.Error.SettingErrorFragment
-import com.skh.reviewme.Setting.Model.SettingUserProfileModel
 import com.skh.reviewme.Setting.Photo.SettingPhotoActivity
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.databinding.FragmentSettingMainBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 
 /**
@@ -39,6 +38,8 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
     lateinit var binding: FragmentSettingMainBinding
     lateinit var pref: SharedPreferences
     private var isCalled: Boolean = false
+    private val client by lazy { ApiCilentRx.create() }
+    private var disposable: Disposable? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -61,7 +62,7 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
             }
             R.id.setting_btn_errors -> {
                 val frag = SettingErrorFragment()
-                addFragment(activity, R.id.frame_layout, frag, true, true,"SettingErrorFragment")
+                addFragment(activity, R.id.frame_layout, frag, true, true, "SettingErrorFragment")
             }
         }
     }
@@ -119,28 +120,29 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
     private fun getUserProfileApi() {
 
         val userid = pref.getString("userLoginId", "")
-        val call = ApiCilent.getInstance().getService().GetSettingUserProfile(userid)
 
-        call.enqueue(object : Callback<SettingUserProfileModel> {
-            override fun onFailure(call: Call<SettingUserProfileModel>?, t: Throwable?) {
-                DLog.e(t?.message.toString())
-                isCalled = true
-            }
+        disposable = client.GetSettingUserProfileRx(userid).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    binding.item = result
+                    binding.executePendingBindings()
+                    binding.settingAgeTxt.append("살")
+                    isCalled = true
 
-            override fun onResponse(call: Call<SettingUserProfileModel>?, response: Response<SettingUserProfileModel>?) {
-                binding.item = response?.body()
-                binding.executePendingBindings()
-                binding.settingAgeTxt.append("살")
-                isCalled = true
-            }
-
-        })
+                }, { error ->
+                    DLog.e("t : ${error?.message.toString()}")
+                    isCalled = true
+                })
     }
 
     override fun onResume() {
         super.onResume()
         if (isCalled)
             getUserProfileApi()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 
 

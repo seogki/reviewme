@@ -16,7 +16,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.gson.JsonObject
 import com.kakao.network.ErrorResult
 import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.MeV2ResponseCallback
@@ -24,17 +23,17 @@ import com.kakao.usermgmt.response.MeV2Response
 import com.skh.reviewme.ApplicationClass
 import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Main.ReviewMainActivity
-import com.skh.reviewme.Network.ApiCilent
+import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.ActivityRegisterBinding
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
 
@@ -45,25 +44,26 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     lateinit var id: String
     lateinit var pref: SharedPreferences
     lateinit var name: String
+    private val client by lazy {
+        ApiCilentRx.create()
+    }
+    private var disposable: Disposable? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
         binding.registBtnRegister.visibility = View.GONE
-        binding.registBtnRegister.setOnClickListener(this)
-        binding.registImgProfileimage.setOnClickListener(this)
-        binding.registBtnClearImage.setOnClickListener(this)
+        binding.onClickListener = this
         checkRegistration()
     }
 
 
     private fun checkRegistration() {
-
-
         if (ApplicationClass.getIsKakao()) {
             UserManagement.getInstance().me(object : MeV2ResponseCallback() {
                 override fun onSuccess(result: MeV2Response?) {
                     id = "Kakao_" + result?.id.toString()
-                    isUserOn(id)
+                    isUserOnRx(id)
                 }
 
                 override fun onSessionClosed(errorResult: ErrorResult?) {
@@ -73,73 +73,52 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
             })
         } else {
-            id = requestGoogleId()
-            isUserOn(id)
+            id = requestGoogleId(); isUserOnRx(id)
         }
 
     }
 
-    private fun isUserOn(id: String) {
-        pref = getSharedPreferences("UserId", Activity.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString("userLoginId", id)
-        editor.apply()
-        val call = ApiCilent.getInstance().getService().isUserOn(id)
-        call.enqueue(object : Callback<JsonObject> {
-            override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
-                DLog.e("msg" + t?.message)
-            }
+    private fun isUserOnRx(id: String) {
+        saveUserId(id)
+        disposable = client.isUserOnRx(id).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).subscribe(
+                { result -> isUserAvailable(result?.get("result").toString(), result?.get("name").toString()) }
+                , { error -> DLog.e("error ${error?.message.toString()}") })
 
-            override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
-                DLog.e("" + response?.body()?.get("result").toString())
-                DLog.e("" + response?.body()?.toString())
-                isUserAvailable(response?.body()?.get("result").toString(), response?.body()?.get("name").toString())
-            }
-
-        })
     }
 
     private fun isUserAvailable(isAvailable: String, username: String) {
         when {
             isAvailable.contains("200") -> {
-                val editor = pref.edit()
-                editor.putString("UserNick", username.replace("\"", ""))
-                editor.apply()
+                saveUserNick(username)
                 redirectReviewMainActivity()
                 finish()
             }
             isAvailable.contains("에러") -> alertAndFinishDialog()
             else -> {
-                binding.registBtnClearImage.visibility = View.VISIBLE
-                binding.registEmptyBackground.visibility = View.GONE
-                binding.registBtnRegister.visibility = View.VISIBLE
-
+                setViewVisibility()
             }
         }
     }
+
 
     private fun requestGoogleId(): String {
         val acct = GoogleSignIn.getLastSignedInAccount(this)
 
         return "Google_" + acct?.id.toString()
-
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.regist_btn_register -> {
 
-                if (nullCheck()) {
-                    setImageProfile()
-
-                } else {
+                if (nullCheck())
+                    setImageProfileRx()
+                else
                     Toast.makeText(this@RegisterActivity, "모두 입력해 주세요.", Toast.LENGTH_SHORT).show()
-                }
             }
 
             R.id.regist_img_profileimage -> {
                 beginActivity(Intent(this@RegisterActivity, RegisterProfileImageActivity::class.java))
-
             }
             R.id.regist_btn_clearImage -> {
                 binding.registImgProfileimage.setImageDrawable(null)
@@ -147,7 +126,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
-    private fun setImageProfile() {
+    private fun setImageProfileRx() {
         if (binding.registImgProfileimage.drawable != null) {
             val file = UtilMethod.getCompressed(this@RegisterActivity, File(name).toString(), "profile")
             val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file).let { MultipartBody.Part.createFormData("userProfile", file.name, it) }
@@ -161,19 +140,14 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             val isKakao = ApplicationClass.getIsKakao().toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
 
 
-            val call = ApiCilent.getInstance().getService().registerAccountImage(userid, nickname, email, age, gender, isKakao, requestFile)
+            disposable = client.registerAccountImageRx(userid, nickname, email, age, gender, isKakao, requestFile).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            { result ->
+                                DLog.e("message :$result")
+                                beginActivity(Intent(this@RegisterActivity, ReviewMainActivity::class.java))
+                                finish()
+                            }, { error -> DLog.e("error ${error?.message.toString()}") })
 
-            call.enqueue(object : Callback<JsonObject> {
-                override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
-                    DLog.e("t message ${t?.message.toString()}")
-                }
-
-                override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
-                    beginActivity(Intent(this@RegisterActivity, ReviewMainActivity::class.java))
-                    finish()
-                }
-
-            })
         } else {
             val age = binding.registEditAge.text.toString()
             val email = binding.registEditEmail.text.toString()
@@ -181,32 +155,18 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
             val gender = binding.registRadiogroupAge.checkedRadioButtonId.let { findViewById<RadioButton>(it).text.toString() }
             val isKakao = ApplicationClass.getIsKakao().toString()
 
+            disposable = client.registerAccountRx(id, nickname, email, age, gender, isKakao)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(
+                            { result ->
+                                DLog.e("message :$result")
+                                beginActivity(Intent(this@RegisterActivity, ReviewMainActivity::class.java))
+                                finish()
+                            }, { error -> DLog.e("error ${error?.message.toString()}") })
 
-            val call = ApiCilent.getInstance().getService().registerAccount(id, nickname, email, age, gender, isKakao)
-
-            call.enqueue(object : Callback<JsonObject> {
-                override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
-                    DLog.e("t data : " + t?.message)
-                    DLog.e("통신 실패")
-                }
-
-                override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
-                    DLog.e("통신 성공")
-                    beginActivity(Intent(this@RegisterActivity, ReviewMainActivity::class.java))
-                    finish()
-                }
-
-            })
         }
 
-    }
-
-
-    private fun nullCheck(): Boolean {
-
-        return (binding.registEditNickname.text.toString().isNotEmpty()
-                && binding.registEditEmail.text.toString().isNotEmpty()
-                && binding.registEditAge.text.toString().isNotEmpty())
     }
 
 
@@ -232,5 +192,41 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                     }
         }
         pref.edit().remove("fileName").apply()
+    }
+
+    private fun nullCheck(): Boolean {
+
+        return (binding.registEditNickname.text.toString().isNotEmpty()
+                && binding.registEditEmail.text.toString().isNotEmpty()
+                && binding.registEditAge.text.toString().isNotEmpty())
+    }
+
+    private fun setViewVisibility() {
+        binding.registBtnClearImage.visibility = View.VISIBLE
+        binding.registEmptyBackground.visibility = View.GONE
+        binding.registBtnRegister.visibility = View.VISIBLE
+    }
+
+    private fun saveUserNick(username: String) {
+        val editor = pref.edit()
+        editor.putString("UserNick", username.replace("\"", ""))
+        editor.apply()
+    }
+
+    private fun saveUserId(id: String) {
+        pref = getSharedPreferences("UserId", Activity.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("userLoginId", id)
+        editor.apply()
+    }
+
+//    override fun onPause() {
+//        super.onPause()
+//        disposable?.dispose()
+//    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 }

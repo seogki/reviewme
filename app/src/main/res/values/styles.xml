@@ -32,9 +32,20 @@
         <item name="android:textSize">14sp</item>
     </style>
 
+    <style name="text12Style">
+        <item name="android:textColor">@color/darkGrey</item>
+        <item name="android:textSize">9.5sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="MyRadioButton" parent="Theme.AppCompat.Light">
-        <item name="colorControlNormal">@color/darkGrey</item>
+        <item name="colorControlNormal">@color/midGey</item>
         <item name="colorControlActivated">@color/black</item>
+    </style>
+
+    <style name="ButtonRippleStyle" parent="Material.Drawable.Ripple.Wave.Light">
+        <item name="android:background">@null</item>
+        <item name="rd_rippleColor">@color/DarkGreen</item>
     </style>
 
 </resources>

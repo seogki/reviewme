@@ -10,18 +10,15 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.gson.JsonObject
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Community.model.CommunityInnerCommentModel
-import com.skh.reviewme.Community.model.CommunityInnerCommentModels
-import com.skh.reviewme.Community.model.CommunityInnerModel
-import com.skh.reviewme.Network.ApiCilent
+import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.databinding.FragmentCommunityInnerBinding
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 
 /**
@@ -32,6 +29,8 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
     lateinit var id: String
 
     lateinit var binding: FragmentCommunityInnerBinding
+    private val client by lazy { ApiCilentRx.create() }
+    private var disposable: Disposable? = null
 
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var communityInnerAdapter: CommunityInnerAdapter
@@ -44,40 +43,7 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
         id = arguments?.getString("communityid").toString()
         setView(id)
         setRv()
-
-
-
-
-
         return binding.root
-    }
-
-    private fun setView(id: String?) {
-        val call = id?.let { ApiCilent.getInstance().getService().GetInnerCommunityItem(it) }
-        call?.enqueue(object : Callback<CommunityInnerModel> {
-            override fun onFailure(call: Call<CommunityInnerModel>?, t: Throwable?) {
-                DLog.e("t message ${t?.message.toString()}")
-            }
-
-            override fun onResponse(call: Call<CommunityInnerModel>?, response: Response<CommunityInnerModel>?) {
-                binding.item = response?.body()
-
-//                setNullImageVisibility()
-            }
-
-        })
-    }
-
-    private fun setNullImageVisibility() {
-        if (binding.item.image1.isNullOrEmpty())
-            binding.innerImgFirst.visibility = View.GONE
-        if (binding.item.image2.isNullOrEmpty())
-            binding.innerImgSecond.visibility = View.GONE
-        if (binding.item.image3.isNullOrEmpty())
-            binding.innerImgThird.visibility = View.GONE
-        if (binding.item.image4.isNullOrEmpty())
-            binding.innerImgFourth.visibility = View.GONE
-
     }
 
     private fun setRv() {
@@ -98,28 +64,35 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
                 RecyclerView.LayoutParams.MATCH_PARENT
         )
 
-
         setSpotDialog()
         getCommunityCommentFromServer()
     }
 
+    private fun setView(id: String?) {
+
+        disposable = id?.let {
+            client.GetInnerCommunityItemRx(it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ result ->
+                        binding.item = result
+                    }, { error ->
+                        DLog.e("t : ${error?.message.toString()}")
+                    })
+        }
+    }
+
+
     @Suppress("UNCHECKED_CAST")
     private fun getCommunityCommentFromServer() {
-        val call = ApiCilent.getInstance().getService().GetInnerCommunityComment(id)
 
-        call.enqueue(object : Callback<CommunityInnerCommentModels> {
-            override fun onFailure(call: Call<CommunityInnerCommentModels>?, t: Throwable?) {
-                dismissSpotDialog()
-            }
-
-            override fun onResponse(call: Call<CommunityInnerCommentModels>?, response: Response<CommunityInnerCommentModels>?) {
-                DLog.e("response.body : ${response?.body()?.CommunityInnerCommentModel.toString()}")
-                communityInnerAdapter.addItems(response?.body()?.CommunityInnerCommentModel as MutableList<CommunityInnerCommentModel>)
-                communityInnerAdapter.notifyDataSetChanged()
-                dismissSpotDialog()
-            }
-
-        })
+        disposable = id.let {
+            client.GetInnerCommunityCommentRx(it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ result ->
+                        communityInnerAdapter.addItems(result?.CommunityInnerCommentModel as MutableList<CommunityInnerCommentModel>)
+                        dismissSpotDialog()
+                    }, { error ->
+                        DLog.e("t : ${error?.message.toString()}"); dismissSpotDialog()
+                    })
+        }
     }
 
     override fun onClick(v: View?) {
@@ -140,43 +113,30 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
 
     private fun sendCommunityCommentToServer() {
         val pref = activity?.getSharedPreferences("UserId", Activity.MODE_PRIVATE)
-        val userid = pref?.getString("userLoginId","")
+        val userid = pref?.getString("userLoginId", "")
         val comment = binding.innerEditComment.text.toString()
-        val username = pref?.getString("UserNick","")
+        val username = pref?.getString("UserNick", "")
         if (comment.length < 0) {
 
         } else {
-            val call = ApiCilent.getInstance().getService().SetInnerCommunityComment(userid!!,id, username!!,comment,"")
-            call.enqueue(object : Callback<JsonObject> {
-                override fun onFailure(call: Call<JsonObject>?, t: Throwable?) {
-                    DLog.e("t message : ${t?.message.toString()}")
-                }
-
-                override fun onResponse(call: Call<JsonObject>?, response: Response<JsonObject>?) {
-                    onRefresh()
-                }
-
-            })
+            disposable = client.SetInnerCommunityCommentRx(userid!!, id, username!!, comment, "").subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({
+                        onRefresh()
+                    }, { error ->
+                        DLog.e("t : ${error?.message.toString()}")
+                    })
         }
     }
 
-    private fun onRefresh(){
+    private fun onRefresh() {
         communityInnerAdapter.clearItems()
         binding.innerEditComment.text.clear()
         getCommunityCommentFromServer()
     }
 
-
-    override fun onPause() {
-        binding.innerConstLayout.visibility = View.GONE
-        super.onPause()
-
-    }
-
-    override fun onResume() {
-        binding.innerConstLayout.visibility = View.VISIBLE
-        super.onResume()
-
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 
 }// Required empty public constructor

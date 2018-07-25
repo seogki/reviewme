@@ -24,6 +24,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -35,21 +36,19 @@ import com.gun0912.tedpermission.TedPermission
 import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Main.Photos.ReviewPhotoActivity
 import com.skh.reviewme.Main.model.ReviewFragmentModel
-import com.skh.reviewme.Main.model.ReviewFragmentModels
-import com.skh.reviewme.Network.ApiCilent
+import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.GridSpacingItemDecoration
 import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.FragmentReviewMainBinding
 import dmax.dialog.SpotsDialog
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.File
 
 
@@ -69,6 +68,10 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     private var pref: SharedPreferences? = null
     private var isSearch: Boolean = false
     private var searchedText: String? = null
+
+    private val client by lazy { ApiCilentRx.create() }
+    private var disposable: Disposable? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -114,7 +117,6 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         binding.mainGridRv.itemAnimator = null
         binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(2, 15, false, 0))
 
-
         binding.swipeLayout.setDistanceToTriggerSync(350)
         binding.swipeLayout.setOnRefreshListener(this)
 
@@ -122,6 +124,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
             binding.mainGridRv.adapter = reviewAdapter
         }, 100)
 
+        setSpotDialogs()
         getApi()
 
 
@@ -139,30 +142,23 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
 
     private fun getApi() {
-        setSpotDialogs()
-        val call2 = ApiCilent.getInstance().getService().GetReviewItem2()
-        call2.enqueue(object : Callback<ReviewFragmentModels> {
-            override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {
-                DLog.e("message : " + t?.message)
-                dialog.dismiss()
-            }
 
-            override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
-                DLog.e("ReviewModel data : " + response?.toString())
-                reviewAdapter.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
-//                reviewAdapter.notifyDataSetChanged()
+        disposable = client.GetReviewItem2Rx().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
+                .subscribe({ result ->
+                    DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
+                    reviewAdapter.addItems(result?.reviewModel as MutableList<ReviewFragmentModel>)
+                    dialog.dismiss()
+                    startScrollbarListener()
+                }, { error ->
+                    DLog.e("error ${error?.message.toString()}")
+                    dialog.dismiss()
+                })
+    }
 
-                DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
-                dialog.dismiss()
-
-
-                Handler().postDelayed({
-                    setRecyclerViewScrollbar()
-                }, 100)
-
-
-            }
-        })
+    private fun startScrollbarListener() {
+        Handler().postDelayed({
+            setRecyclerViewScrollbar()
+        }, 100)
     }
 
     private fun setRecyclerViewScrollbar() {
@@ -212,62 +208,53 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     private fun callSearchApi() {
         searchedText = binding.mainSearchEdit?.text?.toString() ?: return
         if (searchedText!!.isNotEmpty()) {
+
             val userid = pref?.getString("userLoginId", "") ?: return
             onRefreshWithoutApi()
-            val call = ApiCilent.getInstance().getService().GetSearchedReviewItem2(userid, searchedText!!)
-            call.enqueue(object : Callback<ReviewFragmentModels> {
-                override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {
-                    DLog.e(t?.message.toString())
-                }
+            disposable = client.GetSearchedReviewItem2Rx(userid, searchedText!!).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
+                    .subscribe({ result ->
+                        DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
+                        clearAndClose(binding.mainSearchEdit)
+                        reviewAdapter.addItems(result?.reviewModel as MutableList<ReviewFragmentModel>)
+                        dialog.dismiss()
+                        startScrollbarListener()
+                    }, { error ->
+                        DLog.e("error ${error?.message.toString()}")
+                        dialog.dismiss()
+                    })
 
-                override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
-                    binding.mainSearchEdit.text.clear()
-                    closeKeyboard()
-                    reviewAdapter.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
-                }
 
-            })
-            // 유저 아이디랑 , 서치한 텍스트
         } else {
             Toast.makeText(context, "모두 입력해주세요", Toast.LENGTH_SHORT).show()
         }
     }
 
+
     private fun callScrollSearchedApi() {
-        if (reviewAdapter.itemCount > 0) {
-            val userid = pref?.getString("userLoginId", "") ?: return
-            val call = reviewAdapter
-                    .getItem(reviewAdapter.itemCount - 1)
-                    ?.reviewId
-                    ?.let {
-                        ApiCilent
-                                .getInstance()
-                                .getService()
-                                .GetScrollSearchedReviewItem2(userid, searchedText!!, it)
-                    }
-            call?.enqueue(object : Callback<ReviewFragmentModels> {
-                override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {
-                    dialog.dismiss()
-                    isLoading = false
-                }
 
-                override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
-                    isLoading = if (response?.body()?.reviewModel?.isEmpty() == true) {
-                        dialog.dismiss()
-                        false
-                    } else {
-                        reviewAdapter.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
-//
-                        DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
-                        dialog.dismiss()
-                        false
-                    }
-                }
-
-            })
-        } else {
+        if (reviewAdapter.itemCount < 1) {
             dialog.dismiss()
             isLoading = false
+        } else {
+            val userid = pref?.getString("userLoginId", "") ?: return
+            disposable = reviewAdapter.getItem(reviewAdapter.itemCount - 1)?.reviewId?.let {
+                client.GetScrollSearchedReviewItem2Rx(userid, searchedText!!, it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
+                        .subscribe({ result ->
+                            isLoading = if (result?.reviewModel?.isEmpty() == true) {
+                                dialog.dismiss()
+                                false
+                            } else {
+                                reviewAdapter.addItems(result?.reviewModel as MutableList<ReviewFragmentModel>)
+                                DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
+                                dialog.dismiss()
+                                false
+                            }
+                        }, { error ->
+                            DLog.e("error ${error?.message.toString()}")
+                            isLoading = false
+                            dialog.dismiss()
+                        })
+            }
         }
     }
 
@@ -304,67 +291,65 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         val title = binding.reviewMainQuestion.naviTextTitle.text.toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
         val text = binding.reviewMainQuestion.naviTxtQuestion.text.toString().trim().let { RequestBody.create(MediaType.parse("text/plain"), it) }
 
-        val call = ApiCilent.getInstance().getService().SetReviewPhotos(userid, title, text, requestFile)
-        call.enqueue(object : Callback<JSONObject> {
-            override fun onFailure(call: Call<JSONObject>?, t: Throwable?) {
-                closeKeyboard()
-                DLog.e("이미지 업로드 fail")
-                DLog.e("t : " + t?.message)
-            }
-
-            override fun onResponse(call: Call<JSONObject>?, response: Response<JSONObject>?) {
-                DLog.e("이미지 업로드 success")
-                plusClose(false)
-                setNavigationNull()
-                closeKeyboard()
-                onRefresh()
-            }
-
-        })
+        disposable = client.SetReviewPhotosRx(userid, title, text, requestFile).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
+                .subscribe({
+                    plusClose(false)
+                    setNavigationNull()
+                    closeKeyboard()
+                    onRefresh()
+                }, { error ->
+                    closeKeyboard()
+                    DLog.e("이미지 업로드 fail")
+                    DLog.e("t : " + error?.message)
+                })
     }
 
     private fun scrollToEnd() {
-        if (reviewAdapter.itemCount > 0) {
-            val call = reviewAdapter
-                    .getItem(reviewAdapter.itemCount - 1)
-                    ?.reviewId
-                    ?.let { ApiCilent.getInstance().getService().ScrollGetReviewItem2(it) }
 
-            DLog.e("review id :" + reviewAdapter.getItem(reviewAdapter.itemCount - 1)?.reviewId)
-
-            call?.enqueue(object : Callback<ReviewFragmentModels> {
-                override fun onFailure(call: Call<ReviewFragmentModels>?, t: Throwable?) {
-                    dialog.dismiss()
-                    isLoading = false
-                }
-
-                override fun onResponse(call: Call<ReviewFragmentModels>?, response: Response<ReviewFragmentModels>?) {
-                    isLoading = if (response?.body()?.reviewModel?.isEmpty() == true) {
-                        dialog.dismiss()
-                        false
-                    } else {
-                        reviewAdapter.addItems(response?.body()?.reviewModel as MutableList<ReviewFragmentModel>)
-//                        reviewAdapter.notifyDataSetChanged()
-                        DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
-                        dialog.dismiss()
-                        false
-                    }
-                }
-
-            })
-        } else {
+        if (reviewAdapter.itemCount < 1) {
             dialog.dismiss()
             isLoading = false
+        } else {
+            disposable = reviewAdapter.getItem(reviewAdapter.itemCount - 1)?.reviewId?.let {
+                client.ScrollGetReviewItem2Rx(it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
+                        .subscribe({ result ->
+                            isLoading = if (result?.reviewModel?.isEmpty() == true) {
+                                dialog.dismiss();false
+                            } else {
+                                reviewAdapter.addItems(result?.reviewModel as MutableList<ReviewFragmentModel>)
+                                DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
+                                dialog.dismiss()
+                                false
+                            }
+                        }, { error ->
+                            DLog.e("error ${error?.message.toString()}")
+                            isLoading = false
+                            dialog.dismiss()
+                        })
+            }
         }
     }
 
 
-    private fun setNavigationNull() {
-        binding.reviewMainQuestion.naviImg.setImageDrawable(null)
-        binding.reviewMainQuestion.naviTextTitle.text = null
-        binding.reviewMainQuestion.naviTxtQuestion.text = null
-    }
+    override fun onResume() {
+        super.onResume()
+        val pref = context?.getSharedPreferences("fileName", MODE_PRIVATE)
+        this.name = pref?.getString("filestring", "empty")!!
+        if (name != "empty") {
+            Uri.parse("file://$name").let {
+                Glide.with(this@ReviewMainFragment)
+                        .load(it)
+                        .apply(RequestOptions().centerCrop().override(400, 400))
+                        .into(object : SimpleTarget<Drawable>() {
+                            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                                binding.reviewMainQuestion.naviImg.setImageDrawable(resource)
+                            }
 
+                        })
+            }
+        }
+        pref.edit().remove("fileName").apply()
+    }
 
     private fun setPhoto() {
         TedPermission.with(context)
@@ -383,33 +368,13 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        val pref = context?.getSharedPreferences("fileName", MODE_PRIVATE)
-        this.name = pref?.getString("filestring", "empty")!!
-        if (name != "empty") {
-            Uri.parse("file://$name")
-                    .let {
-                        Glide.with(this@ReviewMainFragment)
-                                .load(it)
-                                .apply(RequestOptions().centerCrop().override(400, 400))
-                                .into(object : SimpleTarget<Drawable>() {
-                                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
-                                        binding.reviewMainQuestion.naviImg.setImageDrawable(resource)
-                                    }
-
-                                })
-                    }
-        }
-        pref.edit().remove("fileName").apply()
-    }
-
     override fun onRefresh() {
         reviewAdapter.clearItems()
         reviewAdapter.notifyDataSetChanged()
         binding.mainGridRv.removeOnScrollListener(null)
         getApi()
         isSearch = false
+        isLoading = false
         binding.swipeLayout.isRefreshing = false
     }
 
@@ -456,10 +421,21 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                 })
     }
 
+    private fun setNavigationNull() {
+        binding.reviewMainQuestion.naviImg.setImageDrawable(null)
+        binding.reviewMainQuestion.naviTextTitle.text = null
+        binding.reviewMainQuestion.naviTxtQuestion.text = null
+    }
+
+    private fun clearAndClose(edit: EditText) {
+        edit.text.clear()
+        closeKeyboard()
+    }
 
     override fun onDestroy() {
         super.onDestroy()
         Glide.get(context!!).clearMemory()
+        disposable?.dispose()
     }
 
 }// Required empty public constructor

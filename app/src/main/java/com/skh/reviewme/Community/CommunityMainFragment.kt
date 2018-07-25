@@ -14,6 +14,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
+import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.skh.reviewme.Base.BaseFragment
@@ -21,17 +22,16 @@ import com.skh.reviewme.Base.BaseRecyclerViewAdapter
 import com.skh.reviewme.Community.Inner.CommunityInnerFragment
 import com.skh.reviewme.Community.Question.CommunityQuestionActivity
 import com.skh.reviewme.Community.model.CommunityModel
-import com.skh.reviewme.Community.model.CommunityModels
-import com.skh.reviewme.Network.ApiCilent
+import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.GridSpacingItemDecoration
 import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.FragmentCommunityMainBinding
 import dmax.dialog.SpotsDialog
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
 
 
 class CommunityMainFragment : BaseFragment()
@@ -48,6 +48,11 @@ class CommunityMainFragment : BaseFragment()
     private var isSearch: Boolean = false
     private var searchText: String = ""
     private var pref: SharedPreferences? = null
+    private val client by lazy {
+        ApiCilentRx.create()
+    }
+    private var disposable: Disposable? = null
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_community_main, container, false)
@@ -87,25 +92,6 @@ class CommunityMainFragment : BaseFragment()
 
     }
 
-    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
-
-        when (actionId) {
-            EditorInfo.IME_ACTION_SEARCH -> {
-                getSearchedApi()
-            }
-        }
-        return true
-    }
-
-    private fun setSpotDialogs() {
-        dialog = SpotsDialog
-                .Builder()
-                .setContext(context!!)
-                .setMessage("데이터를 불러오는 중...")
-                .setCancelable(false)
-                .build().apply { show() }
-    }
-
 
     private fun setRecyclerViewScrollbar() {
         binding.mainGridRv.addOnScrollListener(object : RecyclerView.OnScrollListener() {
@@ -131,64 +117,48 @@ class CommunityMainFragment : BaseFragment()
 
     private fun scrollToEnd() {
         DLog.e("scroll end Called")
-        if (communityMainAdapter.itemCount > 0) {
-            val call = communityMainAdapter
-                    .getItem(communityMainAdapter.itemCount - 1)
-                    ?.communityid
-                    ?.let { ApiCilent.getInstance().getService().ScrollGetCommunityItem(it) }
-
-            DLog.e("community id :" + communityMainAdapter.getItem(communityMainAdapter.itemCount - 1)?.communityid)
-
-
-
-            call?.enqueue(object : Callback<CommunityModels> {
-                override fun onFailure(call: Call<CommunityModels>?, t: Throwable?) {
-                    DLog.e("t ${t?.message.toString()}")
-                    dialog.dismiss()
-                    isLoading = false
-                }
-
-                override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
-                    isLoading = when {
-                        response?.body()?.CommunityModel?.isNotEmpty() == true -> {
-                            communityMainAdapter.addItems(response.body()!!.CommunityModel as MutableList<CommunityModel>)
-                            dialog.dismiss()
-                            DLog.e("memory: " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
-                            false
-                        }
-                        else -> {
-                            dialog.dismiss()
-                            false
-                        }
-                    }
-                }
-
-            })
-        } else {
+        if (communityMainAdapter.itemCount < 1) {
             dialog.dismiss()
             isLoading = false
+        } else {
+            disposable = communityMainAdapter.getItem(communityMainAdapter.itemCount - 1)?.communityid?.let {
+                client.ScrollGetCommunityItemRx(it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ result ->
+                            isLoading = when {
+                                result?.CommunityModel?.isNotEmpty() == true -> {
+                                    communityMainAdapter.addItems(result.CommunityModel as MutableList<CommunityModel>)
+                                    dialog.dismiss()
+                                    DLog.e("memory: " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
+                                    false
+                                }
+                                else -> {
+                                    dialog.dismiss()
+                                    false
+                                }
+                            }
+                        }, { error ->
+                            DLog.e("t : ${error?.message.toString()}")
+                            dialog.dismiss()
+                            isLoading = false
+                        })
+            }
         }
 
     }
 
     private fun getCommunityItemFromServer() {
-        val call = ApiCilent.getInstance().getService().GetCommunityItem()
-        call.enqueue(object : Callback<CommunityModels> {
-            override fun onFailure(call: Call<CommunityModels>?, t: Throwable?) {
-                DLog.e("t : ${t?.message.toString()}")
-                dialog.dismiss()
-            }
 
-            override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
-                communityMainAdapter.addItems(response?.body()?.CommunityModel as MutableList<CommunityModel>)
-                dialog.dismiss()
-                Handler().postDelayed({
-                    setRecyclerViewScrollbar()
-                }, 100)
-            }
-
-        })
+        disposable = client.GetCommunityItemRx().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ result ->
+                    communityMainAdapter.addItems(result?.CommunityModel as MutableList<CommunityModel>)
+                    dialog.dismiss()
+                    setScrollbar()
+                }, { error ->
+                    DLog.e("t : ${error?.message.toString()}")
+                    dialog.dismiss()
+                })
     }
+
 
     override fun onItemClick(view: View, position: Int) {
         DLog.e("item $position")
@@ -198,7 +168,7 @@ class CommunityMainFragment : BaseFragment()
         bundle.putString("communityid", id)
         val frag = CommunityInnerFragment()
         frag.arguments = bundle
-        addFragment(activity, R.id.frame_layout, frag, false, true,"CommunityInnerFragment")
+        addFragment(activity, R.id.frame_layout, frag, false, true, "CommunityInnerFragment")
     }
 
     override fun onClick(v: View?) {
@@ -214,64 +184,64 @@ class CommunityMainFragment : BaseFragment()
 
     private fun getSearchedApi() {
         searchText = binding.mainSearchEdit.text.toString()
+
         if (searchText.isNotEmpty()) {
             onRefreshWithoutApi()
             val userid = pref?.getString("userLoginId", "") ?: return
-            val call = ApiCilent.getInstance().getService().GetSearchedCommunityItem(userid, searchText)
-            call.enqueue(object : Callback<CommunityModels> {
-                override fun onFailure(call: Call<CommunityModels>?, t: Throwable?) {
-                    DLog.e(t?.message.toString())
-                }
+            disposable = client.GetSearchedCommunityItemRx(userid, searchText).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ result ->
+                        communityMainAdapter.addItems(result?.CommunityModel as MutableList<CommunityModel>)
+                        clearAndClose(binding.mainSearchEdit)
+                        dialog.dismiss()
 
-                override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
-                    binding.mainSearchEdit.text.clear()
-                    closeKeyboard()
-                    communityMainAdapter.addItems(response?.body()?.CommunityModel as MutableList<CommunityModel>)
+                    }, { error ->
+                        DLog.e("t : ${error?.message.toString()}")
+                        dialog.dismiss()
+                    })
 
-                }
-
-            })
         } else {
             Toast.makeText(context, "모두 입력해주세요", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         }
+
+
     }
 
     private fun getSearchScrollApi() {
-        if (communityMainAdapter.itemCount > 0) {
-            val userid = pref?.getString("userLoginId", "") ?: return
-            val call = communityMainAdapter
-                    .getItem(communityMainAdapter.itemCount - 1)
-                    ?.communityid
-                    ?.let { ApiCilent.getInstance().getService().GetScrollSearchedCommunityItem(userid, searchText, it) }
 
-            call?.enqueue(object : Callback<CommunityModels> {
-                override fun onFailure(call: Call<CommunityModels>?, t: Throwable?) {
-                    DLog.e("t ${t?.message.toString()}")
-                    dialog.dismiss()
-                    isLoading = false
-                }
-
-                override fun onResponse(call: Call<CommunityModels>?, response: Response<CommunityModels>?) {
-                    isLoading = when {
-                        response?.body()?.CommunityModel?.isNotEmpty() == true -> {
-                            communityMainAdapter.addItems(response.body()!!.CommunityModel as MutableList<CommunityModel>)
-                            //                            communityMainAdapter.notifyDataSetChanged()
-                            dialog.dismiss()
-                            DLog.e("memory: " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
-                            false
-                        }
-                        else -> {
-                            dialog.dismiss()
-                            false
-                        }
-                    }
-                }
-
-            })
-        } else {
+        if (communityMainAdapter.itemCount < 1) {
             dialog.dismiss()
             isLoading = false
+        } else {
+            val userid = pref?.getString("userLoginId", "") ?: return
+            disposable = communityMainAdapter.getItem(communityMainAdapter.itemCount - 1)?.communityid?.let {
+                client.GetScrollSearchedCommunityItemRx(userid, searchText, it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
+                        .subscribe({ result ->
+                            isLoading = when {
+                                result?.CommunityModel?.isNotEmpty() == true -> {
+                                    communityMainAdapter.addItems(result.CommunityModel as MutableList<CommunityModel>)
+                                    dialog.dismiss()
+                                    DLog.e("memory: " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
+                                    false
+                                }
+                                else -> {
+                                    dialog.dismiss()
+                                    false
+                                }
+                            }
+
+                        }, { error ->
+                            DLog.e("t : ${error?.message.toString()}")
+                            dialog.dismiss()
+                            isLoading = false
+                        })
+            }
         }
+    }
+
+    private fun clearAndClose(edit: EditText) {
+        edit.text.clear()
+        closeKeyboard()
     }
 
     override fun onRefresh() {
@@ -291,6 +261,31 @@ class CommunityMainFragment : BaseFragment()
         binding.mainGridRv.removeOnScrollListener(null)
     }
 
+    private fun setScrollbar() {
+        Handler().postDelayed({
+            setRecyclerViewScrollbar()
+        }, 100)
+    }
+
+    override fun onEditorAction(v: TextView?, actionId: Int, event: KeyEvent?): Boolean {
+
+        when (actionId) {
+            EditorInfo.IME_ACTION_SEARCH -> {
+                getSearchedApi()
+            }
+        }
+        return true
+    }
+
+    private fun setSpotDialogs() {
+        dialog = SpotsDialog
+                .Builder()
+                .setContext(context!!)
+                .setMessage("데이터를 불러오는 중...")
+                .setCancelable(false)
+                .build().apply { show() }
+    }
+
     override fun onResume() {
 
         val pref = activity?.getSharedPreferences("CommunityDone", Activity.MODE_PRIVATE)
@@ -302,6 +297,11 @@ class CommunityMainFragment : BaseFragment()
         }
 
         super.onResume()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        disposable?.dispose()
     }
 
 

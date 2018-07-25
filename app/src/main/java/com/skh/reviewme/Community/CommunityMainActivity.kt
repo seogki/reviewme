@@ -3,7 +3,9 @@ package com.skh.reviewme.Community
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Main.ReviewMainActivity
@@ -23,8 +25,7 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_main)
         binding.layoutBottomTab.onClickListener = this
         addFragment(R.id.frame_layout, CommunityMainFragment(), false, false, "CommunityMainFragment")
-        binding.layoutBottomTab.bottomLayoutBtn2.setBackgroundColor(Color.parseColor("#0ABFB5"))
-//        binding.layoutBottomTab.bottomLayoutBtn2Txt.setImageDrawable(ContextCompat.getDrawable(this@CommunityMainActivity, R.drawable.baseline_people_black_24dp))
+        setCurrentTab()
     }
 
     override fun onClick(v: View?) {
@@ -39,6 +40,12 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
             }
 
         }
+    }
+
+    private fun setCurrentTab() {
+        binding.layoutBottomTab.bottomLayoutBtn2Txt.setImageDrawable(ContextCompat.getDrawable(this@CommunityMainActivity, R.drawable.icons8_people_24_fill))
+        binding.layoutBottomTab.bottomLayoutBtn2Txt.drawable.setColorFilter(Color.parseColor("#13A9AA"), PorterDuff.Mode.SRC_ATOP)
+        binding.layoutBottomTab.bottomLayoutText2.setTextColor(Color.parseColor("#000000"))
     }
 
 

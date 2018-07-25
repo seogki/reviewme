@@ -3,7 +3,9 @@ package com.skh.reviewme.Setting
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Community.CommunityMainActivity
@@ -23,7 +25,8 @@ class SettingMainActivity : BaseActivity(), View.OnClickListener {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_setting_main)
         binding.layoutBottomTab.onClickListener = this
         addFragment(R.id.frame_layout, SettingMainFragment(), false, false, "SettingMainFragment")
-        binding.layoutBottomTab.bottomLayoutBtn3.setBackgroundColor(Color.parseColor("#0ABFB5"))
+        setCurrentTab()
+
     }
 
     override fun onClick(v: View?) {
@@ -31,15 +34,21 @@ class SettingMainActivity : BaseActivity(), View.OnClickListener {
             R.id.bottom_layout_btn1 -> {
                 beginActivity(Intent(this@SettingMainActivity
                         , ReviewMainActivity::class.java)
-                        )
+                )
 
             }
             R.id.bottom_layout_btn2 -> {
                 beginActivity(Intent(this@SettingMainActivity
                         , CommunityMainActivity::class.java)
-                       )
+                )
             }
         }
+    }
+
+    private fun setCurrentTab() {
+        binding.layoutBottomTab.bottomLayoutBtn3Txt.setImageDrawable(ContextCompat.getDrawable(this@SettingMainActivity, R.drawable.icons8_user_24_fill))
+        binding.layoutBottomTab.bottomLayoutBtn3Txt.drawable.setColorFilter(Color.parseColor("#13A9AA"), PorterDuff.Mode.SRC_ATOP)
+        binding.layoutBottomTab.bottomLayoutText3.setTextColor(Color.parseColor("#000000"))
     }
 
 

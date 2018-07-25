@@ -143,16 +143,18 @@ public class BaseBindingAdapter {
         }
 
         if (url == null) {
+            imageView.setVisibility(View.GONE);
             Glide.with(imageView).clear(imageView);
             imageView.setImageDrawable(null);
         } else {
+            imageView.setVisibility(View.VISIBLE);
             String murl = Const.Companion.getServer_url() + url;
             Uri uri = Uri.parse(murl);
             Glide.with(imageView.getContext())
                     .load(uri)
                     .apply(new RequestOptions()
-                            .centerCrop()
-                            .override(600, 600)
+                            .fitCenter()
+                            .override(900, 900)
                             .skipMemoryCache(true)
                             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .thumbnail(0.1f)
@@ -256,6 +258,8 @@ public class BaseBindingAdapter {
             textView.setText("[커뮤니티]");
         } else if (Objects.equals(data, "세팅")) {
             textView.setText("[세팅]");
+        } else if (Objects.equals(data, "기타")) {
+            textView.setText("[기타]");
         }
     }
 

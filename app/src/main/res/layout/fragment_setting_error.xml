@@ -87,6 +87,14 @@
                         android:textColor="#000"
                         app:buttonTint="@color/DarkGreen"
                         />
+                    <android.support.v7.widget.AppCompatRadioButton
+                        android:id="@+id/error_radiobtn_etc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="기타"
+                        android:textColor="#000"
+                        app:buttonTint="@color/DarkGreen"
+                        />
 
 
                 </RadioGroup>
