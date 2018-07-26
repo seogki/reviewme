@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -35,7 +37,7 @@ class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnC
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_question_photo)
         binding.onClickListener = this
         imagePath = ArrayList<String>()
-
+        binding.questionPhotoImgBack.drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP)
         setRv()
     }
 
@@ -47,8 +49,9 @@ class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnC
         communityQuestionPhotoAdapter = CommunityQuestionPhotoAdapter(this, ImageFile().fetchAllImages(this))
 
         communityQuestionPhotoAdapter.sethash(this)
-        communityQuestionPhotoAdapter.setHasStableIds(true)
         communityQuestionPhotoAdapter.setOnItemClickListener(this)
+        communityQuestionPhotoAdapter.setHasStableIds(true)
+
 
         Handler().postDelayed({
             binding.questionPhotoRv.adapter = communityQuestionPhotoAdapter
@@ -56,15 +59,15 @@ class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnC
     }
 
     override fun onHash(pos: Int, filename: String?) {
+
     }
 
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.question_btn_register -> {
-                val returnIntent = Intent()
-                returnIntent.putParcelableArrayListExtra("PhotoFromQuestion", getDrawable())
-                returnIntent.putStringArrayListExtra("imagePath",imagePath)
-                setResult(Activity.RESULT_OK, returnIntent)
+                callActivity()
+            }
+            R.id.question_photo_img_back -> {
                 finish()
             }
         }
@@ -77,7 +80,7 @@ class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnC
         imagePath.add(communityQuestionPhotoAdapter.getItem(position).toString())
 
         for (i in 0..(view as ViewGroup).childCount) {
-            val child = view.getChildAt(i)
+            val child = view.getChildAt(0)
 
             if (child is ImageView) {
                 checkImageIsAvailable(child.drawable)
@@ -108,6 +111,14 @@ class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnC
 
         return list
 
+    }
+
+    private fun callActivity() {
+        val returnIntent = Intent()
+        returnIntent.putParcelableArrayListExtra("PhotoFromQuestion", getDrawable())
+        returnIntent.putStringArrayListExtra("imagePath", imagePath)
+        setResult(Activity.RESULT_OK, returnIntent)
+        finish()
     }
 
     private fun checkImageIsAvailable(drawable: Drawable) {

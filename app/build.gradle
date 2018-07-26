@@ -87,5 +87,6 @@ dependencies {
 
 
     //api 21 아래에 ripple 이펙트 넣기위해
-    implementation 'com.github.rey5137:material:1.2.5'
+//    implementation 'com.github.rey5137:material:1.2.5'
+//    compile 'com.balysv:material-ripple:1.0.2'
 }

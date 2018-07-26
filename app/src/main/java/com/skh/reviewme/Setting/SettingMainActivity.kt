@@ -48,12 +48,12 @@ class SettingMainActivity : BaseActivity(), View.OnClickListener {
     private fun setCurrentTab() {
         binding.layoutBottomTab.bottomLayoutBtn3Txt.setImageDrawable(ContextCompat.getDrawable(this@SettingMainActivity, R.drawable.icons8_user_24_fill))
         binding.layoutBottomTab.bottomLayoutBtn3Txt.drawable.setColorFilter(Color.parseColor("#13A9AA"), PorterDuff.Mode.SRC_ATOP)
-        binding.layoutBottomTab.bottomLayoutText3.setTextColor(Color.parseColor("#000000"))
+        binding.layoutBottomTab.bottomLayoutText3.setTextColor(Color.parseColor("#13A9AA"))
     }
 
 
     override fun onBackPressed() {
-        DLog.e("onBack Pressed" + isFirstFragment())
+        DLog.e("onBack Pressed" + isFirstFragment() + "count : " + fragmentManager.backStackEntryCount)
 
         if (isFirstFragment()) {
             if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
@@ -65,6 +65,8 @@ class SettingMainActivity : BaseActivity(), View.OnClickListener {
                 this.finishAffinity()
                 finishToast()
             }
+        } else if (fragmentManager.backStackEntryCount > 0) {
+            fragmentManager.popBackStack()
         } else {
             super.onBackPressed()
         }

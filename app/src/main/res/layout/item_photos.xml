@@ -29,18 +29,22 @@
             android:layout_width="100dp"
             android:layout_height="100dp"
             app:galleryImageUrl="@{item}"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             android:onClick="@{onClickListener::onClick}"
-            tools:background="#fff"
             />
 
 
-        <Button
+        <ImageView
             android:id="@+id/photo_max_btn"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icons8_full_screen_30"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
 
             />
 

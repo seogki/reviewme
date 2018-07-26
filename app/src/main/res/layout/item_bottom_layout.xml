@@ -25,9 +25,9 @@
 
         >
 
-        <com.rey.material.widget.TextView
+
+        <TextView
             android:id="@+id/bottom_layout_btn1"
-            style="@style/ButtonRippleStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:onClick="@{onClickListener::onClick}"
@@ -35,9 +35,9 @@
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:rd_enable="true"
-
-            />
+            android:background="@drawable/btn_ripple_colored"
+            >
+        </TextView>
 
 
         <ImageView
@@ -68,18 +68,18 @@
             app:layout_constraintTop_toBottomOf="@id/bottom_layout_btn1_txt"
             />
 
-        <com.rey.material.widget.TextView
+        <TextView
             android:id="@+id/bottom_layout_btn2"
-            style="@style/ButtonRippleStyle"
             android:layout_width="0dp"
+            android:background="@drawable/btn_ripple_colored"
             android:layout_height="0dp"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/bottom_layout_btn3"
             app:layout_constraintStart_toEndOf="@id/bottom_layout_btn1"
             app:layout_constraintTop_toTopOf="parent"
-            app:rd_enable="true"
-            />
+            >
+        </TextView>
 
         <ImageView
             android:id="@+id/bottom_layout_btn2_txt"
@@ -109,18 +109,19 @@
             app:layout_constraintTop_toBottomOf="@id/bottom_layout_btn2_txt"
             />
 
-        <com.rey.material.widget.TextView
+        <TextView
             android:id="@+id/bottom_layout_btn3"
-            style="@style/ButtonRippleStyle"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/btn_ripple_colored"
             android:onClick="@{onClickListener::onClick}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/bottom_layout_btn2"
             app:layout_constraintTop_toTopOf="parent"
-            app:rd_enable="true"
-            />
+            >
+
+        </TextView>
 
         <ImageView
             android:id="@+id/bottom_layout_btn3_txt"

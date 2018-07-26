@@ -12,6 +12,10 @@
             type="android.view.View.OnClickListener"
             />
 
+        <variable
+            name="empty"
+            type="String"/>
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -20,181 +24,183 @@
         android:background="@color/grey"
         >
 
-        <!--<android.support.v4.widget.NestedScrollView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:fillViewport="true"-->
 
-            <!--&gt;-->
+        <TextView
+            android:id="@+id/error_txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center"
+            android:background="@color/titleColor"
+            android:text="문의"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            />
 
-            <!--<android.support.constraint.ConstraintLayout-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"-->
-                <!--&gt;-->
+        <ImageView
+            android:id="@+id/error_img_back"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:onClick="@{onClickListener::onClick}"
+            android:src="@drawable/icons8_undo_24"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
 
-                <TextView
-                    android:id="@+id/error_txt_title"
-                    android:layout_width="match_parent"
-                    android:layout_height="50dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:text="문의"
-                    android:textColor="@color/black"
-                    android:textSize="17sp"
-                    />
-
-                <RadioGroup
-                    android:id="@+id/error_radiogroup_setting"
-                    android:layout_width="0dp"
-                    android:layout_height="35dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/error_txt_title"
-                    >
-
-
-                    <android.support.v7.widget.AppCompatRadioButton
-                        android:id="@+id/error_radiobtn_main"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
-                        android:text="메인"
-                        android:textColor="#000"
-                        app:buttonTint="@color/DarkGreen"
-                        />
-
-                    <android.support.v7.widget.AppCompatRadioButton
-                        android:id="@+id/error_radiobtn_community"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="커뮤니티"
-                        android:textColor="#000"
-                        app:buttonTint="@color/DarkGreen"
-
-                        />
-
-                    <android.support.v7.widget.AppCompatRadioButton
-                        android:id="@+id/error_radiobtn_setting"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="세팅"
-                        android:textColor="#000"
-                        app:buttonTint="@color/DarkGreen"
-                        />
-                    <android.support.v7.widget.AppCompatRadioButton
-                        android:id="@+id/error_radiobtn_etc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="기타"
-                        android:textColor="#000"
-                        app:buttonTint="@color/DarkGreen"
-                        />
+        <RadioGroup
+            android:id="@+id/error_radiogroup_setting"
+            android:layout_width="0dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_txt_title"
+            >
 
 
-                </RadioGroup>
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/error_radiobtn_main"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"
+                android:text="메인"
+                android:textColor="#000"
+                app:buttonTint="@color/DarkGreen"
+                />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/error_radiobtn_community"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="커뮤니티"
+                android:textColor="#000"
+                app:buttonTint="@color/DarkGreen"
+
+                />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/error_radiobtn_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="세팅"
+                android:textColor="#000"
+                app:buttonTint="@color/DarkGreen"
+                />
+
+            <android.support.v7.widget.AppCompatRadioButton
+                android:id="@+id/error_radiobtn_etc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="기타"
+                android:textColor="#000"
+                app:buttonTint="@color/DarkGreen"
+                />
 
 
-                <TextView
-                    android:id="@+id/error_txt_name"
-                    style="@style/textStyle"
-                    android:layout_width="50dp"
-                    android:layout_height="40dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@color/white"
-                    android:gravity="center"
-                    android:text="제목"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/error_radiogroup_setting"
-                    />
-
-                <EditText
-                    android:id="@+id/error_edit_name"
-                    style="@style/textStyle"
-                    android:layout_width="0dp"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginTop="15dp"
-                    android:background="@drawable/btn_whitebackground_lightgeyborder"
-                    android:padding="4dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/error_txt_name"
-                    app:layout_constraintTop_toBottomOf="@id/error_radiogroup_setting"
-                    />
-
-                <TextView
-                    android:id="@+id/error_txt_content"
-                    style="@style/textStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="13dp"
-                    android:background="@drawable/btn_whitebackground_lightgeyborder"
-                    android:gravity="center"
-                    android:text="내용"
-                    app:layout_constraintBottom_toTopOf="@id/error_edit_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/error_txt_name"
-                    />
-
-                <EditText
-                    android:id="@+id/error_edit_content"
-                    style="@style/textStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/white"
-                    android:gravity="start"
-                    android:padding="4dp"
-                    app:layout_constraintBottom_toTopOf="@id/error_btn_register"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/error_txt_content"
-                    tools:text="dddd"
-                    />
+        </RadioGroup>
 
 
-                <Button
-                    android:id="@+id/error_btn_register"
-                    style="@style/textStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    android:background="@color/white"
-                    android:onClick="@{onClickListener::onClick}"
-                    android:text="문의하기"
-                    app:layout_constraintBottom_toTopOf="@id/error_rv"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/error_edit_content"
-                    />
+        <TextView
+            android:id="@+id/error_txt_name"
+            style="@style/textStyle"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@color/white"
+            android:gravity="center"
+            android:text="제목"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_radiogroup_setting"
+            />
+
+        <EditText
+            android:id="@+id/error_edit_name"
+            style="@style/textStyle"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/btn_whitebackground_lightgeyborder"
+            android:padding="4dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/error_txt_name"
+            app:layout_constraintTop_toBottomOf="@id/error_radiogroup_setting"
+            />
+
+        <TextView
+            android:id="@+id/error_txt_content"
+            style="@style/textStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13dp"
+            android:background="@drawable/btn_whitebackground_lightgeyborder"
+            android:gravity="center"
+            android:text="내용"
+            app:layout_constraintBottom_toTopOf="@id/error_edit_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_txt_name"
+            />
+
+        <EditText
+            android:id="@+id/error_edit_content"
+            style="@style/textStyle"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:background="@color/white"
+            android:gravity="start"
+            android:padding="4dp"
+            app:layout_constraintBottom_toTopOf="@id/error_btn_register"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_txt_content"
+            tools:text="dddd"
+            />
 
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/error_rv"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/error_btn_register"
-                    />
-            <!--</android.support.constraint.ConstraintLayout>-->
+        <Button
+            android:id="@+id/error_btn_register"
+            style="@style/textStyle"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/white"
+            android:onClick="@{onClickListener::onClick}"
+            android:text="문의하기"
+            app:layout_constraintBottom_toTopOf="@id/error_rv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_edit_content"
+            />
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/error_rv"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="5dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_btn_register"
+            />
+        <!--</android.support.constraint.ConstraintLayout>-->
         <!--</android.support.v4.widget.NestedScrollView>-->
 
     </android.support.constraint.ConstraintLayout>

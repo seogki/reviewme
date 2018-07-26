@@ -45,9 +45,8 @@ class CommunityMainActivity : BaseActivity(), View.OnClickListener {
     private fun setCurrentTab() {
         binding.layoutBottomTab.bottomLayoutBtn2Txt.setImageDrawable(ContextCompat.getDrawable(this@CommunityMainActivity, R.drawable.icons8_people_24_fill))
         binding.layoutBottomTab.bottomLayoutBtn2Txt.drawable.setColorFilter(Color.parseColor("#13A9AA"), PorterDuff.Mode.SRC_ATOP)
-        binding.layoutBottomTab.bottomLayoutText2.setTextColor(Color.parseColor("#000000"))
+        binding.layoutBottomTab.bottomLayoutText2.setTextColor(Color.parseColor("#13A9AA"))
     }
-
 
     override fun onBackPressed() {
         DLog.e("onBack Pressed" + isFirstFragment())

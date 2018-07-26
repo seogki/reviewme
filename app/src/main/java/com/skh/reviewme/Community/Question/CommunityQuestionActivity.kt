@@ -5,6 +5,8 @@ import android.app.Activity
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Bitmap
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AlertDialog
@@ -38,10 +40,8 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_community_question)
-
+        binding.questionImgBack.drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP)
         binding.onClickListener = this
-
-
     }
 
     override fun onClick(v: View?) {
@@ -52,6 +52,9 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
             R.id.question_btn_register -> {
                 binding.questionBtnRegister.isEnabled = false
                 setRegisterCommunityToSever()
+            }
+            R.id.question_img_back -> {
+                finish()
             }
         }
     }

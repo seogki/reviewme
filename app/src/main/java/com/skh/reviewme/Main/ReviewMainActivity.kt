@@ -26,6 +26,7 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
         binding.layoutBottomTab.onClickListener = this
         addFragment(R.id.frame_layout, ReviewMainFragment(), false, false, "ReviewMainFragment")
         setCurrentTab()
+
     }
 
     override fun onClick(v: View?) {
@@ -47,7 +48,7 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
     private fun setCurrentTab() {
         binding.layoutBottomTab.bottomLayoutBtn1Txt.setImageDrawable(ContextCompat.getDrawable(this@ReviewMainActivity, R.drawable.icons8_home_24_fill))
         binding.layoutBottomTab.bottomLayoutBtn1Txt.drawable.setColorFilter(Color.parseColor("#13A9AA"), PorterDuff.Mode.SRC_ATOP)
-        binding.layoutBottomTab.bottomLayoutText1.setTextColor(Color.parseColor("#000000"))
+        binding.layoutBottomTab.bottomLayoutText1.setTextColor(Color.parseColor("#13A9AA"))
     }
 
 
@@ -55,14 +56,20 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
         DLog.e("onBack Pressed" + isFirstFragment())
 
         if (isFirstFragment()) {
-            if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
-                backKeyPressedTime = System.currentTimeMillis()
-                showGuide()
-                return
-            }
-            if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
-                this.finishAffinity()
-                finishToast()
+            val frag = supportFragmentManager.findFragmentById(R.id.frame_layout) as ReviewMainFragment
+            DLog.e("frag : " + frag.tag)
+            if (frag.isOpened) {
+                frag.plusClose(false)
+            } else {
+                if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+                    backKeyPressedTime = System.currentTimeMillis()
+                    showGuide()
+                    return
+                }
+                if (System.currentTimeMillis() <= backKeyPressedTime + 2000) {
+                    this.finishAffinity()
+                    finishToast()
+                }
             }
         } else {
             super.onBackPressed()

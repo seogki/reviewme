@@ -17,59 +17,72 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#fff"
+
         >
+
+
 
 
         <TextView
             android:id="@+id/review_photo_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:text="사진을 정해주세요"
-            android:textColor="#000"
-            android:textSize="25sp"
-
+            style="@style/pictureTitlebar"
             app:layout_constraintBottom_toTopOf="@+id/review_photo_rv"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.046"
             />
+
+        <ImageView
+            android:id="@+id/review_photo_img_back"
+            android:src="@drawable/icons8_undo_24"
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:padding="20dp"
+            android:onClick="@{onClickListener::onClick}"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/review_photo_rv"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="25dp"
-            app:layout_constraintBottom_toTopOf="@+id/btn_floataction"
+
+
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/review_photo_view_bottom"
             app:layout_constraintTop_toBottomOf="@id/review_photo_title"
             app:layout_constraintVertical_weight="1"
             />
 
-
+        <View
+            android:id="@+id/review_photo_view_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:background="@color/titleColor"
+            />
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/btn_floataction"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginBottom="25dp"
-            android:layout_marginEnd="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:clipToPadding="false"
-            app:backgroundTint="#85d3d3d3"
+            app:backgroundTint="@color/titleColor"
             app:borderWidth="0dp"
-            app:elevation="0dp"
+            app:elevation="3dp"
             app:fabSize="auto"
-            android:onClick="@{onClickListener::onClick}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintVertical_weight="3"
+            android:layout_marginBottom="9dp"
+            app:layout_constraintStart_toStartOf="parent"
+            android:src="@drawable/icons8_camera_24"
+            android:onClick="@{onClickListener::onClick}"
             />
 
 

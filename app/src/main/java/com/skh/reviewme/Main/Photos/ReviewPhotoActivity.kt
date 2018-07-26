@@ -4,6 +4,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.databinding.DataBindingUtil
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -36,6 +38,8 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_review_photo)
         binding.onClickListener = this
+        binding.reviewPhotoImgBack.drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP)
+        binding.btnFloataction.drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP)
         setView()
     }
 
@@ -58,6 +62,9 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
             R.id.btn_floataction -> {
                 startCamera()
             }
+            R.id.review_photo_img_back -> {
+                finish()
+            }
         }
     }
 
@@ -69,16 +76,18 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
             var photoFile: File? = null
             try {
                 photoFile = createImageFile()
+                DLog.e("created camera")
             } catch (e: Exception) {
                 // Error occurred while creating the File
                 e.printStackTrace()
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
-                val photoURI = FileProvider.getUriForFile(this,
-                        "com.example.android.fileprovider",
-                        photoFile)
+                val photoURI = FileProvider.getUriForFile(this@ReviewPhotoActivity
+                        , "com.example.android.fileprovider"
+                        , photoFile)
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                DLog.e("call FileProvider")
                 startActivityForResult(takePictureIntent, requestFileCode)
             }
         }
@@ -87,10 +96,7 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == requestFileCode && resultCode == RESULT_OK) {
-            val extras = data?.extras
-            //비트맵 형식으로 가져옴
-            DLog.e("data: " + extras?.get("data"))
-
+            DLog.e("activity done : $mCurrentPhotoPath")
         }
     }
 
@@ -99,7 +105,7 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
     private fun createImageFile(): File {
         // Create an image file name
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss").format(Date())
-        val imageFileName = "ReviewMe_" + timeStamp + "_"
+        val imageFileName = "JPEG_" + timeStamp + "_"
         val storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val image = File.createTempFile(
                 imageFileName, /* prefix */

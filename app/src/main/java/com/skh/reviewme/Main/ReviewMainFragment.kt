@@ -63,11 +63,12 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     private lateinit var layoutManager: GridLayoutManager
     private lateinit var name: String
     private lateinit var dialog: android.app.AlertDialog
-    private var isOpened: Boolean = false
+    var isOpened: Boolean = false
     private var isLoading: Boolean = false
     private var pref: SharedPreferences? = null
     private var isSearch: Boolean = false
     private var searchedText: String? = null
+    private var pref_file: SharedPreferences? = null
 
     private val client by lazy { ApiCilentRx.create() }
     private var disposable: Disposable? = null
@@ -83,7 +84,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         binding.mainSearchEdit.setOnEditorActionListener(this)
         binding.appBarLayout.isEnabled = false // Include 한 레이아웃이 상위로 가기 위해 사용
         setView()
-
+        pref_file = context?.getSharedPreferences("fileName", MODE_PRIVATE)
         return binding.root
     }
 
@@ -333,8 +334,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
     override fun onResume() {
         super.onResume()
-        val pref = context?.getSharedPreferences("fileName", MODE_PRIVATE)
-        this.name = pref?.getString("filestring", "empty")!!
+        name = pref_file?.getString("filestring", "empty")!!
         if (name != "empty") {
             Uri.parse("file://$name").let {
                 Glide.with(this@ReviewMainFragment)
@@ -348,7 +348,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                         })
             }
         }
-        pref.edit().remove("fileName").apply()
+        pref_file?.edit()?.remove("fileName")?.apply()
     }
 
     private fun setPhoto() {
@@ -385,7 +385,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         binding.mainGridRv.removeOnScrollListener(null)
     }
 
-    private fun plusClose(isFirst: Boolean) {
+    fun plusClose(isFirst: Boolean) {
         val view: View = binding.reviewConstAll
         if (isFirst)
             view.visibility = View.INVISIBLE
@@ -396,9 +396,10 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
                         isOpened = false
+                        binding.mainCoordiLayout.background = null
                         binding.reviewMainQuestion.naviItems.isClickable = false
                         binding.reviewMainRegi.text = "+"
-
+                        setAlpha(1F)
                         if (isFirst)
                             view.visibility = View.VISIBLE
                     }
@@ -406,6 +407,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     }
 
     private fun plusOpen() {
+        setNavigationNull()
         val view: View = binding.reviewConstAll
         view.animate().translationXBy(-(view.width * 0.86).toFloat())
                 .setDuration(300)
@@ -414,11 +416,18 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
                         isOpened = true
+                        setAlpha(0.4F)
                         binding.reviewMainQuestion.naviItems.isClickable = true
                         binding.reviewMainRegi.text = "-"
-                        DLog.e("isOpend: $isOpened")
+
                     }
                 })
+    }
+
+
+    private fun setAlpha(a: Float) {
+        binding.mainGridRv.alpha = a
+        binding.appBarLayout.alpha = a
     }
 
     private fun setNavigationNull() {

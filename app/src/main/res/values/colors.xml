@@ -9,7 +9,9 @@
     <color name="grey">#f4f4f4</color>
     <color name="darkGrey">#8D8D8D</color>
     <color name="midGey">#E5E5E5</color>
-    <color name="trans">#8f000000</color>
+    <color name="trans">#3f000000</color>
     <color name="DarkGreen">#13A9AA</color>
+    <color name="DarkGreenalpha">#7013A9AA</color>
     <color name="ddGreen">#078f87</color>
+    <color name="titleColor">#0ABFB5</color>
 </resources>

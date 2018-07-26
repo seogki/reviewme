@@ -4,6 +4,8 @@ package com.skh.reviewme.Setting.Error
 import android.app.Activity
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.app.AlertDialog
@@ -41,9 +43,9 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_setting_error, container, false)
         binding.onClickListener = this
+        binding.errorImgBack.drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP)
         pref = activity!!.getSharedPreferences("UserId", Activity.MODE_PRIVATE)
         setRv()
         return binding.root
@@ -75,6 +77,9 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
             R.id.error_btn_register -> {
                 binding.errorBtnRegister.isEnabled = false
                 registerErrorApi()
+            }
+            R.id.error_img_back -> {
+                activity?.supportFragmentManager?.popBackStack()
             }
         }
     }

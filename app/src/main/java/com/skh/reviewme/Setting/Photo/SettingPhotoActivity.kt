@@ -4,6 +4,8 @@ import android.app.Activity
 import android.content.Intent
 import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
+import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.Handler
 import android.provider.MediaStore
@@ -42,6 +44,8 @@ class SettingPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapL
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_review_photo)
         pref = getSharedPreferences("UserId", Activity.MODE_PRIVATE)
+        binding.reviewPhotoImgBack.drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP)
+        binding.btnFloataction.drawable.setColorFilter(Color.parseColor("#ffffff"), PorterDuff.Mode.SRC_ATOP)
         binding.onClickListener = this
         setView()
     }
@@ -64,6 +68,9 @@ class SettingPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapL
         when (v?.id) {
             R.id.btn_floataction -> {
                 startCamera()
+            }
+            R.id.review_photo_img_back -> {
+                finish()
             }
         }
     }
