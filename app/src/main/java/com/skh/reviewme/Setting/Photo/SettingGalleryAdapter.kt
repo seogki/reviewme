@@ -8,8 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
-import com.skh.reviewme.Main.Interface.HashMapListener
-import com.skh.reviewme.Main.Photos.GalleryMaxActivity
+import com.skh.reviewme.Review.Interface.HashMapListener
+import com.skh.reviewme.Review.Photos.GalleryMaxActivity
 import com.skh.reviewme.R
 import com.skh.reviewme.databinding.ItemPhotosBinding
 import java.util.*

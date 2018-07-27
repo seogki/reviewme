@@ -58,7 +58,7 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
                 signOut()
             }
             R.id.setting_btn_changeimage -> {
-                beginNewActivity(Intent(context!!, SettingPhotoActivity::class.java))
+                beginNewActivity(Intent(context!!, SettingPhotoActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
             }
             R.id.setting_btn_errors -> {
                 val frag = SettingErrorFragment()

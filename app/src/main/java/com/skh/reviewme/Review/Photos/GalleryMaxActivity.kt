@@ -1,4 +1,4 @@
-package com.skh.reviewme.Main.Photos
+package com.skh.reviewme.Review.Photos
 
 import android.databinding.DataBindingUtil
 import android.net.Uri

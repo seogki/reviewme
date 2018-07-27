@@ -1,4 +1,4 @@
-package com.skh.reviewme.Main.Photos
+package com.skh.reviewme.Review.Photos
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -6,6 +6,8 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Handler
@@ -16,7 +18,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.skh.reviewme.Main.Interface.HashMapListener
+import com.skh.reviewme.Review.Interface.HashMapListener
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.ImageFile
@@ -69,10 +71,19 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
     }
 
 
+    private fun savePhotoInPref(filename: String) {
+        val pref = getSharedPreferences("fileName", Context.MODE_PRIVATE)
+        val editor = pref.edit()
+        editor.putString("filestring", filename)
+        editor.apply()
+        finish()
+    }
+
     private fun startCamera() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         if (takePictureIntent.resolveActivity(packageManager) != null) {
             // Create the File where the photo should go
+
             var photoFile: File? = null
             try {
                 photoFile = createImageFile()
@@ -82,13 +93,20 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
                 e.printStackTrace()
             }
             // Continue only if the File was successfully created
+
             if (photoFile != null) {
-                val photoURI = FileProvider.getUriForFile(this@ReviewPhotoActivity
-                        , "com.example.android.fileprovider"
-                        , photoFile)
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                DLog.e("call FileProvider")
-                startActivityForResult(takePictureIntent, requestFileCode)
+                if (Build.VERSION_CODES.N <= android.os.Build.VERSION.SDK_INT) {
+                    val photoURI = FileProvider.getUriForFile(this@ReviewPhotoActivity
+                            , "com.example.android.fileprovider"
+                            , photoFile)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                    DLog.e("call FileProvider")
+                    startActivityForResult(takePictureIntent, requestFileCode)
+                } else {
+                    val uri = Uri.fromFile(photoFile)
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, uri)
+                    startActivityForResult(takePictureIntent, requestFileCode)
+                }
             }
         }
     }
@@ -97,8 +115,20 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == requestFileCode && resultCode == RESULT_OK) {
             DLog.e("activity done : $mCurrentPhotoPath")
+            if (mCurrentPhotoPath != null)
+                galleryAddPic()
         }
     }
+
+    private fun galleryAddPic() {
+        val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)
+        val f = File(mCurrentPhotoPath)
+        val contentUri = Uri.fromFile(f)
+        mediaScanIntent.data = contentUri
+        this.sendBroadcast(mediaScanIntent)
+        savePhotoInPref(mCurrentPhotoPath as String)
+    }
+
 
     @SuppressLint("SimpleDateFormat")
     @Throws(IOException::class)
@@ -122,10 +152,6 @@ class ReviewPhotoActivity : AppCompatActivity(), View.OnClickListener, HashMapLi
     @SuppressLint("ApplySharedPref")
     override fun onHash(pos: Int, filename: String) {
         DLog.e("int : String : $pos : $filename")
-        val pref = getSharedPreferences("fileName", Context.MODE_PRIVATE)
-        val editor = pref.edit()
-        editor.putString("filestring", filename)
-        editor.commit()
-        finish()
+        savePhotoInPref(filename)
     }
 }

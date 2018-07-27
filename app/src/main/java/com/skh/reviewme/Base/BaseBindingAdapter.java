@@ -3,6 +3,8 @@ package com.skh.reviewme.Base;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.BindingAdapter;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -41,20 +43,26 @@ public class BaseBindingAdapter {
             }
         }
 
-        Uri uri = Uri.parse("file://" + url);
-        Glide.with(imageView.getContext())
-                .load(uri)
-                .apply(new RequestOptions()
-                        .centerCrop()
-                        .override(175, 175)
-                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
-                .thumbnail(0.1f)
-                .into(new SimpleTarget<Drawable>() {
-                    @Override
-                    public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
-                        imageView.setImageDrawable(resource);
-                    }
-                });
+        if (url == null) {
+            Glide.with(imageView.getContext()).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+
+            Uri uri = Uri.parse("file://" + url);
+            Glide.with(imageView.getContext())
+                    .load(uri)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .override(175, 175)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                    .thumbnail(0.1f)
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
     }
 
     @BindingAdapter("reviewImageUrl")
@@ -249,6 +257,7 @@ public class BaseBindingAdapter {
             textView.setText("여자");
         }
     }
+
 
     @BindingAdapter("checkTag")
     public static void checkTag(final TextView textView, final String data) {

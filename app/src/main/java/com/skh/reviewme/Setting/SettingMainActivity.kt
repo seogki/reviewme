@@ -9,8 +9,9 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Community.CommunityMainActivity
-import com.skh.reviewme.Main.ReviewMainActivity
+import com.skh.reviewme.Home.HomeMainActivity
 import com.skh.reviewme.R
+import com.skh.reviewme.Review.ReviewMainActivity
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.databinding.ActivitySettingMainBinding
 
@@ -31,6 +32,12 @@ class SettingMainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.bottom_layout_btn0 -> {
+                beginActivity(Intent(this@SettingMainActivity
+                        , HomeMainActivity::class.java)
+                )
+            }
+
             R.id.bottom_layout_btn1 -> {
                 beginActivity(Intent(this@SettingMainActivity
                         , ReviewMainActivity::class.java)
@@ -65,8 +72,6 @@ class SettingMainActivity : BaseActivity(), View.OnClickListener {
                 this.finishAffinity()
                 finishToast()
             }
-        } else if (fragmentManager.backStackEntryCount > 0) {
-            fragmentManager.popBackStack()
         } else {
             super.onBackPressed()
         }

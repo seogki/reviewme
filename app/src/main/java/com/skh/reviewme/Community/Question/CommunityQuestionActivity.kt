@@ -118,6 +118,7 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
                 }, { error ->
                     DLog.e("t : ${error?.message.toString()}")
                     binding.questionBtnRegister.isEnabled = true
+                    alertDialog(error?.message!!)
                 })
 
     }

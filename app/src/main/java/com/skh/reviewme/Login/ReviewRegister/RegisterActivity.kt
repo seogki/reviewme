@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.kakao.network.ErrorResult
 import com.kakao.usermgmt.UserManagement
@@ -22,9 +23,9 @@ import com.kakao.usermgmt.callback.MeV2ResponseCallback
 import com.kakao.usermgmt.response.MeV2Response
 import com.skh.reviewme.ApplicationClass
 import com.skh.reviewme.Base.BaseActivity
-import com.skh.reviewme.Main.ReviewMainActivity
 import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
+import com.skh.reviewme.Review.ReviewMainActivity
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.ActivityRegisterBinding
@@ -51,10 +52,14 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        checkRegistration()
+        bindview()
+    }
+
+    private fun bindview(){
         binding = DataBindingUtil.setContentView(this, R.layout.activity_register)
         binding.registBtnRegister.visibility = View.GONE
         binding.onClickListener = this
-        checkRegistration()
     }
 
 
@@ -90,7 +95,8 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
         when {
             isAvailable.contains("200") -> {
                 saveUserNick(username)
-                redirectReviewMainActivity()
+                crashlyticsSetData(username)
+                redirectHomeMainActivity()
                 finish()
             }
             isAvailable.contains("에러") -> alertAndFinishDialog()
@@ -98,6 +104,10 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
                 setViewVisibility()
             }
         }
+    }
+    private fun crashlyticsSetData(username: String){
+        Crashlytics.setUserIdentifier(id)
+        Crashlytics.setUserName(username)
     }
 
 
@@ -202,6 +212,7 @@ class RegisterActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setViewVisibility() {
+
         binding.registBtnClearImage.visibility = View.VISIBLE
         binding.registEmptyBackground.visibility = View.GONE
         binding.registBtnRegister.visibility = View.VISIBLE

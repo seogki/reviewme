@@ -86,6 +86,15 @@ open class BaseFragment : Fragment() {
 
     }
 
+    fun alertDialog(c: Context ,msg: String){
+        AlertDialog.Builder(c, R.style.MyDialogTheme)
+                .setMessage(msg)
+                .setPositiveButton("확인", { dialog, _ ->
+                    dialog.dismiss()
+                }).setNegativeButton(null, null)
+                .show()
+    }
+
 
 
 

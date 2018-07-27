@@ -4,6 +4,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.View
+import com.crashlytics.android.Crashlytics
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -34,13 +35,17 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         DLog.e("key hsh" + Utility.getKeyHash(this))
 
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
-        binding.signInButton.setOnClickListener(this)
-        binding.comLogin.setOnClickListener(this)
+//        bindview()
         DLog.e("onSessionInitiated")
 
         initiateKakaoSign()
         initiateGoogleSign()
+    }
+
+    private fun bindview() {
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_login)
+        binding.signInButton.setOnClickListener(this)
+        binding.comLogin.setOnClickListener(this)
     }
 
 
@@ -61,10 +66,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         super.onStart()
         GoogleSignIn.getLastSignedInAccount(this).let { updataUI(it) }
     }
-    private fun initiateKakaoSign(){
+
+    private fun initiateKakaoSign() {
         callback = SessionCallback()
         Session.getCurrentSession().addCallback(callback)
-        Session.getCurrentSession().checkAndImplicitOpen()
+        if (!Session.getCurrentSession().checkAndImplicitOpen()) {
+            bindview()
+        }
 
     }
 
@@ -88,8 +96,12 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             ApplicationClass.setIsKakao(false)
             redirectRegisterActivity()
             finish()
+        } else {
+            bindview()
         }
     }
+
+
 
     private fun handleSignInResult(task: Task<GoogleSignInAccount>) {
         try {
@@ -137,7 +149,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
     }
 
 
-    private fun isUserLogin(){
+    private fun isUserLogin() {
 
     }
 

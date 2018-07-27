@@ -12,8 +12,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import com.skh.reviewme.Base.BaseActivity
-import com.skh.reviewme.Main.Interface.HashMapListener
-import com.skh.reviewme.Main.Photos.RegisterImageAdapter
+import com.skh.reviewme.Review.Interface.HashMapListener
+import com.skh.reviewme.Review.Photos.RegisterImageAdapter
 import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.ImageFile

@@ -1,4 +1,4 @@
-package com.skh.reviewme.Main
+package com.skh.reviewme.Review
 
 
 import android.Manifest
@@ -34,10 +34,10 @@ import com.bumptech.glide.request.transition.Transition
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.skh.reviewme.Base.BaseFragment
-import com.skh.reviewme.Main.Photos.ReviewPhotoActivity
-import com.skh.reviewme.Main.model.ReviewFragmentModel
 import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
+import com.skh.reviewme.Review.Photos.ReviewPhotoActivity
+import com.skh.reviewme.Review.model.ReviewFragmentModel
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.GridSpacingItemDecoration
 import com.skh.reviewme.Util.UtilMethod
@@ -100,9 +100,9 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
 
     private fun setView() {
-        binding.reviewConstAll.post {
-            run { plusClose(true) }
-        }
+        Handler().post({
+            plusClose(true)
+        })
 
         binding.mainGridRv.removeAllViews()
         reviewAdapter = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
@@ -302,6 +302,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                     closeKeyboard()
                     DLog.e("이미지 업로드 fail")
                     DLog.e("t : " + error?.message)
+                    alertDialog(context!!, error?.message!!)
                 })
     }
 
@@ -357,7 +358,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                 .setPermissionListener(object : PermissionListener {
                     override fun onPermissionGranted() {
                         Handler().postDelayed({
-                            beginNewActivity(Intent(context, ReviewPhotoActivity::class.java))
+                            beginNewActivity(Intent(context, ReviewPhotoActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
                         }, 10)
                     }
 
@@ -408,6 +409,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
 
     private fun plusOpen() {
         setNavigationNull()
+
         val view: View = binding.reviewConstAll
         view.animate().translationXBy(-(view.width * 0.86).toFloat())
                 .setDuration(300)

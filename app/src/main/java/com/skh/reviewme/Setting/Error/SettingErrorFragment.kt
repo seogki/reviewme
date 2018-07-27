@@ -95,7 +95,7 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
                     .subscribe({
                         setErrorSucDialog()
                     }, { error ->
-                        DLog.e("t : ${error?.message.toString()}"); binding.errorBtnRegister.isEnabled = true
+                        DLog.e("t : ${error?.message.toString()}"); binding.errorBtnRegister.isEnabled = true ; alertDialog(context!!,error?.message!!)
                     })
         } else {
             binding.errorBtnRegister.isEnabled = true

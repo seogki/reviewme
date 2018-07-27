@@ -6,12 +6,14 @@ import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
 import com.bumptech.glide.Glide;
+import com.crashlytics.android.Crashlytics;
 import com.kakao.auth.ApprovalType;
 import com.kakao.auth.AuthType;
 import com.kakao.auth.IApplicationConfig;
 import com.kakao.auth.ISessionConfig;
 import com.kakao.auth.KakaoAdapter;
 import com.kakao.auth.KakaoSDK;
+import io.fabric.sdk.android.Fabric;
 
 /**
  * Created by Seogki on 2018. 6. 20..
@@ -35,6 +37,7 @@ public class ApplicationClass extends MultiDexApplication{
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         instance = this;
         MultiDex.install(this);
         KakaoSDK.init(new KakaoSDKAdapter());

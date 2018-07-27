@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.skh.reviewme.Main.Photos.ReviewPhotoActivity"
+    tools:context="com.skh.reviewme.Review.Photos.ReviewPhotoActivity"
     >
 
     <data>
@@ -121,18 +121,19 @@
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/question_btn_floataction"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
-            android:layout_marginEnd="25dp"
             android:clipToPadding="false"
             android:onClick="@{onClickListener::onClick}"
-            app:backgroundTint="#85d3d3d3"
+            app:backgroundTint="@color/titleColor"
             app:borderWidth="0dp"
-            app:elevation="0dp"
+            app:elevation="3dp"
             app:fabSize="auto"
+            android:src="@drawable/icons8_camera_24"
             app:layout_constraintBottom_toTopOf="@id/question_btn_register"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/question_photo_rv"
             app:layout_constraintVertical_weight="3"
             />

@@ -15,7 +15,7 @@
 
         <variable
             name="model"
-            type="com.skh.reviewme.Main.model.ReviewFragmentModel"/>
+            type="com.skh.reviewme.Review.model.ReviewFragmentModel"/>
     </data>
 
     <android.support.constraint.ConstraintLayout

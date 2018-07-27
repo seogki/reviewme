@@ -1,4 +1,4 @@
-package com.skh.reviewme.Main
+package com.skh.reviewme.Home
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -7,15 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
-import com.skh.reviewme.Main.model.ReviewFragmentModel
 import com.skh.reviewme.R
+import com.skh.reviewme.Review.model.ReviewFragmentModel
 import com.skh.reviewme.databinding.ItemReviewMainBinding
 
 
 /**
  * Created by Seogki on 2018. 6. 5..
  */
-open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFragmentModel>) : BaseRecyclerViewAdapter<ReviewFragmentModel, ReviewMainAdapter.ReviewMainViewholder>(context, arrayList) {
+open class HomeReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFragmentModel>) : BaseRecyclerViewAdapter<ReviewFragmentModel, HomeReviewMainAdapter.ReviewMainViewholder>(context, arrayList) {
 
 
     override fun onBindView(holder: ReviewMainViewholder, position: Int) {
@@ -40,4 +40,5 @@ open class ReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFrag
             binding = DataBindingUtil.bind(itemView)
         }
     }
+
 }

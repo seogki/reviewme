@@ -1,4 +1,4 @@
-package com.skh.reviewme.Main
+package com.skh.reviewme.Review
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
@@ -9,6 +9,7 @@ import android.support.v4.content.ContextCompat
 import android.view.View
 import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Community.CommunityMainActivity
+import com.skh.reviewme.Home.HomeMainActivity
 import com.skh.reviewme.R
 import com.skh.reviewme.Setting.SettingMainActivity
 import com.skh.reviewme.Util.DLog
@@ -31,6 +32,12 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
 
     override fun onClick(v: View?) {
         when (v?.id) {
+            R.id.bottom_layout_btn0 -> {
+                beginActivity(Intent(this@ReviewMainActivity
+                        , HomeMainActivity::class.java)
+                )
+            }
+
             R.id.bottom_layout_btn2 -> {
                 beginActivity(Intent(this@ReviewMainActivity
                         , CommunityMainActivity::class.java)

@@ -1,4 +1,4 @@
-package com.skh.reviewme.Main.model
+package com.skh.reviewme.Review.model
 
 /**
  * Created by Seogki on 2018. 6. 12..

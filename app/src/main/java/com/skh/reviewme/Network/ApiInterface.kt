@@ -4,7 +4,7 @@ import com.google.gson.JsonObject
 import com.skh.reviewme.Community.model.CommunityInnerCommentModels
 import com.skh.reviewme.Community.model.CommunityInnerModel
 import com.skh.reviewme.Community.model.CommunityModels
-import com.skh.reviewme.Main.model.ReviewFragmentModels
+import com.skh.reviewme.Review.model.ReviewFragmentModels
 import com.skh.reviewme.Setting.Model.SettingErrorModels
 import com.skh.reviewme.Setting.Model.SettingUserProfileModel
 import io.reactivex.Observable

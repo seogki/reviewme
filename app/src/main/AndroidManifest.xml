@@ -45,6 +45,10 @@
             android:name="com.kakao.sdk.AppKey"
             android:value="@string/kakao_app_key"/>
 
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="3860cdf1413877bb2c860a0278c8b42737d7b8b2"/>
+
         <activity
             android:name="com.kakao.auth.authorization.authcode.KakaoWebViewActivity"
             android:launchMode="singleTop"
@@ -56,38 +60,54 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Main.ReviewMainActivity"
+            android:name=".Review.ReviewMainActivity"
             android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Setting.SettingMainActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Setting.SettingMainActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Community.CommunityMainActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Community.CommunityMainActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Main.Photos.ReviewPhotoActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Review.Photos.ReviewPhotoActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Main.Photos.GalleryMaxActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Review.Photos.GalleryMaxActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Community.Question.CommunityQuestionActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Community.Question.CommunityQuestionActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Login.LoginActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Login.LoginActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Community.Question.CommunityQuestionPhotoActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Community.Question.CommunityQuestionPhotoActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Login.ReviewRegister.RegisterActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Login.ReviewRegister.RegisterActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Login.ReviewRegister.RegisterProfileImageActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Login.ReviewRegister.RegisterProfileImageActivity"
+            android:screenOrientation="portrait">
         </activity>
-        <activity android:name=".Setting.Photo.SettingPhotoActivity"
-                  android:screenOrientation="portrait">
+        <activity
+            android:name=".Setting.Photo.SettingPhotoActivity"
+            android:screenOrientation="portrait">
+        </activity>
+
+
+
+        <activity android:name=".Home.HomeMainActivity"
+                  android:screenOrientation="portrait">>
         </activity>
     </application>
 
