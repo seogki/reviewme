@@ -3,8 +3,6 @@ package com.skh.reviewme.Base;
 import android.app.Activity;
 import android.content.Context;
 import android.databinding.BindingAdapter;
-import android.graphics.Color;
-import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.annotation.NonNull;

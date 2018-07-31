@@ -4,6 +4,8 @@ import com.google.gson.JsonObject
 import com.skh.reviewme.Community.model.CommunityInnerCommentModels
 import com.skh.reviewme.Community.model.CommunityInnerModel
 import com.skh.reviewme.Community.model.CommunityModels
+import com.skh.reviewme.Home.Model.HomeCommunityModels
+import com.skh.reviewme.Home.Model.HomeReviewFragmentModels
 import com.skh.reviewme.Review.model.ReviewFragmentModels
 import com.skh.reviewme.Setting.Model.SettingErrorModels
 import com.skh.reviewme.Setting.Model.SettingUserProfileModel
@@ -78,6 +80,17 @@ interface ApiInterface {
                              , @Part("isKakao") isKakao: RequestBody
                              , @Part file: MultipartBody.Part): Call<JsonObject>
 
+
+    /***
+     *  홈 메인
+     */
+
+    @POST("api/GetHomeReviewItem2")
+    fun GetHomeReviewItem2Rx(): Observable<HomeReviewFragmentModels>
+
+
+    @POST("api/GetHomeCommunityItem2")
+    fun GetHomeCommunityItem2Rx(): Observable<HomeCommunityModels>
 
     /***
      * 리뷰 Rx메인

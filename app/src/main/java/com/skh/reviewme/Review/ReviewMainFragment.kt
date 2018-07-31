@@ -116,7 +116,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
         reviewAdapter.setHasStableIds(true)
         binding.mainGridRv.itemAnimator = null
-        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(2, 15, false, 0))
+        binding.mainGridRv.addItemDecoration(GridSpacingItemDecoration(2, 10, true, 0))
 
         binding.swipeLayout.setDistanceToTriggerSync(350)
         binding.swipeLayout.setOnRefreshListener(this)

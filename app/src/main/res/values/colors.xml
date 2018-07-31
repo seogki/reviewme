@@ -13,5 +13,8 @@
     <color name="DarkGreen">#13A9AA</color>
     <color name="DarkGreenalpha">#7013A9AA</color>
     <color name="ddGreen">#078f87</color>
-    <color name="titleColor">#0ABFB5</color>
+    <color name="titleColor">#78C7FF</color>
+    <color name="titleReverse">#B39B54</color>
+
+    <!--default #0ABFB5-->
 </resources>

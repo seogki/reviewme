@@ -2,7 +2,6 @@ package com.skh.reviewme.Review
 
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
@@ -54,8 +53,8 @@ class ReviewMainActivity : BaseActivity(), View.OnClickListener {
 
     private fun setCurrentTab() {
         binding.layoutBottomTab.bottomLayoutBtn1Txt.setImageDrawable(ContextCompat.getDrawable(this@ReviewMainActivity, R.drawable.icons8_home_24_fill))
-        binding.layoutBottomTab.bottomLayoutBtn1Txt.drawable.setColorFilter(Color.parseColor("#13A9AA"), PorterDuff.Mode.SRC_ATOP)
-        binding.layoutBottomTab.bottomLayoutText1.setTextColor(Color.parseColor("#13A9AA"))
+        binding.layoutBottomTab.bottomLayoutBtn1Txt.drawable.setColorFilter(ContextCompat.getColor(this,R.color.titleColor), PorterDuff.Mode.SRC_ATOP)
+        binding.layoutBottomTab.bottomLayoutText1.setTextColor(ContextCompat.getColor(this,R.color.titleColor))
     }
 
 

@@ -1,4 +1,4 @@
-package com.skh.reviewme.Home
+package com.skh.reviewme.Home.Adapter
 
 import android.content.Context
 import android.databinding.DataBindingUtil
@@ -7,15 +7,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
+import com.skh.reviewme.Home.Model.HomeReviewFragmentModel
 import com.skh.reviewme.R
-import com.skh.reviewme.Review.model.ReviewFragmentModel
-import com.skh.reviewme.databinding.ItemReviewMainBinding
+import com.skh.reviewme.databinding.ItemReviewHorizontalBinding
 
 
 /**
  * Created by Seogki on 2018. 6. 5..
  */
-open class HomeReviewMainAdapter(context: Context, arrayList: MutableList<ReviewFragmentModel>) : BaseRecyclerViewAdapter<ReviewFragmentModel, HomeReviewMainAdapter.ReviewMainViewholder>(context, arrayList) {
+open class HomeReviewMainAdapter(context: Context, arrayList: MutableList<HomeReviewFragmentModel>) : BaseRecyclerViewAdapter<HomeReviewFragmentModel, HomeReviewMainAdapter.ReviewMainViewholder>(context, arrayList) {
 
 
     override fun onBindView(holder: ReviewMainViewholder, position: Int) {
@@ -30,10 +30,10 @@ open class HomeReviewMainAdapter(context: Context, arrayList: MutableList<Review
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_review_main, parent, false).let { ReviewMainViewholder(it) }
+            LayoutInflater.from(parent.context).inflate(R.layout.item_review_horizontal, parent, false).let { ReviewMainViewholder(it) }
 
     inner class ReviewMainViewholder(itemView: View?) : RecyclerView.ViewHolder(itemView) {
-        var binding: ItemReviewMainBinding
+        var binding: ItemReviewHorizontalBinding
 
         init {
             super.itemView

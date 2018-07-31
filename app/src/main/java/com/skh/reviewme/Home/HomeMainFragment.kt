@@ -5,13 +5,16 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
-import android.support.v7.widget.GridLayoutManager
+import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.skh.reviewme.Home.Adapter.HomeCommunityMainAdapter
+import com.skh.reviewme.Home.Adapter.HomeReviewMainAdapter
+import com.skh.reviewme.Home.Model.HomeCommunityModel
+import com.skh.reviewme.Home.Model.HomeReviewFragmentModel
 import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
-import com.skh.reviewme.Review.model.ReviewFragmentModel
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.UtilMethod
 import com.skh.reviewme.databinding.FragmentHomeMainBinding
@@ -27,46 +30,74 @@ class HomeMainFragment : Fragment() {
 
     lateinit var binding: FragmentHomeMainBinding
     private lateinit var reviewAdapter: HomeReviewMainAdapter
-    private lateinit var layoutManager: GridLayoutManager
+    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var layoutManager2: LinearLayoutManager
+    private lateinit var communityMainAdapter: HomeCommunityMainAdapter
     private val client by lazy { ApiCilentRx.create() }
     private var disposable: Disposable? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_main, container, false)
-        setReview()
+        setRecyclerview()
         return binding.root
     }
 
 
-    private fun setReview() {
-        reviewAdapter = HomeReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
-        layoutManager = GridLayoutManager(context!!,1, GridLayoutManager.HORIZONTAL, false)
-        layoutManager.isItemPrefetchEnabled = true
-        layoutManager.initialPrefetchItemCount = 3
-        binding.homeRvReview.layoutManager = layoutManager
-        binding.homeRvReview.setHasFixedSize(true)
-        binding.homeRvReview.isDrawingCacheEnabled = true
-        binding.homeRvReview.setItemViewCacheSize(20)
-        binding.homeRvReview.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH
-        reviewAdapter.setHasStableIds(true)
-        binding.homeRvReview.itemAnimator = null
-//        binding.homeRvReview.addItemDecoration(GridSpacingItemDecoration(1, 35, false, 0))
-
+    private fun setRecyclerview() {
+        setReview()
+        setCommunity()
         Handler().postDelayed({
             binding.homeRvReview.adapter = reviewAdapter
+            binding.homeRvCommunity.adapter = communityMainAdapter
         }, 100)
 
 
         getApi()
+        getComapi()
+    }
+
+    private fun setCommunity() {
+        communityMainAdapter = HomeCommunityMainAdapter(context!!, ArrayList<HomeCommunityModel>())
+        communityMainAdapter.setHasStableIds(true)
+        layoutManager2 = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager2.isItemPrefetchEnabled = true
+        layoutManager2.initialPrefetchItemCount = 3
+        binding.homeRvCommunity.layoutManager = layoutManager2
+        binding.homeRvCommunity.setHasFixedSize(true)
+        binding.homeRvCommunity.itemAnimator = null
+
+    }
+
+
+    private fun setReview() {
+        reviewAdapter = HomeReviewMainAdapter(context!!, ArrayList<HomeReviewFragmentModel>())
+        reviewAdapter.setHasStableIds(true)
+        layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
+        layoutManager.isItemPrefetchEnabled = true
+        layoutManager.initialPrefetchItemCount = 3
+        binding.homeRvReview.layoutManager = layoutManager
+        binding.homeRvReview.setHasFixedSize(true)
+        binding.homeRvReview.itemAnimator = null
     }
 
     private fun getApi() {
 
-        disposable = client.GetReviewItem2Rx().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
+        disposable = client.GetHomeReviewItem2Rx().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
                 .subscribe({ result ->
                     DLog.e("memory : " + UtilMethod.getMemoryUsage(reviewAdapter.itemCount))
-                    reviewAdapter.addItems(result?.reviewModel as MutableList<ReviewFragmentModel>)
+                    reviewAdapter.addItems(result?.reviewModel as MutableList<HomeReviewFragmentModel>)
+
+                }, { error ->
+                    DLog.e("error ${error?.message.toString()}")
+                })
+    }
+
+    private fun getComapi() {
+        disposable = client.GetHomeCommunityItem2Rx().subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
+                .subscribe({ result ->
+                    DLog.e("memory : " + UtilMethod.getMemoryUsage(communityMainAdapter.itemCount))
+                    communityMainAdapter.addItems(result?.CommunityModel as MutableList<HomeCommunityModel>)
 
                 }, { error ->
                     DLog.e("error ${error?.message.toString()}")

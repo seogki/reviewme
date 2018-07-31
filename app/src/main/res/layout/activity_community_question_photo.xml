@@ -95,7 +95,7 @@
             android:layout_width="match_parent"
             android:layout_height="10dp"
             android:layout_marginBottom="2.5dp"
-            android:background="@drawable/survey_divder"
+            android:background="@color/grey"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintBottom_toTopOf="@id/question_photo_rv"
             app:layout_constraintStart_toStartOf="parent"
