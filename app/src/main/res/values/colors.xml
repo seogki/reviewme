@@ -13,8 +13,14 @@
     <color name="DarkGreen">#13A9AA</color>
     <color name="DarkGreenalpha">#7013A9AA</color>
     <color name="ddGreen">#078f87</color>
-    <color name="titleColor">#78C7FF</color>
-    <color name="titleReverse">#B39B54</color>
+
+
+
+    <color name="titleColor">#F57C00</color>
+    <color name="btn">#b33f00</color>
+    <color name="titleReverse">#0095e6</color>
+    <color name="statusbar">#E65100</color>
+    <color name="radioBtn">#0095e6</color>
 
     <!--default #0ABFB5-->
 </resources>

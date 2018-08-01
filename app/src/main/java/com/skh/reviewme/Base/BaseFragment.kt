@@ -8,8 +8,10 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AlertDialog
 import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import com.skh.reviewme.Login.LoginActivity
 import com.skh.reviewme.R
+import com.skh.reviewme.databinding.ItemNaviQuestionBinding
 import dmax.dialog.SpotsDialog
 
 
@@ -52,6 +54,11 @@ open class BaseFragment : Fragment() {
         inputManager.hideSoftInputFromWindow(activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
 
     }
+    fun clearAndClose(edit: EditText) {
+        edit.text.clear()
+        val inputManager = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(activity!!.currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
+    }
 
     fun openKeyboard() {
         val imm = activity!!.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -67,13 +74,13 @@ open class BaseFragment : Fragment() {
                 .build().apply { show() }
     }
 
-    fun showSpotDialog(){
-        if(!dialog.isShowing && !activity!!.isFinishing){
+    fun showSpotDialog() {
+        if (!dialog.isShowing && !activity!!.isFinishing) {
             dialog.show()
         }
     }
 
-    fun dismissSpotDialog(){
+    fun dismissSpotDialog() {
         dialog.dismiss()
     }
 
@@ -86,16 +93,22 @@ open class BaseFragment : Fragment() {
 
     }
 
-    fun alertDialog(c: Context ,msg: String){
+    fun alertDialog(c: Context, msg: String) {
+
+
         AlertDialog.Builder(c, R.style.MyDialogTheme)
-                .setMessage(msg)
+                .setMessage("나중에 다시 시도해주시기 바랍니다.")
                 .setPositiveButton("확인", { dialog, _ ->
                     dialog.dismiss()
                 }).setNegativeButton(null, null)
                 .show()
     }
 
-
+    fun setImageNull(reviewMainQuestion: ItemNaviQuestionBinding, naviTextTitle: EditText, naviTxtQuestion: EditText) {
+        reviewMainQuestion.naviImg.setImageDrawable(null)
+        naviTextTitle.text = null
+        naviTxtQuestion.text = null
+    }
 
 
 }

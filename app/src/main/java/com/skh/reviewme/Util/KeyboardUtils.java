@@ -46,7 +46,7 @@ public class KeyboardUtils implements ViewTreeObserver.OnGlobalLayoutListener {
         sListenerMap.put(listener, new KeyboardUtils(act, listener));
     }
 
-    public static void removeKeyboardToggleListener(SoftKeyboardToggleListener listener) {
+    private static void removeKeyboardToggleListener(SoftKeyboardToggleListener listener) {
         if (sListenerMap.containsKey(listener)) {
             KeyboardUtils k = sListenerMap.get(listener);
             k.removeListener();

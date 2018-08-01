@@ -4,14 +4,21 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
+import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AlertDialog
 import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.gun0912.tedpermission.PermissionListener
 import com.gun0912.tedpermission.TedPermission
 import com.skh.reviewme.Base.BaseActivity
@@ -20,6 +27,7 @@ import com.skh.reviewme.R
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.UtilMethodComunnity
 import com.skh.reviewme.databinding.ActivityCommunityQuestionBinding
+import dmax.dialog.SpotsDialog
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -32,8 +40,8 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
     lateinit var binding: ActivityCommunityQuestionBinding
     private var ImageCode: Int = 1234
-    private var questions: ArrayList<Bitmap>? = null
     private lateinit var imagePath: ArrayList<String>
+    private lateinit var dialog: android.app.AlertDialog
     private val client by lazy { ApiCilentRx.create() }
     private var disposable: Disposable? = null
 
@@ -50,6 +58,7 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
                 setPhoto()
             }
             R.id.question_btn_register -> {
+                setSpotDialogs()
                 binding.questionBtnRegister.isEnabled = false
                 setRegisterCommunityToSever()
             }
@@ -114,11 +123,14 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
         disposable = client.setCommunityPhotosRx(userid, userNick, title, text, multiPartImages).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
+                    dialog.dismiss()
                     setCommunityDone()
                 }, { error ->
                     DLog.e("t : ${error?.message.toString()}")
+                    dialog.dismiss()
                     binding.questionBtnRegister.isEnabled = true
                     alertDialog(error?.message!!)
+
                 })
 
     }
@@ -165,18 +177,14 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
 
                 imagePath = data?.getStringArrayListExtra("imagePath") as ArrayList<String>
                 DLog.e("path " + imagePath.toString())
-                setImage(data.getSerializableExtra("PhotoFromQuestion") as ArrayList<Bitmap>)
+                setImage(imagePath)
             }
         }
     }
 
-    private fun setImage(receivedDrawable: ArrayList<Bitmap>) {
-        DLog.e("setImage : $receivedDrawable")
-        questions = receivedDrawable
-        var bitmap1: Bitmap? = null
-        var bitmap2: Bitmap? = null
-        var bitmap3: Bitmap? = null
-        var bitmap4: Bitmap? = null
+    private fun setImage(receivedDrawable: ArrayList<String>) {
+        DLog.e("setImage : $imagePath")
+
 
         setImageNull()
 
@@ -185,37 +193,62 @@ class CommunityQuestionActivity : BaseActivity(), View.OnClickListener {
                 return
             }
             receivedDrawable.size == 1 -> {
-                bitmap1 = receivedDrawable[0]
+                val uri = Uri.parse("file://" + receivedDrawable[0])
+                glideDrawable(uri, binding.questionImg1)
             }
             receivedDrawable.size == 2 -> {
-                bitmap1 = receivedDrawable[0]
-                bitmap2 = receivedDrawable[1]
+                val uri1 = Uri.parse("file://" + receivedDrawable[0])
+                glideDrawable(uri1, binding.questionImg1)
+                val uri2 = Uri.parse("file://" + receivedDrawable[1])
+                glideDrawable(uri2, binding.questionImg2)
+
             }
             receivedDrawable.size == 3 -> {
-                bitmap1 = receivedDrawable[0]
-                bitmap2 = receivedDrawable[1]
-                bitmap3 = receivedDrawable[2]
+                val uri1 = Uri.parse("file://" + receivedDrawable[0])
+                glideDrawable(uri1, binding.questionImg1)
+                val uri2 = Uri.parse("file://" + receivedDrawable[1])
+                glideDrawable(uri2, binding.questionImg2)
+                val uri3 = Uri.parse("file://" + receivedDrawable[2])
+                glideDrawable(uri3, binding.questionImg3)
+
             }
             receivedDrawable.size == 4 -> {
-                bitmap1 = receivedDrawable[0]
-                bitmap2 = receivedDrawable[1]
-                bitmap3 = receivedDrawable[2]
-                bitmap4 = receivedDrawable[3]
+                val uri1 = Uri.parse("file://" + receivedDrawable[0])
+                glideDrawable(uri1, binding.questionImg1)
+                val uri2 = Uri.parse("file://" + receivedDrawable[1])
+                glideDrawable(uri2, binding.questionImg2)
+                val uri3 = Uri.parse("file://" + receivedDrawable[2])
+                glideDrawable(uri3, binding.questionImg3)
+                val uri4 = Uri.parse("file://" + receivedDrawable[3])
+                glideDrawable(uri4, binding.questionImg4)
             }
         }
+    }
 
-        if (bitmap1 != null)
-            binding.questionImg1.setImageBitmap(bitmap1)
+    private fun setSpotDialogs() {
+        dialog = SpotsDialog
+                .Builder()
+                .setContext(this@CommunityQuestionActivity)
+                .setMessage("업로드 중...")
+                .setCancelable(false)
+                .build().apply { show() }
+    }
 
-        if (bitmap2 != null)
-            binding.questionImg2.setImageBitmap(bitmap2)
+    private fun glideDrawable(uri: Uri, imageView: ImageView) {
+        DLog.e("uri + $uri")
+        Glide.with(this).load(uri)
+                .apply(RequestOptions()
+                        .centerCrop()
+                        .override(200, 200)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                .thumbnail(0.1f)
+                .into(object : SimpleTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        DLog.e("setImage")
+                        imageView.setImageDrawable(resource)
+                    }
 
-        if (bitmap3 != null)
-            binding.questionImg3.setImageBitmap(bitmap3)
-
-        if (bitmap4 != null)
-            binding.questionImg4.setImageBitmap(bitmap4)
-
+                })
     }
 
     private fun setImageNull() {

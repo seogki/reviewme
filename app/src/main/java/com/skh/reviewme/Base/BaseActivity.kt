@@ -94,7 +94,7 @@ open class BaseActivity : AppCompatActivity() {
 
     fun alertDialog(msg: String) {
         AlertDialog.Builder(this@BaseActivity, R.style.MyDialogTheme)
-                .setMessage(msg)
+                .setMessage("나중에 다시 시도해주시기 바랍니다.")
                 .setPositiveButton("확인", { dialog, _ ->
                     dialog.dismiss()
                 }).setNegativeButton(null, null)

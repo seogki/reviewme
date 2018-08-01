@@ -52,7 +52,7 @@ class SettingMainActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun setCurrentTab() {
-        binding.layoutBottomTab.bottomLayoutBtn3Txt.setImageDrawable(ContextCompat.getDrawable(this@SettingMainActivity, R.drawable.icons8_user_24_fill))
+        binding.layoutBottomTab.bottomLayoutBtn3Txt.setImageDrawable(ContextCompat.getDrawable(this@SettingMainActivity, R.drawable.icons8_user_menu_male_24_filled))
         binding.layoutBottomTab.bottomLayoutBtn3Txt.drawable.setColorFilter(ContextCompat.getColor(this,R.color.titleColor), PorterDuff.Mode.SRC_ATOP)
         binding.layoutBottomTab.bottomLayoutText3.setTextColor(ContextCompat.getColor(this,R.color.titleColor))
     }

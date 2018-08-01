@@ -8,6 +8,7 @@ import com.skh.reviewme.Home.Model.HomeCommunityModels
 import com.skh.reviewme.Home.Model.HomeReviewFragmentModels
 import com.skh.reviewme.Review.model.ReviewFragmentModels
 import com.skh.reviewme.Setting.Model.SettingErrorModels
+import com.skh.reviewme.Setting.Model.SettingNotificationModels
 import com.skh.reviewme.Setting.Model.SettingUserProfileModel
 import io.reactivex.Observable
 import okhttp3.MultipartBody
@@ -248,6 +249,9 @@ interface ApiInterface {
 
     @POST("api/GetSettingErrorItem")
     fun GetSettingErrorItemRx(): Observable<SettingErrorModels>
+
+    @POST("api/GetSettingNotificationItem")
+    fun GetSettingNotificationItemRx(): Observable<SettingNotificationModels>
 
     /***
      *  세팅 메인

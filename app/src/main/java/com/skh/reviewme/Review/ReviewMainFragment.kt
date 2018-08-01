@@ -24,7 +24,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
@@ -104,7 +103,6 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
             plusClose(true)
         })
 
-        binding.mainGridRv.removeAllViews()
         reviewAdapter = ReviewMainAdapter(context!!, ArrayList<ReviewFragmentModel>())
         layoutManager = GridLayoutManager(context!!, 2, LinearLayoutManager.VERTICAL, false)
         layoutManager.isItemPrefetchEnabled = true
@@ -283,9 +281,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     private fun sendReviewToServer() {
 
         val userid = pref?.getString("userLoginId", "").let { RequestBody.create(MediaType.parse("text/plain"), it) }
-
         val file = UtilMethod.getCompressed(context!!, File(name).toString(), "drawable1")
-
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file).let { MultipartBody.Part.createFormData("images", file.name, it) }
 
 
@@ -295,12 +291,11 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         disposable = client.SetReviewPhotosRx(userid, title, text, requestFile).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread()).unsubscribeOn(Schedulers.io())
                 .subscribe({
                     plusClose(false)
-                    setNavigationNull()
+                    setImageNull(binding.reviewMainQuestion, binding.reviewMainQuestion.naviTextTitle, binding.reviewMainQuestion.naviTxtQuestion)
                     closeKeyboard()
                     onRefresh()
                 }, { error ->
                     closeKeyboard()
-                    DLog.e("이미지 업로드 fail")
                     DLog.e("t : " + error?.message)
                     alertDialog(context!!, error?.message!!)
                 })
@@ -396,11 +391,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
-                        isOpened = false
-                        binding.mainCoordiLayout.background = null
-                        binding.reviewMainQuestion.naviItems.isClickable = false
-                        binding.reviewMainRegi.text = "+"
-                        setAlpha(1F)
+                        plusOpenOrClose("+", false, false, 1F)
                         if (isFirst)
                             view.visibility = View.VISIBLE
                     }
@@ -408,7 +399,7 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
     }
 
     private fun plusOpen() {
-        setNavigationNull()
+        setImageNull(binding.reviewMainQuestion, binding.reviewMainQuestion.naviTextTitle, binding.reviewMainQuestion.naviTxtQuestion)
 
         val view: View = binding.reviewConstAll
         view.animate().translationXBy(-(view.width * 0.86).toFloat())
@@ -417,31 +408,20 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationEnd(animation: Animator?) {
                         super.onAnimationEnd(animation)
-                        isOpened = true
-                        setAlpha(0.4F)
-                        binding.reviewMainQuestion.naviItems.isClickable = true
-                        binding.reviewMainRegi.text = "-"
+                        plusOpenOrClose("-", true, true, 0.4F)
 
                     }
                 })
     }
 
-
-    private fun setAlpha(a: Float) {
+    private fun plusOpenOrClose(plus: String, click: Boolean, open: Boolean, a: Float) {
+        binding.reviewMainQuestion.naviItems.isClickable = click
+        binding.reviewMainRegi.text = plus
+        isOpened = open
         binding.mainGridRv.alpha = a
         binding.appBarLayout.alpha = a
     }
 
-    private fun setNavigationNull() {
-        binding.reviewMainQuestion.naviImg.setImageDrawable(null)
-        binding.reviewMainQuestion.naviTextTitle.text = null
-        binding.reviewMainQuestion.naviTxtQuestion.text = null
-    }
-
-    private fun clearAndClose(edit: EditText) {
-        edit.text.clear()
-        closeKeyboard()
-    }
 
     override fun onDestroy() {
         super.onDestroy()

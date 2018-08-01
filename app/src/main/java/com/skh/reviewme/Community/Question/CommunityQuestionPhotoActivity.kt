@@ -4,10 +4,8 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
 import android.databinding.DataBindingUtil
-import android.graphics.Bitmap
 import android.graphics.Color
 import android.graphics.PorterDuff
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Build
@@ -20,12 +18,16 @@ import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.skh.reviewme.Base.BaseActivity
 import com.skh.reviewme.Base.BaseRecyclerViewAdapter
-import com.skh.reviewme.Review.Interface.HashMapListener
 import com.skh.reviewme.R
+import com.skh.reviewme.Review.Interface.HashMapListener
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.Util.ImageFile
 import com.skh.reviewme.databinding.ActivityCommunityQuestionPhotoBinding
@@ -41,6 +43,10 @@ class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnC
     private lateinit var layoutManager: RecyclerView.LayoutManager
     private lateinit var communityQuestionPhotoAdapter: CommunityQuestionPhotoAdapter
     private lateinit var imagePath: ArrayList<String>
+    private lateinit var imagepath1: String
+    private lateinit var imagepath2: String
+    private lateinit var imagepath3: String
+    private lateinit var imagepath4: String
     var mCurrentPhotoPath: String? = null
     private var requestFileCode: Int = 4798
 
@@ -86,97 +92,101 @@ class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnC
             R.id.question_btn_floataction -> {
                 startCamera()
             }
+            R.id.question_photo_img1_close -> {
+
+                binding.questionPhotoImg1.setImageDrawable(null)
+                binding.questionPhotoImg1Close.visibility = View.GONE
+                imagePath.remove(imagepath1)
+            }
+            R.id.question_photo_img2_close -> {
+
+                binding.questionPhotoImg2.setImageDrawable(null)
+                binding.questionPhotoImg2Close.visibility = View.GONE
+                imagePath.remove(imagepath2)
+            }
+            R.id.question_photo_img3_close -> {
+
+                binding.questionPhotoImg3.setImageDrawable(null)
+                binding.questionPhotoImg3Close.visibility = View.GONE
+                imagePath.remove(imagepath3)
+            }
+            R.id.question_photo_img4_close -> {
+                binding.questionPhotoImg4.setImageDrawable(null)
+                binding.questionPhotoImg4Close.visibility = View.GONE
+                imagePath.remove(imagepath4)
+
+            }
         }
 
     }
 
     override fun onItemClick(view: View, position: Int) {
-
-        DLog.e("data + " + communityQuestionPhotoAdapter.getItem(position).toString())
-        imagePath.add(communityQuestionPhotoAdapter.getItem(position).toString())
-
-        for (i in 0..(view as ViewGroup).childCount) {
-            val child = view.getChildAt(0)
-
-            if (child is ImageView) {
-                checkImageIsAvailable(child.drawable)
-            }
-        }
+        checkImageIsAvailable(communityQuestionPhotoAdapter.getItem(position).toString())
     }
 
-    private fun getDrawable(): ArrayList<Bitmap> {
-        val drawable1 = (binding.questionPhotoImg1.drawable as? BitmapDrawable)?.bitmap
-        val drawable2 = (binding.questionPhotoImg2.drawable as? BitmapDrawable)?.bitmap
-        val drawable3 = (binding.questionPhotoImg3.drawable as? BitmapDrawable)?.bitmap
-        val drawable4 = (binding.questionPhotoImg4.drawable as? BitmapDrawable)?.bitmap
-
-        val list = ArrayList<Bitmap>()
-
-        if (drawable1 != null) {
-            list.add(drawable1)
-        }
-        if (drawable2 != null) {
-            list.add(drawable2)
-        }
-        if (drawable3 != null) {
-            list.add(drawable3)
-        }
-        if (drawable4 != null) {
-            list.add(drawable4)
-        }
-
-        return list
-
-    }
 
     private fun callActivity() {
         val returnIntent = Intent()
-        returnIntent.putParcelableArrayListExtra("PhotoFromQuestion", getDrawable())
         returnIntent.putStringArrayListExtra("imagePath", imagePath)
         setResult(Activity.RESULT_OK, returnIntent)
         finish()
     }
 
-    private fun checkImageIsAvailable(drawable: Drawable) {
+    private fun checkImageIsAvailable(drawable: String) {
         val bitmap1 = binding.questionPhotoImg1.drawable
         val bitmap2 = binding.questionPhotoImg2.drawable
         val bitmap3 = binding.questionPhotoImg3.drawable
         val bitmap4 = binding.questionPhotoImg4.drawable
 
-        if (bitmap1 == drawable) {
-            binding.questionPhotoImg1.setImageDrawable(null)
-            return
-        }
-        if (bitmap2 == drawable) {
-            binding.questionPhotoImg2.setImageDrawable(null)
-            return
-        }
-        if (bitmap3 == drawable) {
-            binding.questionPhotoImg3.setImageDrawable(null)
-            return
-        }
-        if (bitmap4 == drawable) {
-            binding.questionPhotoImg4.setImageDrawable(null)
-            return
-        }
+
+        val uri = Uri.parse("file://$drawable")
 
         if (bitmap1 == null) {
-            binding.questionPhotoImg1.setImageDrawable(drawable)
+            imagepath1 = drawable
+            glideDrawable(uri, binding.questionPhotoImg1)
+            binding.questionPhotoImg1Close.visibility = View.VISIBLE
+            imagePath.add(drawable)
         } else {
             if (bitmap2 == null) {
-                binding.questionPhotoImg2.setImageDrawable(drawable)
+                imagepath2 = drawable
+                glideDrawable(uri, binding.questionPhotoImg2)
+                binding.questionPhotoImg2Close.visibility = View.VISIBLE
+                imagePath.add(drawable)
             } else {
                 if (bitmap3 == null) {
-                    binding.questionPhotoImg3.setImageDrawable(drawable)
+                    imagepath3 = drawable
+                    glideDrawable(uri, binding.questionPhotoImg3)
+                    binding.questionPhotoImg3Close.visibility = View.VISIBLE
+                    imagePath.add(drawable)
                 } else {
                     if (bitmap4 == null) {
-                        binding.questionPhotoImg4.setImageDrawable(drawable)
+                        imagepath4 = drawable
+                        glideDrawable(uri, binding.questionPhotoImg4)
+                        binding.questionPhotoImg4Close.visibility = View.VISIBLE
+                        imagePath.add(drawable)
                     }
                 }
             }
         }
 
 
+    }
+
+    private fun glideDrawable(uri: Uri, imageView: ImageView) {
+        DLog.e("uri + $uri")
+        Glide.with(this).load(uri)
+                .apply(RequestOptions()
+                        .centerCrop()
+                        .override(200, 200)
+                        .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                .thumbnail(0.1f)
+                .into(object : SimpleTarget<Drawable>() {
+                    override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                        DLog.e("setImage")
+                        imageView.setImageDrawable(resource)
+                    }
+
+                })
     }
 
     private fun startCamera() {
@@ -215,10 +225,14 @@ class CommunityQuestionPhotoActivity : BaseActivity(), HashMapListener, View.OnC
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == requestFileCode && resultCode == RESULT_OK) {
             DLog.e("activity done : $mCurrentPhotoPath")
-            if (mCurrentPhotoPath != null)
+            if (mCurrentPhotoPath != null) {
                 galleryAddPic()
+                checkImageIsAvailable(mCurrentPhotoPath!!)
+
+            }
         }
     }
+
 
     private fun galleryAddPic() {
         val mediaScanIntent = Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE)

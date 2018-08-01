@@ -160,9 +160,8 @@ Where Quality ranges from 1–100.
 
 
             //Convert bitmap to byte array
-            Bitmap bitmap = myBitmap;
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            bitmap.compress(Bitmap.CompressFormat.PNG, 100 /*ignored for PNG*/, bos);
+            myBitmap.compress(Bitmap.CompressFormat.PNG, 100 /*ignored for PNG*/, bos);
             byte[] bitmapdata = bos.toByteArray();
 
             //write the bytes in file
@@ -191,11 +190,4 @@ Where Quality ranges from 1–100.
                 .show();
 
     }
-    public static void checkTime(String data){
-//        2018년07월24일 13:43:33
-        // 2018 07 24 13 43 33
-
-    }
-
-
 }

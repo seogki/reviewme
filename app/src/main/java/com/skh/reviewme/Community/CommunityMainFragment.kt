@@ -14,7 +14,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import com.skh.reviewme.Base.BaseFragment
@@ -237,11 +236,6 @@ class CommunityMainFragment : BaseFragment()
                         })
             }
         }
-    }
-
-    private fun clearAndClose(edit: EditText) {
-        edit.text.clear()
-        closeKeyboard()
     }
 
     override fun onRefresh() {

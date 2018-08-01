@@ -58,7 +58,7 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
         layoutManager.isItemPrefetchEnabled = true
         layoutManager.initialPrefetchItemCount = 4
         binding.errorRv.layoutManager = layoutManager
-
+        binding.errorRv.isNestedScrollingEnabled = false
         binding.errorRv.itemAnimator = null
         binding.errorRv.setHasFixedSize(true)
         settingErrorAdapter.setHasStableIds(true)

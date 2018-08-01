@@ -210,6 +210,42 @@ public class BaseBindingAdapter {
         }
     }
 
+    @BindingAdapter("CommunityInnerThumbnailImageUrl")
+    public static void CommunityInnerThumbnailImageUrl(final ImageView imageView, String url) {
+
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
+        if (url == null) {
+            Glide.with(imageView.getContext()).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+            String murl = Const.Companion.getServer_url() + url;
+            Uri uri = Uri.parse(murl);
+            Glide.with(imageView.getContext())
+                    .load(uri)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .circleCrop()
+                            .override(150, 150)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                    .thumbnail(0.1f)
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
+    }
+
     @BindingAdapter("settingImageUrl")
     public static void SettingImage(final ImageView imageView, String url) {
 
@@ -284,14 +320,13 @@ public class BaseBindingAdapter {
         }
 
 
-        if (UtilMethod.getActivity(view.getContext()) != null) {
+        if (UtilMethod.getActivity(view.getContext()) != null)
             KeyboardUtils.addKeyboardToggleListener(UtilMethod.getActivity(view.getContext()), new KeyboardUtils.SoftKeyboardToggleListener() {
                 @Override
                 public void onToggleSoftKeyboard(boolean isVisible) {
                     view.setVisibility(isVisible ? View.GONE : View.VISIBLE);
                 }
             });
-        }
 
     }
 }

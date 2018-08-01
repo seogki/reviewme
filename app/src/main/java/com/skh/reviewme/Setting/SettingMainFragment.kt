@@ -12,8 +12,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.kakao.kakaotalk.callback.TalkResponseCallback
-import com.kakao.network.ErrorResult
 import com.kakao.usermgmt.UserManagement
 import com.kakao.usermgmt.callback.LogoutResponseCallback
 import com.skh.reviewme.ApplicationClass
@@ -21,6 +19,7 @@ import com.skh.reviewme.Base.BaseFragment
 import com.skh.reviewme.Network.ApiCilentRx
 import com.skh.reviewme.R
 import com.skh.reviewme.Setting.Error.SettingErrorFragment
+import com.skh.reviewme.Setting.Notification.SettingNotificationFragment
 import com.skh.reviewme.Setting.Photo.SettingPhotoActivity
 import com.skh.reviewme.Util.DLog
 import com.skh.reviewme.databinding.FragmentSettingMainBinding
@@ -64,6 +63,10 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
                 val frag = SettingErrorFragment()
                 addFragment(activity, R.id.frame_layout, frag, true, true, "SettingErrorFragment")
             }
+            R.id.setting_btn_notification -> {
+                val frag = SettingNotificationFragment()
+                addFragment(activity, R.id.frame_layout, frag, true, true, "SettingNotificationFragment")
+            }
         }
     }
 
@@ -98,24 +101,7 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
                 }
     }
 
-    private open inner class kakaoTalkResponseCallback<T> : TalkResponseCallback<T>() {
-        override fun onNotKakaoTalkUser() {
 
-        }
-
-        override fun onSessionClosed(errorResult: ErrorResult?) {
-
-        }
-
-        override fun onSuccess(result: T) {
-
-        }
-
-        override fun onNotSignedUp() {
-
-        }
-
-    }
 
     private fun getUserProfileApi() {
 
@@ -144,6 +130,25 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
         super.onDestroy()
         disposable?.dispose()
     }
+
+//    private open inner class kakaoTalkResponseCallback<T> : TalkResponseCallback<T>() {
+//        override fun onNotKakaoTalkUser() {
+//
+//        }
+//
+//        override fun onSessionClosed(errorResult: ErrorResult?) {
+//
+//        }
+//
+//        override fun onSuccess(result: T) {
+//
+//        }
+//
+//        override fun onNotSignedUp() {
+//
+//        }
+//
+//    }
 
 
 }// Required empty public constructor

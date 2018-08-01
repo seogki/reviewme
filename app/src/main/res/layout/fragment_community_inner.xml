@@ -234,7 +234,7 @@
                     app:layout_constraintEnd_toStartOf="@id/inner_txt_comment"
                     app:layout_constraintStart_toStartOf="parent"
                     tools:text="댓글인가 봉당"
-
+                    android:inputType="text"
                     />
 
                 <TextView
