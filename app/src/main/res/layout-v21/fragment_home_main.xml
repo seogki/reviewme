@@ -21,14 +21,13 @@
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/home_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
+                style="@style/toolbar"
                 app:contentInsetEnd="0dp"
                 app:contentInsetLeft="0dp"
                 app:contentInsetRight="0dp"
                 app:contentInsetStart="0dp"
                 app:elevation="0dp"
-                app:layout_scrollFlags="scroll|enterAlways|snap"
+                app:layout_scrollFlags="snap|enterAlways|scroll"
                 >
 
 
@@ -62,8 +61,8 @@
         <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             android:fillViewport="true"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
             >
 
             <android.support.constraint.ConstraintLayout
@@ -77,7 +76,7 @@
                     android:id="@+id/home_view_top"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
-                    android:background="@color/titleColor"
+                    android:background="@color/belowtitle"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
@@ -85,85 +84,54 @@
 
                 <TextView
                     android:id="@+id/home_txt_thisweek"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:text="최근 리뷰"
                     android:textColor="@color/titleReverse"
                     android:textSize="15sp"
-                    android:textStyle="normal"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/home_view_top"
-                    />
-
-                <View
-                    android:id="@+id/home_view_belowweek"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/darkGrey"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_txt_thisweek"
+                    app:layout_constraintBottom_toTopOf="@id/home_rv_review"
                     />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/home_rv_review"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:scrollbars="none"
-                    android:background="@color/grey"
+                    android:layout_height="wrap_content"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_view_belowweek"
+                    app:layout_constraintTop_toBottomOf="@id/home_txt_thisweek"
+                    app:layout_constraintBottom_toTopOf="@id/home_txt_community"
                     />
 
                 <TextView
                     android:id="@+id/home_txt_community"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:layout_marginTop="5dp"
                     android:text="최근 커뮤니티"
                     android:textColor="@color/titleReverse"
                     android:textSize="15sp"
-                    android:textStyle="normal"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/home_rv_review"
-                    />
-
-                <View
-                    android:id="@+id/home_view_belowrv"
-                    android:layout_width="match_parent"
-                    android:layout_height="0.5dp"
-                    android:layout_marginTop="7dp"
-                    android:layout_marginEnd="10dp"
-                    android:layout_marginStart="10dp"
-                    android:background="@color/darkGrey"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_txt_community"
+                    app:layout_constraintBottom_toTopOf="@id/home_rv_community"
                     />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/home_rv_community"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:scrollbars="none"
-                    android:background="@color/grey"
-
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="10dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/home_view_belowrv"
+                    app:layout_constraintTop_toBottomOf="@id/home_txt_community"
                     />
 
 

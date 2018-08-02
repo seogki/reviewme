@@ -60,11 +60,9 @@ class SettingErrorFragment : BaseFragment(), View.OnClickListener, BaseRecyclerV
         binding.errorRv.layoutManager = layoutManager
         binding.errorRv.isNestedScrollingEnabled = false
         binding.errorRv.itemAnimator = null
-        binding.errorRv.setHasFixedSize(true)
         settingErrorAdapter.setHasStableIds(true)
-        binding.errorRv.addItemDecoration(GridSpacingItemDecoration(1, 20, false, 0))
+        binding.errorRv.addItemDecoration(GridSpacingItemDecoration(1, 5, false, 0))
         settingErrorAdapter.setOnItemClickListener(this)
-
         binding.errorRv.adapter = settingErrorAdapter
         getErrorApi()
 

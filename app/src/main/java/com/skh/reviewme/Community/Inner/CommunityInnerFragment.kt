@@ -56,7 +56,6 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
         binding.innerRvComment.adapter = communityInnerAdapter
         binding.innerRvComment.setItemViewCacheSize(20)
         binding.innerRvComment.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_AUTO
-        binding.innerRvComment.setHasFixedSize(false)
         binding.innerRvComment.isNestedScrollingEnabled = false
 
         view?.layoutParams = RecyclerView.LayoutParams(
@@ -74,6 +73,7 @@ class CommunityInnerFragment : BaseFragment(), View.OnClickListener {
             client.GetInnerCommunityItemRx(it).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ result ->
                         binding.item = result
+                        binding.executePendingBindings()
                     }, { error ->
                         DLog.e("t : ${error?.message.toString()}")
                     })

@@ -422,7 +422,6 @@ open class ReviewMainFragment : BaseFragment(), View.OnClickListener, SwipeRefre
         binding.appBarLayout.alpha = a
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         Glide.get(context!!).clearMemory()

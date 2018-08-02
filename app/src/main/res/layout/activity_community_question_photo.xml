@@ -138,7 +138,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="10dp"
+            android:layout_height="3dp"
             android:layout_marginBottom="2.5dp"
             android:background="@color/grey"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -191,7 +191,7 @@
             android:layout_marginBottom="15dp"
             android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
-            android:background="@drawable/btn_color_border"
+            android:background="@drawable/btn_register_round"
             android:onClick="@{onClickListener::onClick}"
             android:text="등록"
             android:textColor="#fff"

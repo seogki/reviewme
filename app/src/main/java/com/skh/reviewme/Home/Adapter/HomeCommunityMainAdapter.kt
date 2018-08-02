@@ -19,9 +19,11 @@ open class HomeCommunityMainAdapter(context: Context, arrayList: MutableList<Hom
 
 
     override fun onBindView(holder: ReviewMainViewholder, position: Int) {
-        holder.setIsRecyclable(true)
-        holder.binding.model = getItem(holder.adapterPosition)
-
+        holder.setIsRecyclable(false)
+        val model = getItem(holder.adapterPosition)
+        holder.binding.model = model
+        if (model?.images != null)
+            holder.binding.reviewMainTitle.visibility = View.GONE
     }
 
     override fun getItemId(position: Int): Long {

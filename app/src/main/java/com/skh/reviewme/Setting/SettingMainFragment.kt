@@ -7,6 +7,7 @@ import android.content.SharedPreferences
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,7 +55,7 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
     override fun onClick(v: View?) {
         when (v?.id) {
             R.id.setting_btn_out -> {
-                signOut()
+                outDialog()
             }
             R.id.setting_btn_changeimage -> {
                 beginNewActivity(Intent(context!!, SettingPhotoActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP))
@@ -68,6 +69,18 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
                 addFragment(activity, R.id.frame_layout, frag, true, true, "SettingNotificationFragment")
             }
         }
+    }
+
+    private fun outDialog() {
+        AlertDialog.Builder(context!!, R.style.MyDialogTheme)
+                .setMessage("정말로 로그아웃 하시겠습니까?")
+                .setPositiveButton("확인", { dialog, _ ->
+                    dialog.dismiss()
+                    signOut()
+                }).setNegativeButton("취소", { dialog, _ ->
+                    dialog.dismiss()
+                })
+                .show()
     }
 
     private fun signOut() {
@@ -102,7 +115,6 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
     }
 
 
-
     private fun getUserProfileApi() {
 
         val userid = pref.getString("userLoginId", "")
@@ -111,7 +123,7 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
                 .subscribe({ result ->
                     binding.item = result
                     binding.executePendingBindings()
-                    binding.settingAgeTxt.append("살")
+                    binding.settingAgeTxt.append("세")
                     isCalled = true
 
                 }, { error ->
@@ -130,25 +142,5 @@ class SettingMainFragment : BaseFragment(), View.OnClickListener {
         super.onDestroy()
         disposable?.dispose()
     }
-
-//    private open inner class kakaoTalkResponseCallback<T> : TalkResponseCallback<T>() {
-//        override fun onNotKakaoTalkUser() {
-//
-//        }
-//
-//        override fun onSessionClosed(errorResult: ErrorResult?) {
-//
-//        }
-//
-//        override fun onSuccess(result: T) {
-//
-//        }
-//
-//        override fun onNotSignedUp() {
-//
-//        }
-//
-//    }
-
 
 }// Required empty public constructor

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -90,6 +91,78 @@ public class BaseBindingAdapter {
                             .override(225, 225)
                             .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
 
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
+    }
+
+    @BindingAdapter("horizontalImageUrl")
+    public static void horizontalImageUrl(final ImageView imageView, String url) {
+
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
+        if (url == null) {
+            Glide.with(imageView.getContext()).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+            String murl = Const.Companion.getServer_url() + url;
+            Uri uri = Uri.parse(murl);
+
+            Glide.with(imageView.getContext())
+                    .load(uri)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .transform(new RoundedCorners(8))
+                            .override(225, 225)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
+                    .into(new SimpleTarget<Drawable>() {
+                        @Override
+                        public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                            imageView.setImageDrawable(resource);
+                        }
+                    });
+        }
+    }
+
+    @BindingAdapter("horizontalcomImageUrl")
+    public static void horizontalcomImageUrl(final ImageView imageView, String url) {
+
+        Context context = imageView.getContext();
+        if (context == null) {
+            return;
+        } else if (context instanceof Activity) {
+            final Activity activity = (Activity) context;
+            if (activity.isFinishing() || activity.isDestroyed()) {
+                return;
+            }
+        }
+
+        if (url == null) {
+            Glide.with(imageView.getContext()).clear(imageView);
+            imageView.setImageDrawable(null);
+        } else {
+            String murl = Const.Companion.getServer_url() + url;
+            Uri uri = Uri.parse(murl);
+
+            Glide.with(imageView.getContext())
+                    .load(uri)
+                    .apply(new RequestOptions()
+                            .centerCrop()
+                            .transform(new RoundedCorners(8))
+                            .override(300, 300)
+                            .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC))
                     .into(new SimpleTarget<Drawable>() {
                         @Override
                         public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
@@ -286,9 +359,9 @@ public class BaseBindingAdapter {
     @BindingAdapter("checkGender")
     public static void genderCheck(final TextView textView, final String data) {
         if (Objects.equals(data, "M")) {
-            textView.setText("남자");
+            textView.setText("(남)");
         } else if (Objects.equals(data, "F")) {
-            textView.setText("여자");
+            textView.setText("(여)");
         }
     }
 

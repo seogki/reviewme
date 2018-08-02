@@ -71,7 +71,6 @@ class CommunityMainFragment : BaseFragment()
         binding.mainGridRv.layoutManager = layoutManager
 
         binding.mainGridRv.itemAnimator = null
-        binding.mainGridRv.setHasFixedSize(true)
         binding.mainGridRv.isDrawingCacheEnabled = true
         binding.mainGridRv.setItemViewCacheSize(20)
         binding.mainGridRv.drawingCacheQuality = View.DRAWING_CACHE_QUALITY_HIGH

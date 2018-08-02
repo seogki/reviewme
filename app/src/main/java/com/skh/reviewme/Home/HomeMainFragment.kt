@@ -37,7 +37,6 @@ class HomeMainFragment : Fragment() {
     private var disposable: Disposable? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_home_main, container, false)
         setRecyclerview()
         return binding.root
@@ -50,7 +49,7 @@ class HomeMainFragment : Fragment() {
         Handler().postDelayed({
             binding.homeRvReview.adapter = reviewAdapter
             binding.homeRvCommunity.adapter = communityMainAdapter
-        }, 100)
+        }, 10)
 
 
         getApi()
@@ -63,8 +62,8 @@ class HomeMainFragment : Fragment() {
         layoutManager2 = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
         layoutManager2.isItemPrefetchEnabled = true
         layoutManager2.initialPrefetchItemCount = 3
+        binding.homeRvCommunity.isNestedScrollingEnabled = false
         binding.homeRvCommunity.layoutManager = layoutManager2
-        binding.homeRvCommunity.setHasFixedSize(true)
         binding.homeRvCommunity.itemAnimator = null
 
     }
@@ -76,8 +75,8 @@ class HomeMainFragment : Fragment() {
         layoutManager = LinearLayoutManager(context!!, LinearLayoutManager.HORIZONTAL, false)
         layoutManager.isItemPrefetchEnabled = true
         layoutManager.initialPrefetchItemCount = 3
+        binding.homeRvReview.isNestedScrollingEnabled = false
         binding.homeRvReview.layoutManager = layoutManager
-        binding.homeRvReview.setHasFixedSize(true)
         binding.homeRvReview.itemAnimator = null
     }
 

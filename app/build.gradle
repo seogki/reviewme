@@ -53,9 +53,9 @@ android {
         cruncherEnabled true
     }
 }
-repositories {
-    maven { url 'https://maven.fabric.io/public' }
-}
+//repositories {
+//    maven { url 'https://maven.fabric.io/public' }
+//}
 
 
 
@@ -116,7 +116,5 @@ dependencies {
     implementation 'com.google.android.gms:play-services-auth:15.0.1'
     implementation 'com.android.support:exifinterface:27.1.0'
 
-    //api 21 아래에 ripple 이펙트 넣기위해
-//    implementation 'com.github.rey5137:material:1.2.5'
-//    compile 'com.balysv:material-ripple:1.0.2'
+
 }

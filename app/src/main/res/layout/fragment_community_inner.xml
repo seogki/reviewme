@@ -46,7 +46,7 @@
                     android:id="@+id/inner_txt_regi_name"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
-                    android:layout_marginStart="20dp"
+                    android:layout_marginStart="10dp"
                     android:layout_marginTop="15dp"
                     android:gravity="center_vertical"
                     android:text="@{item.nickname}"
@@ -145,7 +145,7 @@
                     android:id="@+id/inner_img_first"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="15dp"
+
                     android:adjustViewBounds="true"
                     app:innerCommunityImageUrl="@{item.image1}"
                     app:layout_constraintEnd_toEndOf="parent"

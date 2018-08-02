@@ -16,11 +16,12 @@
 
 
 
-    <color name="titleColor">#F57C00</color>
-    <color name="btn">#b33f00</color>
-    <color name="titleReverse">#0095e6</color>
-    <color name="statusbar">#E65100</color>
-    <color name="radioBtn">#0095e6</color>
+    <color name="titleColor">#303F9F</color>
+    <color name="btn">#131A53</color>
+    <color name="titleReverse">#7A701A</color>
+    <color name="statusbar">#1A237E</color>
+    <color name="radioBtn">#7A701A</color>
+    <color name="belowtitle">#202E92</color>
 
     <!--default #0ABFB5-->
 </resources>

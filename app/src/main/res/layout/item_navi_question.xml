@@ -101,7 +101,7 @@
             android:id="@+id/navi_btn_register"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/btn"
+            android:background="@drawable/btn_register_round"
             android:onClick="@{onClickListener::onClick}"
             android:text="등록"
             android:textColor="#fff"

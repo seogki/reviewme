@@ -50,7 +50,6 @@ class SettingNotificationFragment : Fragment(), View.OnClickListener, BaseRecycl
         linearLayoutManager = LinearLayoutManager(context!!, LinearLayoutManager.VERTICAL, false)
         binding.notificationRv.layoutManager = linearLayoutManager
         binding.notificationRv.itemAnimator = null
-        binding.notificationRv.setHasFixedSize(false)
         binding.notificationRv.addItemDecoration(GridSpacingItemDecoration(1, 5, false, 0))
         settingNotificationAdapter.setOnItemClickListener(this)
         binding.notificationRv.adapter = settingNotificationAdapter
